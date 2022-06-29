@@ -3,8 +3,8 @@
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    nickname NVARCHAR(20) NOT NULL,
-    email TEXT NOT NULL,
+    nickname NVARCHAR(20) unique NOT NULL,
+    email TEXT unique NOT NULL,
     password TEXT NOT NULL
 );
 
@@ -69,46 +69,3 @@ CREATE TABLE comments_votes (
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(comment_id) REFERENCES comments(id)
 );
-
-
--- INSERT VALUES TO TABLES
-
--- USERS
-INSERT INTO users (nickname, email, password) VALUES
-('Dias1c', 'admin@example.com', '1234567890'),
-('alice', 'alice@example.com', '1234567890'),
-('bob', 'bob@example.com', '1234567890');
-
-SELECT * FROM users;
-
--- CATEGORIES
-INSERT INTO categories (name) VALUES
-('about self'),
-('sport'),
-('music'),
-('car'),
-('health'),
-('meme');
-
-SELECT * FROM categories;
-
--- POSTS
-INSERT INTO posts (title, content, category_id, user_id) VALUES
-('About me', 'Hello there! I am Dias1c and I started to learn english. Here I will read, communicate, write posts and comments only in english!', 1, 1);
-
-SELECT * FROM posts;
-
--- COMMENTS
-INSERT INTO comments (content, post_id, user_id) VALUES
-('If you read this comment, lets learn english together', 1, 1);
-
-SELECT * FROM comments;
-
-
--- SHOW TABLES CONTENTS
-SELECT * FROM users;
-SELECT * FROM categories;
-SELECT * FROM posts;
-SELECT * FROM posts_votes;
-SELECT * FROM comments;
-SELECT * FROM comments_votes;
