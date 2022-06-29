@@ -8,6 +8,16 @@ CREATE TABLE users (
     password TEXT NOT NULL
 );
 
+-- USER SESSIONS 
+DROP TABLE IF EXISTS sessions;
+CREATE TABLE IF NOT EXISTS sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    uuid TEXT NOT NULL,
+    expired_at TEXT,
+    user_id INTEGER,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
 -- POSTS CATEGORIES
 DROP TABLE IF EXISTS categories;
 CREATE TABLE categories (
@@ -65,7 +75,9 @@ CREATE TABLE comments_votes (
 
 -- USERS
 INSERT INTO users (nickname, email, password) VALUES
-('Dias1c', 'example@mail.com', '1234567890');
+('Dias1c', 'admin@example.com', '1234567890'),
+('alice', 'alice@example.com', '1234567890'),
+('bob', 'bob@example.com', '1234567890');
 
 SELECT * FROM users;
 
