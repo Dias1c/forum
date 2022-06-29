@@ -16,8 +16,8 @@ INSERT INTO categories (name) VALUES
 ('meme');
 
 -- POSTS
-INSERT INTO posts (title, content, category_id, user_id) VALUES
-('About me', 'Hello there! I am Dias1c and I started to learn english. Here I will read, communicate, write posts and comments only in english!', 1, 1);
+INSERT INTO posts (title, content, user_id) VALUES
+('About me', 'Hello there! I am Dias1c and I started to learn english. Here I will read, communicate, write posts and comments only in english!', 1);
 
 -- COMMENTS
 INSERT INTO comments (content, post_id, user_id) VALUES
@@ -28,6 +28,8 @@ INSERT INTO comments (content, post_id, user_id) VALUES
 SELECT * FROM users;
 SELECT * FROM categories;
 SELECT * FROM posts;
+SELECT * FROM categories_posts;
 SELECT * FROM posts_votes;
 SELECT * FROM comments;
 SELECT * FROM comments_votes;
+SELECT * FROM sessions;
