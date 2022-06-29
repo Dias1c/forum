@@ -16,6 +16,5 @@ COPY --from=builder /src/store.sqlite.db .
 COPY --from=builder /src/configs.env .
 COPY --from=builder /src/main .
 EXPOSE 8080
-RUN ls -laR
 
 CMD ["./main"]
