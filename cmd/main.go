@@ -8,29 +8,44 @@ import (
 	"forum/architecture/service"
 	"forum/architecture/web/handler"
 	"forum/architecture/web/server"
+	"forum/internal/database"
 	"forum/internal/envfiller"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
-const FILE_CONFIGS = "config.env"
+const FILE_CONFIGS = "configs.env"
 
 func main() {
-	servConf, handlerConf := GetConfigs()
-	repos := repository.NewRepo(nil)
+	dbConf, servConf, handlerConf := GetConfigs()
+
+	db, err := database.InitDatabase(dbConf)
+	if err != nil {
+		log.Fatalf("InitDatabase: %s\n", err)
+	}
+
+	repos := repository.NewRepo(db)
 	services := service.NewService(repos)
 	handlers, err := handler.NewMainHandler(services, handlerConf)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 
 	server := new(server.Server)
 	if err := server.Run(servConf, handlers.InitRoutes(handlerConf)); err != nil {
-		log.Fatalf("ERROR: %s\n", err)
+		log.Fatalln(err)
 	}
 }
 
-func GetConfigs() (*server.Configs, *handler.Configs) {
+func GetConfigs() (*database.Configs, *server.Configs, *handler.Configs) {
+	dbConf := new(database.Configs)
+	err := envfiller.FillFieldsByEnvFile(FILE_CONFIGS, dbConf)
+	if err != nil {
+		log.Fatalf("GetConifgs from %q returns err: %v\n", FILE_CONFIGS, err)
+	}
+
 	servConf := new(server.Configs)
-	err := envfiller.FillFieldsByEnvFile(FILE_CONFIGS, servConf)
+	err = envfiller.FillFieldsByEnvFile(FILE_CONFIGS, servConf)
 	if err != nil {
 		log.Fatalf("GetConifgs from %q returns err: %v\n", FILE_CONFIGS, err)
 	}
@@ -40,7 +55,9 @@ func GetConfigs() (*server.Configs, *handler.Configs) {
 	if err != nil {
 		log.Fatalf("GetConifgs from %q returns err: %v\n", FILE_CONFIGS, err)
 	}
-	fmt.Printf("servConf: %+v\n", servConf)
-	fmt.Printf("handlerConf: %+v\n", handlerConf)
-	return servConf, handlerConf
+
+	fmt.Printf("dbConf:         %+v\n", dbConf)
+	fmt.Printf("servConf:       %+v\n", servConf)
+	fmt.Printf("handlerConf:    %+v\n", handlerConf)
+	return dbConf, servConf, handlerConf
 }

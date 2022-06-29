@@ -19,17 +19,10 @@ INSERT INTO categories (name) VALUES
 INSERT INTO posts (title, content, user_id) VALUES
 ('About me', 'Hello there! I am Dias1c and I started to learn english. Here I will read, communicate, write posts and comments only in english!', 1);
 
+-- CATEGORY POST
+INSERT INTO categories_posts (category_id, post_id) VALUES
+(1,1);
+
 -- COMMENTS
 INSERT INTO comments (content, post_id, user_id) VALUES
 ('If you read this comment, lets learn english together', 1, 1);
-
-
--- SHOW TABLES CONTENTS
-SELECT * FROM users;
-SELECT * FROM categories;
-SELECT * FROM posts;
-SELECT * FROM categories_posts;
-SELECT * FROM posts_votes;
-SELECT * FROM comments;
-SELECT * FROM comments_votes;
-SELECT * FROM sessions;
