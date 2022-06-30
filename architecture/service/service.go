@@ -3,18 +3,18 @@ package service
 import (
 	"forum/architecture/models"
 	"forum/architecture/repository"
-	"forum/architecture/service/post"
+	"forum/architecture/service/question"
 	"forum/architecture/service/user"
 )
 
 type Service struct {
-	User models.IUserService
-	Post models.IPostService
+	User     models.IUserService
+	Question models.IQuestionService
 }
 
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
-		User: user.NewUserService(repo.User),
-		Post: post.NewPostService(repo.Question),
+		User:     user.NewUserService(repo.User),
+		Question: question.NewQuestionService(repo.Question),
 	}
 }

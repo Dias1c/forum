@@ -6,9 +6,11 @@ import "time"
 type User struct {
 	Id          int
 	Nickname    string
-	Email       string
+	Fistname    string
+	Lastname    string
 	Password    string
 	CreatedTime time.Time
+	//? PHOTO
 }
 
 type IUserService interface {

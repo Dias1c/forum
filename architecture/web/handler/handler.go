@@ -3,50 +3,32 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"path/filepath"
-	"text/template"
 
 	"forum/architecture/service"
+	"forum/architecture/web/handler/api"
+	"forum/architecture/web/handler/view"
 )
 
-type Configs struct {
-	Templates   string `templates`
-	StaticFiles string `static_files`
-}
-
 type MainHandler struct {
-	templates *template.Template
-	service   *service.Service
+	apiHandler  *api.ApiHandler
+	viewHandler *view.ViewHandler
 }
 
-func NewMainHandler(service *service.Service, configs *Configs) (*MainHandler, error) {
-	templates, err := newTemplate(configs)
+func NewMainHandler(service *service.Service) (*MainHandler, error) {
+	apiHandler := api.NewApiHandler(service)
+	viewHandler, err := view.NewViewHandler()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("NewMainHandler: %w", err)
 	}
 	return &MainHandler{
-		templates: templates,
-		service:   service,
+		apiHandler:  apiHandler,
+		viewHandler: viewHandler,
 	}, nil
 }
 
-func newTemplate(configs *Configs) (*template.Template, error) {
-	// Gets All Templates in folder templates
-	filepaths, err := filepath.Glob(configs.Templates + "/*.html")
-	files, err := template.ParseFiles(filepaths...)
-	if err != nil {
-		return nil, fmt.Errorf("newTemplate: %w", err)
-	}
-	return template.Must(files, nil), nil
-}
-
-func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
+func (m *MainHandler) InitRoutes() http.Handler {
 	mux := http.NewServeMux()
-	// HERE IS ALL ROUTES
-	fsStatic := http.FileServer(http.Dir(configs.StaticFiles))
-	mux.Handle("/static/", http.StripPrefix("/static/", fsStatic))
-
-	// AnyRoutes
-	mux.HandleFunc("/test", m.TestHandler)
+	m.apiHandler.InitRoutes(mux)
+	m.viewHandler.InitRoutes(mux)
 	return mux
 }

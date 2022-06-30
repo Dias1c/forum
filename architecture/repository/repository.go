@@ -10,7 +10,7 @@ import (
 
 type Repository struct {
 	User     models.IUserRepo
-	Question models.IPostRepo
+	Question models.IQuestionRepo
 }
 
 func NewRepo(db *sql.DB) *Repository {
