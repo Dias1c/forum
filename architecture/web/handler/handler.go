@@ -47,6 +47,6 @@ func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
 	mux.Handle("/static/", http.StripPrefix("/static/", fsStatic))
 
 	// AnyRoutes
-	mux.HandleFunc("/test", m.TestHandler)
+	mux.HandleFunc("/", m.TestHandler)
 	return mux
 }
