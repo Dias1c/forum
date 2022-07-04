@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"errors"
 	"fmt"
 	"forum/architecture/models"
 	"log"
 	"net/http"
-	"strings"
+
+	suser "forum/architecture/service/user"
 )
 
 // TestHandler - Handle for Testing
@@ -24,7 +26,6 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Println(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
 		}
 	case http.MethodPost:
 		err = r.ParseForm()
@@ -38,31 +39,28 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 			Email:    r.FormValue("email"),
 			Password: r.FormValue("password"),
 		}
-		userId, err := m.service.User.Create(newUser)
-		if err == nil {
-			// http.StatusPermanentRedirect
-			http.Redirect(w, r, "/login", userId)
-			return
-		}
 
-		if strings.HasPrefix(err.Error(), "client: ") {
+		_, err := m.service.User.Create(newUser)
+		switch {
+		case err == nil:
+			http.Redirect(w, r, "/login", http.StatusPermanentRedirect)
+		case errors.Is(err, suser.ErrExistNickname):
 			w.WriteHeader(http.StatusBadRequest)
-			fmt.Fprintln(w, err)
-			err = m.templates.ExecuteTemplate(w, "bootstrap", nil)
-			if err != nil {
-				log.Println(err)
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			return
+		case errors.Is(err, suser.ErrExistEmail):
+			w.WriteHeader(http.StatusBadRequest)
+		case errors.Is(err, suser.ErrInvalidNickname):
+			w.WriteHeader(http.StatusBadRequest)
+		case errors.Is(err, suser.ErrInvalidEmail):
+			w.WriteHeader(http.StatusBadRequest)
+		default:
+			// w.WriteHeader(http.StatusInternalServerError)
+			log.Printf("ERROR: SignUpHandler: %s", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintln(w, err) //? debug
-		fmt.Fprintln(w, "internal server error")
+		fmt.Fprintln(w, err)
 
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		fmt.Fprintf(w, "Method %v not allowed\n", r.Method)
-		return
 	}
 }
