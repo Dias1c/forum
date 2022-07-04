@@ -2,11 +2,10 @@ package handler
 
 import (
 	"fmt"
+	"forum/architecture/service"
 	"net/http"
 	"path/filepath"
 	"text/template"
-
-	"forum/architecture/service"
 )
 
 type Configs struct {
@@ -48,5 +47,6 @@ func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
 
 	// AnyRoutes
 	mux.HandleFunc("/", m.TestHandler)
+	mux.HandleFunc("/signup", m.SignUpHandler)
 	return mux
 }

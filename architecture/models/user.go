@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 // User -
 type User struct {
@@ -12,7 +14,7 @@ type User struct {
 }
 
 type IUserService interface {
-	Create(user *User) error
+	Create(user *User) (int, error)
 	Update(user *User) error
 	DeleteByID(id int) error
 
@@ -23,7 +25,7 @@ type IUserService interface {
 }
 
 type IUserRepo interface {
-	Create(user *User) error
+	Create(user *User) (int, error)
 	Update(user *User) error
 	DeleteByID(id int) error
 

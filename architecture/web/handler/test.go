@@ -8,26 +8,19 @@ import (
 
 // TestHandler - Handle for Testing
 func (m *MainHandler) TestHandler(w http.ResponseWriter, r *http.Request) {
+	debugLogHandler("TestHandler", r)
 	err := m.debugRefreshTemplates()
 	if err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// err = v.templates.ExecuteTemplate(w, "pg-index", nil)
-	// err = v.templates.ExecuteTemplate(w, "pg-signup", nil)
-	// err = v.templates.ExecuteTemplate(w, "pg-login", nil)
-	// err = v.templates.ExecuteTemplate(w, "pg-question", nil)
-	err = m.templates.ExecuteTemplate(w, "bootstrap", nil)
-	// err = v.templates.ExecuteTemplate(w, "pg-question-create", nil)
-	// err = v.templates.ExecuteTemplate(w, "pg-tags", nil)
-	// err = v.templates.ExecuteTemplate(w, "pg-user", nil)
-	// err = v.templates.ExecuteTemplate(w, "pg-users", nil)
-	if err != nil {
-		log.Println(err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	fmt.Fprintf(w, "Current state:\n")
+	fmt.Fprintf(w, "Cookies count: %v; Cookies: %q;\n", len(r.Cookies()), r.Cookies())
+	fmt.Fprintf(w, "Ready Endpoints:\n")
+	fmt.Fprintf(w, "Main:      /\n")
+	fmt.Fprintf(w, "SignUp:    /signup\n")
+	fmt.Fprintf(w, "LogIn:     /login\n")
 }
 
 //? debugRefreshTemplates -
@@ -38,4 +31,9 @@ func (m *MainHandler) debugRefreshTemplates() error {
 	}
 	m.templates = templates
 	return nil
+}
+
+//? debugLogHandler -
+func debugLogHandler(fName string, r *http.Request) {
+	fmt.Printf("%-20v | %-7v | %-20v \n", r.URL, r.Method, fName)
 }

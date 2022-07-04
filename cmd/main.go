@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"forum/architecture/repository"
@@ -56,8 +55,9 @@ func GetConfigs() (*database.Configs, *server.Configs, *handler.Configs) {
 		log.Fatalf("GetConifgs from %q returns err: %v\n", FILE_CONFIGS, err)
 	}
 
-	fmt.Printf("dbConf:         %+v\n", dbConf)
-	fmt.Printf("servConf:       %+v\n", servConf)
-	fmt.Printf("handlerConf:    %+v\n", handlerConf)
+	// fmt.Printf("dbConf:         %+v\n", dbConf)
+	// fmt.Printf("servConf:       %+v\n", servConf)
+	// fmt.Printf("handlerConf:    %+v\n", handlerConf)
+
 	return dbConf, servConf, handlerConf
 }
