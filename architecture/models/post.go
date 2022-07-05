@@ -6,6 +6,7 @@ type Post struct {
 	Content  string
 	Category *Category
 	User     *User
+	Comments []Comment
 }
 
 type IPostService interface {

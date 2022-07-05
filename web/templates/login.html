@@ -28,14 +28,14 @@
 {{ define "loginForm" }}
 
 
-<form class="form-signin center" role="form" action="/logedin" method="POST">
+<form class="form-signin center" role="form" action="/login" method="POST">
   <h2 class="form-signin-heading">
     <i class="fa fa-comments-o">
       Forum
     </i>
   </h2>
   <div class="form-group">
-    <input type="text" name="username" class="form-control" id="username" placeholder="Username" required>
+    <input type="text" name="email" class="form-control" id="email" placeholder="Email" required>
   </div>
   <div class="form-group">
     <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
