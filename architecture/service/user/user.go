@@ -3,9 +3,9 @@ package user
 import "forum/architecture/models"
 
 type UserService struct {
-	repo models.IUserService
+	repo models.IUserRepo
 }
 
-func NewUserService(repo models.IUserService) *UserService {
+func NewUserService(repo models.IUserRepo) *UserService {
 	return &UserService{repo}
 }

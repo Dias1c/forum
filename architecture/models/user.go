@@ -19,9 +19,8 @@ type IUserService interface {
 	DeleteByID(id int) error
 
 	GetByID(id int) (*User, error)
-	// GetByNickname(nickname string) (*model.User, error)
+	GetByNicknameOrEmail(field string) (*User, error)
 	// GetAll(from, offset int) error
-	// CanLogin(user *model.User) error
 }
 
 type IUserRepo interface {
@@ -30,7 +29,7 @@ type IUserRepo interface {
 	DeleteByID(id int) error
 
 	GetByID(id int) (*User, error)
-	// GetByNickname(nickname string) (*model.User, error)
+	GetByNickname(nickname string) (*User, error)
+	GetByEmail(email string) (*User, error)
 	// GetAll(from, offset int) error
-	// CanLogin(user *model.User) error
 }
