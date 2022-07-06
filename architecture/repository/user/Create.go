@@ -1,7 +1,6 @@
 package user
 
 import (
-	"fmt"
 	model "forum/architecture/models"
 	"strings"
 )
@@ -23,6 +22,5 @@ INSERT INTO users (nickname, email, password) VALUES
 			return -1, ErrExistEmail
 		}
 	}
-	fmt.Println("ERROR NOT IS ", err)
 	return -1, err
 }
