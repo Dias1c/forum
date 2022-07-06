@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"forum/architecture/models"
 	ruser "forum/architecture/repository/user"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 func (u *UserService) Create(user *models.User) (int, error) {
@@ -16,11 +14,10 @@ func (u *UserService) Create(user *models.User) (int, error) {
 		return -1, ErrInvalidEmail
 	}
 
-	pass, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	err := user.HashPassword()
 	if err != nil {
-		return -1, fmt.Errorf("bcrypt.GenerateFromPassword: %w", err)
+		return -1, fmt.Errorf("user.HashPassword: %w", err)
 	}
-	user.Password = string(pass)
 
 	userId, err := u.repo.Create(user)
 	switch {
