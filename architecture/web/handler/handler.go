@@ -71,14 +71,14 @@ func (m *MainHandler) newView(names ...string) (*template.Template, error) {
 	return t, nil
 }
 
-func (m *MainHandler) executeTemplate(w http.ResponseWriter, pg *page, names ...string) {
-	t, err := m.newView(names...)
+func (m *MainHandler) executeTemplate(w http.ResponseWriter, pg interface{}, names string) {
+	tmpl, err := m.newView(names)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	t.ExecuteTemplate(w, "bootstrap", pg)
+	tmpl.ExecuteTemplate(w, "bootstrap", pg)
 }
 
 func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {

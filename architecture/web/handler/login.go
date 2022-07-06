@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 )
 
@@ -12,14 +11,7 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
-		// tmpl, err := m.templates.ParseFiles("web/templates/bootstrap.html", "web/templates/navbar.html", "web/templates/login.html")
-		tmpl, err := m.newView("login.html")
-		if err != nil {
-			log.Println(err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		tmpl.ExecuteTemplate(w, "bootstrap", nil)
+		m.executeTemplate(w, nil, "login.html")
 	case http.MethodPost:
 		err := r.ParseForm()
 		if err != nil {

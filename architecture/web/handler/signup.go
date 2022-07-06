@@ -43,7 +43,6 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		case errors.Is(err, suser.ErrInvalidEmail):
 			w.WriteHeader(http.StatusBadRequest)
 		default:
-			// w.WriteHeader(http.StatusInternalServerError)
 			log.Printf("ERROR: SignUpHandler: %s", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
