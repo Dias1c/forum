@@ -1,7 +1,7 @@
 package models
 
 type Comment struct {
-	Id      int
+	Id      int64
 	Content string
 	User    *User
 }

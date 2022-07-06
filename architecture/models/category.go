@@ -1,6 +1,6 @@
 package models
 
 type Category struct {
-	Id   int
+	Id   int64
 	Name string
 }

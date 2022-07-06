@@ -1,7 +1,7 @@
 package models
 
 type Post struct {
-	Id       int
+	Id       int64
 	Title    string
 	Content  string
 	Category *Category
@@ -12,13 +12,13 @@ type Post struct {
 type IPostService interface {
 	Create(user *Post) error
 	Update(user *Post) error
-	GetByID(id int) (*Post, error)
-	DeleteByID(id int) error
+	GetByID(id int64) (*Post, error)
+	DeleteByID(id int64) error
 }
 
 type IPostRepo interface {
 	Create(user *Post) error
 	Update(user *Post) error
-	GetByID(id int) (*Post, error)
-	DeleteByID(id int) error
+	GetByID(id int64) (*Post, error)
+	DeleteByID(id int64) error
 }

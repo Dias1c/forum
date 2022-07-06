@@ -1,21 +1,21 @@
 package user
 
 import (
+	"fmt"
 	model "forum/architecture/models"
 	"strings"
 )
 
-func (u *UserRepo) Create(user *model.User) (int, error) {
+func (u *UserRepo) Create(user *model.User) (int64, error) {
 	row := u.db.QueryRow(`
 INSERT INTO users (nickname, email, password) VALUES
 (?, ?, ?) RETURNING id`, user.Nickname, user.Email, user.Password)
 
 	err := row.Scan(&user.Id)
-	if err == nil {
+	switch {
+	case err == nil:
 		return user.Id, nil
-	}
-
-	if strings.HasPrefix(err.Error(), "UNIQUE") {
+	case strings.HasPrefix(err.Error(), "UNIQUE constraint failed"):
 		switch {
 		case strings.Contains(err.Error(), "nickname"):
 			return -1, ErrExistNickname
@@ -23,6 +23,6 @@ INSERT INTO users (nickname, email, password) VALUES
 			return -1, ErrExistEmail
 		}
 	}
-
+	fmt.Println("ERROR NOT IS ", err)
 	return -1, err
 }

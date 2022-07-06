@@ -7,7 +7,7 @@ import (
 	ruser "forum/architecture/repository/user"
 )
 
-func (u *UserService) Create(user *models.User) (int, error) {
+func (u *UserService) Create(user *models.User) (int64, error) {
 	if err := user.ValidateNickname(); err != nil {
 		return -1, ErrInvalidNickname
 	} else if err := user.ValidateEmail(); err != nil {

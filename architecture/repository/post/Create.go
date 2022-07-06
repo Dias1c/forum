@@ -1,4 +1,4 @@
-package question
+package post
 
 import model "forum/architecture/models"
 

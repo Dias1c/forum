@@ -6,7 +6,7 @@ import (
 
 // User -
 type User struct {
-	Id          int
+	Id          int64
 	Nickname    string
 	Email       string
 	Password    string
@@ -14,22 +14,22 @@ type User struct {
 }
 
 type IUserService interface {
-	Create(user *User) (int, error)
+	Create(user *User) (int64, error)
 	Update(user *User) error
-	DeleteByID(id int) error
+	DeleteByID(id int64) error
 
-	GetByID(id int) (*User, error)
+	GetByID(id int64) (*User, error)
 	GetByNicknameOrEmail(field string) (*User, error)
-	// GetAll(from, offset int) error
+	// GetAll(from, offset int64) error
 }
 
 type IUserRepo interface {
-	Create(user *User) (int, error)
+	Create(user *User) (int64, error)
 	Update(user *User) error
-	DeleteByID(id int) error
+	DeleteByID(id int64) error
 
-	GetByID(id int) (*User, error)
+	GetByID(id int64) (*User, error)
 	GetByNickname(nickname string) (*User, error)
 	GetByEmail(email string) (*User, error)
-	// GetAll(from, offset int) error
+	// GetAll(from, offset int64) error
 }

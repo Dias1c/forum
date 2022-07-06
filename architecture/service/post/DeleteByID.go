@@ -1,5 +1,5 @@
 package post
 
-func (q *PostService) DeleteByID(id int) error {
+func (q *PostService) DeleteByID(id int64) error {
 	return nil
 }
