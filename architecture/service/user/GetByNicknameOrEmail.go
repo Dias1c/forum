@@ -22,7 +22,7 @@ func (u *UserService) GetByNicknameOrEmail(field string) (*models.User, error) {
 		}
 		return nil, err
 	default:
-		if err := (&models.User{Email: field}).ValidateNickname(); err != nil {
+		if err := (&models.User{Nickname: field}).ValidateNickname(); err != nil {
 			return nil, ErrInvalidNickname
 		}
 		usr, err := u.repo.GetByNickname(field)
