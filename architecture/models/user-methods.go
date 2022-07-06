@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"net/mail"
+	"unicode"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -12,7 +13,7 @@ func (u *User) ValidateNickname() error {
 		return fmt.Errorf("nickname: invalid lenght (%d)", lng)
 	}
 	for _, c := range u.Nickname {
-		if c < 33 || 125 < c {
+		if !(unicode.IsLetter(c) || unicode.IsDigit(c)) {
 			return fmt.Errorf("nickname: invalid character '%c'", c)
 		}
 	}
