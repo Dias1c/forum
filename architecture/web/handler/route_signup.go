@@ -34,6 +34,7 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case err == nil:
 			http.Redirect(w, r, "/login", http.StatusMovedPermanently)
+			return
 		case errors.Is(err, suser.ErrExistNickname):
 			w.WriteHeader(http.StatusBadRequest)
 		case errors.Is(err, suser.ErrExistEmail):
