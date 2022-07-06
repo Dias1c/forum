@@ -19,7 +19,7 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// newUser := &models.User{
+		// usr := &models.User{
 		// 	Nickname: r.FormValue("login"),
 		// 	Password: r.FormValue("password"),
 		// }
