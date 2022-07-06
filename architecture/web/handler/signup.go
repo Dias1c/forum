@@ -33,7 +33,7 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		_, err = m.service.User.Create(newUser)
 		switch {
 		case err == nil:
-			http.Redirect(w, r, "/login", http.StatusPermanentRedirect)
+			http.Redirect(w, r, "/login", http.StatusMovedPermanently)
 		case errors.Is(err, suser.ErrExistNickname):
 			w.WriteHeader(http.StatusBadRequest)
 		case errors.Is(err, suser.ErrExistEmail):
