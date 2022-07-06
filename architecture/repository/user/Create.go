@@ -1,11 +1,12 @@
 package user
 
 import (
-	model "forum/architecture/models"
+	"fmt"
+	"forum/architecture/models"
 	"strings"
 )
 
-func (u *UserRepo) Create(user *model.User) (int64, error) {
+func (u *UserRepo) Create(user *models.User) (int64, error) {
 	row := u.db.QueryRow(`
 INSERT INTO users (nickname, email, password) VALUES
 (?, ?, ?) RETURNING id`, user.Nickname, user.Email, user.Password)
@@ -22,5 +23,5 @@ INSERT INTO users (nickname, email, password) VALUES
 			return -1, ErrExistEmail
 		}
 	}
-	return -1, err
+	return -1, fmt.Errorf("row.Scan: %w", err)
 }

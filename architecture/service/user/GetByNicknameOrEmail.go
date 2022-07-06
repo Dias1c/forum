@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"fmt"
 	"forum/architecture/models"
 	ruser "forum/architecture/repository/user"
 	"strings"
@@ -20,7 +21,7 @@ func (u *UserService) GetByNicknameOrEmail(field string) (*models.User, error) {
 		case errors.Is(err, ruser.ErrNotFound):
 			return nil, ErrNotFound
 		}
-		return nil, err
+		return nil, fmt.Errorf("u.repo.GetByEmail: %w", err)
 	default:
 		if err := (&models.User{Nickname: field}).ValidateNickname(); err != nil {
 			return nil, ErrInvalidNickname
@@ -32,6 +33,6 @@ func (u *UserService) GetByNicknameOrEmail(field string) (*models.User, error) {
 		case errors.Is(err, ruser.ErrNotFound):
 			return nil, ErrNotFound
 		}
-		return nil, err
+		return nil, fmt.Errorf("u.repo.GetByNickname: %w", err)
 	}
 }

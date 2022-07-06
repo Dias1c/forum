@@ -28,5 +28,5 @@ func (u *UserService) Create(user *models.User) (int64, error) {
 	case errors.Is(err, ruser.ErrExistNickname):
 		return -1, ErrExistNickname
 	}
-	return -1, err
+	return -1, fmt.Errorf("u.repo.Create: %w", err)
 }
