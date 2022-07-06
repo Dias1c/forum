@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -28,5 +29,5 @@ func (m *MainHandler) TestHandler(w http.ResponseWriter, r *http.Request) {
 
 //? debugLogHandler -
 func debugLogHandler(fName string, r *http.Request) {
-	fmt.Printf("%-20v | %-7v | %-20v \n", r.URL, r.Method, fName)
+	log.Printf("%-20v | %-7v | %-20v \n", r.URL, r.Method, fName)
 }

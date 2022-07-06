@@ -10,15 +10,14 @@ type Session struct {
 }
 
 type ISessionRepo interface {
-	Create(session *Session) error
+	Create(session *Session) (int64, error)
 	Delete(id int64) error
-	GetByUserId(userId int64) (*Session, error)
 	GetByUuid(uuid string) (*Session, error)
+	UpdateByUserId(userId int64, session *Session) error
 }
 
 type ISessionService interface {
-	Create(userId int64) (*Session, error)
+	Record(userId int64) (*Session, error)
 	Delete(id int64) error
-	GetByUserId(userId int64) (*Session, error)
 	GetByUuid(uuid string) (*Session, error)
 }

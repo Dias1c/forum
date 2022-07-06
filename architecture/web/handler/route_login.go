@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	suser "forum/architecture/service/user"
 )
@@ -27,30 +28,51 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case err == nil:
 		case errors.Is(err, suser.ErrNotFound):
-			w.WriteHeader(http.StatusNotFound) //
+			w.WriteHeader(http.StatusNotFound)
+			fmt.Fprintln(w, "USER NOT FOUND", err)
+			return
 		case errors.Is(err, suser.ErrInvalidEmail):
 			// 200 Не правильный email
+			fmt.Fprintln(w, "INVALID EMAIL", err)
+			return
 		case errors.Is(err, suser.ErrInvalidNickname):
 			// 200 Не правильный nickname
+			fmt.Fprintln(w, "INVALID NICKNAME", err)
+			return
 		default:
-			log.Printf("ERROR: LogInHandler: %s", err)
+			log.Printf("ERROR: LogInHandler: User.GetByNicknameOrEmail: %s", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		areEqual, err := usr.CompareHashAndPassword(r.FormValue("password"))
+		switch {
+		case err != nil:
+			log.Printf("ERROR: LogInHandler: user.CompareHashAndPassword: %s", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		case !areEqual:
+			// 200 Пароли разные
+			log.Println("Password not equal")
+			fmt.Fprintln(w, "PASSWORD NOT EQUAL")
+			return
+		}
+
+		session, err := m.service.Session.Record(usr.Id)
 		if err != nil {
-			log.Printf("ERROR: LogInHandler: %s", err)
+			log.Printf("ERROR: LogInHandler: Session.Record: %s", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		expiresAfterSeconds := time.Until(session.ExpiredAt).Seconds()
+		http.SetCookie(w,
+			&http.Cookie{
+				Name:   "session",
+				Value:  session.Uuid,
+				MaxAge: int(expiresAfterSeconds),
+			},
+		)
 
-		if !areEqual {
-			// 200 Пароли разные
-			return
-		}
-
-		// Создать сессию, Записать в БД
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)

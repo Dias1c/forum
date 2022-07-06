@@ -1,11 +1,9 @@
 package user
 
 import (
-	"errors"
 	"fmt"
 	"forum/architecture/models"
-
-	"github.com/mattn/go-sqlite3"
+	"strings"
 )
 
 func (u *UserRepo) GetByNickname(nickname string) (*models.User, error) {
@@ -17,7 +15,7 @@ WHERE nickname = ?`, nickname)
 	switch {
 	case err == nil:
 		return user, nil
-	case errors.Is(err, sqlite3.ErrNotFound):
+	case strings.HasPrefix(err.Error(), "sql: no rows in result set"):
 		return nil, ErrNotFound
 	default:
 		return nil, fmt.Errorf("row.Scan: %w", err)
