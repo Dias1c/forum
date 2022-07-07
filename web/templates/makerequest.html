@@ -9,11 +9,11 @@
 
     <form action="/makerequest" method="POST">
      <div class="form-group">
-         <input id= "#" class="form-control" type="text" placeholder="Username.." name="makereq" list="list" required>
+         <input id= "#" class="form-control" type="text" placeholder="Nickname.." name="makereq" list="list" required>
          <input type="hidden" list="list">
             <datalist id="list">
                 {{range .Users}}
-                <option>{{ .Username }}</option>
+                <option>{{ .Nickname }}</option>
                 {{end}}
               </datalist>
               <br>

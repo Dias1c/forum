@@ -16,11 +16,19 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
+		if cookie, err := r.Cookie("session"); err == nil && cookie != nil {
+			pg := &page{Warn: fmt.Errorf("you already signed in!")}
+			m.executeTemplate(w, pg, "login.html")
+			return
+		}
 		m.executeTemplate(w, nil, "login.html")
 	case http.MethodPost:
 		err := r.ParseForm()
 		if err != nil {
-			fmt.Fprintf(w, "r.ParseForm: %v\n", err)
+			log.Printf("LogInHandler: r.ParseForm: %v\n", err)
+			pg := &page{Error: fmt.Errorf("something wrong, maybe try again later")}
+			w.WriteHeader(http.StatusInternalServerError)
+			m.executeTemplate(w, pg, "login.html")
 			return
 		}
 
@@ -28,20 +36,25 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case err == nil:
 		case errors.Is(err, suser.ErrNotFound):
-			w.WriteHeader(http.StatusNotFound)
-			fmt.Fprintln(w, "USER NOT FOUND", err)
+			pg := &page{Error: fmt.Errorf("user with login \"%v\" not found", r.FormValue("login"))}
+			// w.WriteHeader(http.StatusNotFound)
+			m.executeTemplate(w, pg, "login.html")
 			return
 		case errors.Is(err, suser.ErrInvalidEmail):
-			// 200 Не правильный email
-			fmt.Fprintln(w, "INVALID EMAIL", err)
+			pg := &page{Error: fmt.Errorf("invalid email %v", r.FormValue("login"))}
+			// w.WriteHeader(http.StatusBadRequest)
+			m.executeTemplate(w, pg, "login.html")
 			return
 		case errors.Is(err, suser.ErrInvalidNickname):
-			// 200 Не правильный nickname
-			fmt.Fprintln(w, "INVALID NICKNAME", err)
+			pg := &page{Error: fmt.Errorf("invalid nickname %v", r.FormValue("login"))}
+			// w.WriteHeader(http.StatusBadRequest)
+			m.executeTemplate(w, pg, "login.html")
 			return
 		default:
 			log.Printf("ERROR: LogInHandler: User.GetByNicknameOrEmail: %s", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			pg := &page{Error: fmt.Errorf("something wrong, maybe try again later")}
+			w.WriteHeader(http.StatusInternalServerError)
+			m.executeTemplate(w, pg, "login.html")
 			return
 		}
 
@@ -49,19 +62,22 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case err != nil:
 			log.Printf("ERROR: LogInHandler: user.CompareHashAndPassword: %s", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			pg := &page{Error: fmt.Errorf("something wrong, maybe try again later")}
+			w.WriteHeader(http.StatusInternalServerError)
+			m.executeTemplate(w, pg, "login.html")
 			return
 		case !areEqual:
-			// 200 Пароли разные
-			log.Println("Password not equal")
-			fmt.Fprintln(w, "PASSWORD NOT EQUAL")
+			pg := &page{Error: fmt.Errorf("invalid password for login \"%s\"", r.FormValue("login"))}
+			m.executeTemplate(w, pg, "login.html")
 			return
 		}
 
 		session, err := m.service.Session.Record(usr.Id)
 		if err != nil {
 			log.Printf("ERROR: LogInHandler: Session.Record: %s", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			pg := &page{Error: fmt.Errorf("something wrong, maybe try again later")}
+			w.WriteHeader(http.StatusInternalServerError)
+			m.executeTemplate(w, pg, "login.html")
 			return
 		}
 		expiresAfterSeconds := time.Until(session.ExpiredAt).Seconds()
@@ -76,6 +92,5 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
-		fmt.Fprintf(w, "Method %v not allowed\n", r.Method)
 	}
 }

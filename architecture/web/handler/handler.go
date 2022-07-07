@@ -22,14 +22,13 @@ type MainHandler struct {
 }
 
 type page struct {
-	User  models.User
-	Users []models.User
-	Post  models.Post
-	Posts []models.Post
+	User  *models.User
+	Users *[]models.User
+	Post  *models.Post
+	Posts *[]models.Post
 	// Comments           []models.Comment
-	IsErr     bool
-	ErrMsg    string
-	ErrStatus int
+	Error error
+	Warn  error
 }
 
 func NewMainHandler(service *service.Service, configs *Configs) (*MainHandler, error) {
@@ -37,25 +36,20 @@ func NewMainHandler(service *service.Service, configs *Configs) (*MainHandler, e
 		templatesDir: configs.TemplatesDir,
 		service:      service,
 	}
-	// templates, err := mh.newTemplate()
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// mh.templates = templates
 	return mh, nil
 }
 
-func (m *MainHandler) newTemplate() (*template.Template, error) {
-	// Gets All Templates in folder templates
-	filepaths, err := filepath.Glob(m.templatesDir + "/*.html")
-	if err != nil {
-		return nil, fmt.Errorf("newTemplate: %w", err)
-	}
-	files, err := template.ParseFiles(filepaths...)
-	if err != nil {
-		return nil, fmt.Errorf("newTemplate: %w", err)
-	}
-	return template.Must(files, nil), nil
+func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
+	mux := http.NewServeMux()
+	// HERE IS ALL ROUTES
+	fsStatic := http.FileServer(http.Dir(configs.StaticFilesDir))
+	mux.Handle("/static/", http.StripPrefix("/static/", fsStatic))
+
+	// AnyRoutes
+	mux.HandleFunc("/", m.TestHandler)
+	mux.HandleFunc("/signup", m.SignUpHandler)
+	mux.HandleFunc("/login", m.LogInHandler)
+	return mux
 }
 
 func (m *MainHandler) newView(names ...string) (*template.Template, error) {
@@ -71,25 +65,34 @@ func (m *MainHandler) newView(names ...string) (*template.Template, error) {
 	return t, nil
 }
 
-func (m *MainHandler) executeTemplate(w http.ResponseWriter, pg interface{}, names string) {
-	tmpl, err := m.newView(names)
+func (m *MainHandler) executeTemplate(w http.ResponseWriter, pg interface{}, names ...string) {
+	tmpl, err := m.newView(names...)
 	if err != nil {
-		log.Println(err)
+		log.Printf("m.newView: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	tmpl.ExecuteTemplate(w, "bootstrap", pg)
+
+	err = tmpl.ExecuteTemplate(w, "bootstrap", pg)
+	if err != nil {
+		log.Printf("tmpl.ExecuteTemplate: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
-func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
-	mux := http.NewServeMux()
-	// HERE IS ALL ROUTES
-	fsStatic := http.FileServer(http.Dir(configs.StaticFilesDir))
-	mux.Handle("/static/", http.StripPrefix("/static/", fsStatic))
+// UNUSING
 
-	// AnyRoutes
-	mux.HandleFunc("/", m.TestHandler)
-	mux.HandleFunc("/signup", m.SignUpHandler)
-	mux.HandleFunc("/login", m.LogInHandler)
-	return mux
+// newTemplate - returns combined files template which in path m.templatesDir
+func (m *MainHandler) newTemplate() (*template.Template, error) {
+	// Gets All Templates in folder templates
+	filepaths, err := filepath.Glob(m.templatesDir + "/*.html")
+	if err != nil {
+		return nil, fmt.Errorf("newTemplate: %w", err)
+	}
+	files, err := template.ParseFiles(filepaths...)
+	if err != nil {
+		return nil, fmt.Errorf("newTemplate: %w", err)
+	}
+	return template.Must(files, nil), nil
 }

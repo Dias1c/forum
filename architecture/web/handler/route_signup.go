@@ -16,11 +16,19 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
+		if cookie, err := r.Cookie("session"); err == nil && cookie != nil {
+			pg := &page{Warn: fmt.Errorf("you already signed in!")}
+			m.executeTemplate(w, pg, "signup.html")
+			return
+		}
 		m.executeTemplate(w, nil, "signup.html")
 	case http.MethodPost:
 		err := r.ParseForm()
 		if err != nil {
-			fmt.Fprintf(w, "r.ParseForm: %v\n", err)
+			log.Printf("SignUpHandler: r.ParseForm: %v\n", err)
+			pg := &page{Error: fmt.Errorf("something wrong, maybe try again later")}
+			w.WriteHeader(http.StatusInternalServerError)
+			m.executeTemplate(w, pg, "login.html")
 			return
 		}
 
@@ -36,21 +44,25 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/login", http.StatusMovedPermanently)
 			return
 		case errors.Is(err, suser.ErrExistNickname):
-			w.WriteHeader(http.StatusBadRequest)
+			pg := &page{Error: fmt.Errorf("nickname \"%v\" is used. Try with another nickname.", newUser.Nickname)}
+			m.executeTemplate(w, pg, "signup.html")
 		case errors.Is(err, suser.ErrExistEmail):
-			w.WriteHeader(http.StatusBadRequest)
+			pg := &page{Error: fmt.Errorf("email \"%v\" is used. Try with another email.", newUser.Nickname)}
+			m.executeTemplate(w, pg, "signup.html")
 		case errors.Is(err, suser.ErrInvalidNickname):
-			w.WriteHeader(http.StatusBadRequest)
+			pg := &page{Error: fmt.Errorf("invalid nickname \"%v\"", newUser.Nickname)}
+			m.executeTemplate(w, pg, "signup.html")
 		case errors.Is(err, suser.ErrInvalidEmail):
-			w.WriteHeader(http.StatusBadRequest)
+			pg := &page{Error: fmt.Errorf("invalid email \"%v\"", newUser.Email)}
+			m.executeTemplate(w, pg, "signup.html")
 		default:
 			log.Printf("ERROR: SignUpHandler: %s", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			pg := &page{Error: fmt.Errorf("something wrong, maybe try again later")}
+			w.WriteHeader(http.StatusInternalServerError)
+			m.executeTemplate(w, pg, "signup.html")
+			return
 		}
-		fmt.Fprintln(w, err)
-
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
-		fmt.Fprintf(w, "Method %v not allowed\n", r.Method)
 	}
 }
