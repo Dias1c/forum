@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"forum/architecture/models"
+	"forum/architecture/web/handler/view"
 	"log"
 	"net/http"
 
@@ -17,18 +18,18 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		if cookie, err := r.Cookie("session"); err == nil && cookie != nil {
-			pg := &page{Warn: fmt.Errorf("you already signed in!")}
-			m.executeTemplate(w, pg, "signup.html")
+			pg := &view.Page{Warn: fmt.Errorf("you already signed in!")}
+			m.view.ExecuteTemplate(w, pg, "signup.html")
 			return
 		}
-		m.executeTemplate(w, nil, "signup.html")
+		m.view.ExecuteTemplate(w, nil, "signup.html")
 	case http.MethodPost:
 		err := r.ParseForm()
 		if err != nil {
 			log.Printf("SignUpHandler: r.ParseForm: %v\n", err)
-			pg := &page{Error: fmt.Errorf("something wrong, maybe try again later")}
+			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
-			m.executeTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "login.html")
 			return
 		}
 
@@ -44,22 +45,22 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/login", http.StatusMovedPermanently)
 			return
 		case errors.Is(err, suser.ErrExistNickname):
-			pg := &page{Error: fmt.Errorf("nickname \"%v\" is used. Try with another nickname.", newUser.Nickname)}
-			m.executeTemplate(w, pg, "signup.html")
+			pg := &view.Page{Error: fmt.Errorf("nickname \"%v\" is used. Try with another nickname.", newUser.Nickname)}
+			m.view.ExecuteTemplate(w, pg, "signup.html")
 		case errors.Is(err, suser.ErrExistEmail):
-			pg := &page{Error: fmt.Errorf("email \"%v\" is used. Try with another email.", newUser.Nickname)}
-			m.executeTemplate(w, pg, "signup.html")
+			pg := &view.Page{Error: fmt.Errorf("email \"%v\" is used. Try with another email.", newUser.Nickname)}
+			m.view.ExecuteTemplate(w, pg, "signup.html")
 		case errors.Is(err, suser.ErrInvalidNickname):
-			pg := &page{Error: fmt.Errorf("invalid nickname \"%v\"", newUser.Nickname)}
-			m.executeTemplate(w, pg, "signup.html")
+			pg := &view.Page{Error: fmt.Errorf("invalid nickname \"%v\"", newUser.Nickname)}
+			m.view.ExecuteTemplate(w, pg, "signup.html")
 		case errors.Is(err, suser.ErrInvalidEmail):
-			pg := &page{Error: fmt.Errorf("invalid email \"%v\"", newUser.Email)}
-			m.executeTemplate(w, pg, "signup.html")
+			pg := &view.Page{Error: fmt.Errorf("invalid email \"%v\"", newUser.Email)}
+			m.view.ExecuteTemplate(w, pg, "signup.html")
 		default:
 			log.Printf("ERROR: SignUpHandler: %s", err)
-			pg := &page{Error: fmt.Errorf("something wrong, maybe try again later")}
+			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
-			m.executeTemplate(w, pg, "signup.html")
+			m.view.ExecuteTemplate(w, pg, "signup.html")
 			return
 		}
 	default:
