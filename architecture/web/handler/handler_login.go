@@ -22,6 +22,16 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 			m.view.ExecuteTemplate(w, pg, "login.html")
 			return
 		}
+		fmt.Println(r.URL.Query())
+		if redirect := r.URL.Query().Get("redirect_to"); redirect != "" {
+			http.SetCookie(w,
+				&http.Cookie{
+					Name:   "redirect_to",
+					Value:  redirect,
+					MaxAge: 3600,
+				},
+			)
+		}
 		m.view.ExecuteTemplate(w, nil, "login.html")
 	case http.MethodPost:
 		err := r.ParseForm()
@@ -90,6 +100,13 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 			},
 		)
 
+		if cookie, err := r.Cookie("redirect_to"); err == nil && cookie != nil {
+			redirectTo := cookie.Value
+			cookie.MaxAge = -1
+			http.SetCookie(w, cookie)
+			http.Redirect(w, r, redirectTo, http.StatusMovedPermanently)
+			return
+		}
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
