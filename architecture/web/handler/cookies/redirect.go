@@ -1,8 +1,6 @@
 package cookies
 
 import (
-	"errors"
-	"log"
 	"net/http"
 )
 
@@ -10,7 +8,8 @@ const (
 	CookieRedirectName = "redirect_to"
 )
 
-// AddRedirectCookie - sets redirect cookie if field redirectTo is not empty
+// AddRedirectCookie - sets redirect cookie if field redirectTo is not empty.
+// field redirectTo sets at cookie Value
 func AddRedirectCookie(w http.ResponseWriter, redirectTo string) {
 	if redirectTo == "" {
 		return
@@ -26,26 +25,10 @@ func AddRedirectCookie(w http.ResponseWriter, redirectTo string) {
 
 // GetRedirectCookie - returns redirect cookie
 func GetRedirectCookie(w http.ResponseWriter, r *http.Request) *http.Cookie {
-	cookie, err := r.Cookie(CookieRedirectName)
-	switch {
-	case errors.Is(err, http.ErrNoCookie):
-	case err != nil:
-		log.Printf("GetRedirectCookie: r.Cookie: %v", err)
-	case cookie != nil:
-		return cookie
-	}
-	return nil
+	return getCookieByName(w, r, CookieRedirectName)
 }
 
 // CleanRedirectCookie - removes cookie by setting maxAge -1
 func CleanRedirectCookie(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie(CookieRedirectName)
-	switch {
-	case errors.Is(err, http.ErrNoCookie):
-	case err != nil:
-		log.Printf("CleanRedirectCookie: r.Cookie: %v", err)
-	case cookie != nil:
-		cookie.MaxAge = -1
-		http.SetCookie(w, cookie)
-	}
+	removeCookieByName(w, r, CookieRedirectName)
 }
