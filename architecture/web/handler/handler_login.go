@@ -19,7 +19,8 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		cookies.AddRedirectCookie(w, r.URL.Query().Get("redirect_to"))
-		if cookie, err := r.Cookie("session"); err == nil && cookie != nil {
+
+		if cookie := cookies.GetSessionCookie(w, r); cookie != nil {
 			pg := &view.Page{Warn: fmt.Errorf("you already signed in!")}
 			m.view.ExecuteTemplate(w, pg, "login.html")
 			return
@@ -84,17 +85,11 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		expiresAfterSeconds := time.Until(session.ExpiredAt).Seconds()
-		http.SetCookie(w,
-			&http.Cookie{
-				Name:   "session",
-				Value:  session.Uuid,
-				MaxAge: int(expiresAfterSeconds),
-			},
-		)
+		cookies.AddSessionCookie(w, session.Uuid, int(expiresAfterSeconds))
 
 		// TODO: Добавить в главном хендлере удаление этого куки
 		if cookie := cookies.GetRedirectCookie(w, r); cookie != nil {
-			cookies.CleanRedirectCookie(w, r)
+			cookies.RemoveRedirectCookie(w, r)
 			http.Redirect(w, r, cookie.Value, http.StatusMovedPermanently)
 			return
 		}

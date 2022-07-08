@@ -6,15 +6,16 @@ import (
 	"net/http"
 )
 
-// TestHandler - Handle for Testing
-func (m *MainHandler) TestHandler(w http.ResponseWriter, r *http.Request) {
+// DebugHandler - Handle for Testing
+func (m *MainHandler) DebugHandler(w http.ResponseWriter, r *http.Request) {
 	debugLogHandler("TestHandler", r)
 	fmt.Fprintf(w, "Current state:\n")
 	fmt.Fprintf(w, "Cookies count: %v; Cookies: %q;\n", len(r.Cookies()), r.Cookies())
 	fmt.Fprintf(w, "Ready Endpoints:\n")
-	fmt.Fprintf(w, "Main:      /\n")
-	fmt.Fprintf(w, "SignUp:    /signup\n")
-	fmt.Fprintf(w, "LogIn:     /login\n")
+	fmt.Fprintf(w, "Your Current path:      %s%s\n", r.URL.Host, r.URL.Path)
+	fmt.Fprintf(w, "Main:      %s/\n", r.URL.Host)
+	fmt.Fprintf(w, "SignUp:    %s/signup\n", r.URL.Host)
+	fmt.Fprintf(w, "LogIn:     %s/login\n", r.URL.Host)
 }
 
 //? debugRefreshTemplates -
@@ -29,5 +30,5 @@ func (m *MainHandler) TestHandler(w http.ResponseWriter, r *http.Request) {
 
 //? debugLogHandler -
 func debugLogHandler(fName string, r *http.Request) {
-	log.Printf("%-20v | %-7v | %-20v \n", r.URL, r.Method, fName)
+	log.Printf("%-30v | %-7v | %-30v \n", r.URL, r.Method, fName)
 }

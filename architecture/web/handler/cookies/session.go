@@ -26,7 +26,7 @@ func GetSessionCookie(w http.ResponseWriter, r *http.Request) *http.Cookie {
 	return getCookieByName(w, r, CookieSessionName)
 }
 
-// CleanSessionCookie - removes cookie by setting maxAge -1
-func CleanSessionCookie(w http.ResponseWriter, r *http.Request) {
+// RemoveSessionCookie - removes cookie by setting maxAge -1
+func RemoveSessionCookie(w http.ResponseWriter, r *http.Request) {
 	removeCookieByName(w, r, CookieSessionName)
 }

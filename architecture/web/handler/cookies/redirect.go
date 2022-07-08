@@ -28,7 +28,7 @@ func GetRedirectCookie(w http.ResponseWriter, r *http.Request) *http.Cookie {
 	return getCookieByName(w, r, CookieRedirectName)
 }
 
-// CleanRedirectCookie - removes cookie by setting maxAge -1
-func CleanRedirectCookie(w http.ResponseWriter, r *http.Request) {
+// RemoveRedirectCookie - removes cookie by setting maxAge -1
+func RemoveRedirectCookie(w http.ResponseWriter, r *http.Request) {
 	removeCookieByName(w, r, CookieRedirectName)
 }
