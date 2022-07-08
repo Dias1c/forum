@@ -29,8 +29,9 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 - [x] Connect database
 - [x] Write dockerfile
 - **BackEnd**
-- [ ] sign-up
-- [ ] sign-in
+- [x] sign-up
+- [x] sign-in
+- [?] middleware
 - [ ] main-page
 - [ ] posts-page
 - [ ] post-create-page
