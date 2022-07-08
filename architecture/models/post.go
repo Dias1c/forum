@@ -12,6 +12,7 @@ type Post struct {
 type IPostService interface {
 	Create(user *Post) error
 	Update(user *Post) error
+	// GetPosts() ([]*Post, error)
 	GetByID(id int64) (*Post, error)
 	DeleteByID(id int64) error
 }

@@ -1,5 +1,5 @@
 package post
 
-func (q *QuestionRepo) DeleteByID(id int64) error {
+func (p *PostRepo) DeleteByID(id int64) error {
 	return nil
 }
