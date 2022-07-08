@@ -36,6 +36,6 @@ func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
 
 	mux.HandleFunc("/", m.IndexHandler)
 	mux.HandleFunc("/signup", m.SignUpHandler)
-	mux.HandleFunc("/login", m.LogInHandler)
+	mux.HandleFunc("/signin", m.SignInHandler)
 	return mux
 }

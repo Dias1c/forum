@@ -12,9 +12,9 @@ import (
 	"forum/architecture/web/handler/view"
 )
 
-// LogInHandler -
-func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
-	debugLogHandler("LogInHandler", r)
+// SignInHandler -
+func (m *MainHandler) SignInHandler(w http.ResponseWriter, r *http.Request) {
+	debugLogHandler("SignInHandler", r)
 
 	switch r.Method {
 	case http.MethodGet:
@@ -22,17 +22,17 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 
 		if cookie := cookies.GetSessionCookie(w, r); cookie != nil {
 			pg := &view.Page{Warn: fmt.Errorf("you already signed in!")}
-			m.view.ExecuteTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		}
-		m.view.ExecuteTemplate(w, nil, "login.html")
+		m.view.ExecuteTemplate(w, nil, "signin.html")
 	case http.MethodPost:
 		err := r.ParseForm()
 		if err != nil {
-			log.Printf("LogInHandler: r.ParseForm: %v\n", err)
+			log.Printf("SignInHandler: r.ParseForm: %v\n", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
-			m.view.ExecuteTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		}
 
@@ -42,46 +42,46 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 		case errors.Is(err, suser.ErrNotFound):
 			pg := &view.Page{Error: fmt.Errorf("user with login \"%v\" not found", r.FormValue("login"))}
 			// w.WriteHeader(http.StatusNotFound)
-			m.view.ExecuteTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		case errors.Is(err, suser.ErrInvalidEmail):
 			pg := &view.Page{Error: fmt.Errorf("invalid email %v", r.FormValue("login"))}
 			// w.WriteHeader(http.StatusBadRequest)
-			m.view.ExecuteTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		case errors.Is(err, suser.ErrInvalidNickname):
 			pg := &view.Page{Error: fmt.Errorf("invalid nickname %v", r.FormValue("login"))}
 			// w.WriteHeader(http.StatusBadRequest)
-			m.view.ExecuteTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		default:
-			log.Printf("ERROR: LogInHandler: User.GetByNicknameOrEmail: %s", err)
+			log.Printf("ERROR: SignInHandler: User.GetByNicknameOrEmail: %s", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
-			m.view.ExecuteTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		}
 
 		areEqual, err := usr.CompareHashAndPassword(r.FormValue("password"))
 		switch {
 		case err != nil:
-			log.Printf("ERROR: LogInHandler: user.CompareHashAndPassword: %s", err)
+			log.Printf("ERROR: SignInHandler: user.CompareHashAndPassword: %s", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
-			m.view.ExecuteTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		case !areEqual:
 			pg := &view.Page{Error: fmt.Errorf("invalid password for login \"%s\"", r.FormValue("login"))}
-			m.view.ExecuteTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		}
 
 		session, err := m.service.Session.Record(usr.Id)
 		if err != nil {
-			log.Printf("ERROR: LogInHandler: Session.Record: %s", err)
+			log.Printf("ERROR: SignInHandler: Session.Record: %s", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
-			m.view.ExecuteTemplate(w, pg, "login.html")
+			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		}
 		expiresAfterSeconds := time.Until(session.ExpiredAt).Seconds()
