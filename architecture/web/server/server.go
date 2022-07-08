@@ -8,11 +8,11 @@ import (
 )
 
 type Configs struct {
-	Port           string `port`
-	ReadTimeout    int    `read_timeout_ms`
-	WriteTimeout   int    `write_timeout_ms`
-	IdleTimeout    int    `idle_timeout_ms`
-	MaxHeaderBytes int    `max_header_bytes`
+	Port           string `cenv:"port"`
+	ReadTimeout    int    `cenv:"read_timeout_ms"`
+	WriteTimeout   int    `cenv:"write_timeout_ms"`
+	IdleTimeout    int    `cenv:"idle_timeout_ms"`
+	MaxHeaderBytes int    `cenv:"max_header_bytes"`
 }
 
 type Server struct {

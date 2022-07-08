@@ -7,8 +7,8 @@ import (
 )
 
 type Configs struct {
-	TemplatesDir   string `templates`
-	StaticFilesDir string `static_files`
+	TemplatesDir   string `cenv:"templates"`
+	StaticFilesDir string `cenv:"static_files"`
 }
 
 type MainHandler struct {
