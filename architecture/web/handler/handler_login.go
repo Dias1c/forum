@@ -8,6 +8,7 @@ import (
 	"time"
 
 	suser "forum/architecture/service/user"
+	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
 )
 
@@ -17,20 +18,11 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
+		cookies.AddRedirectCookie(w, r.URL.Query().Get("redirect_to"))
 		if cookie, err := r.Cookie("session"); err == nil && cookie != nil {
 			pg := &view.Page{Warn: fmt.Errorf("you already signed in!")}
 			m.view.ExecuteTemplate(w, pg, "login.html")
 			return
-		}
-		fmt.Println(r.URL.Query())
-		if redirect := r.URL.Query().Get("redirect_to"); redirect != "" {
-			http.SetCookie(w,
-				&http.Cookie{
-					Name:   "redirect_to",
-					Value:  redirect,
-					MaxAge: 3600,
-				},
-			)
 		}
 		m.view.ExecuteTemplate(w, nil, "login.html")
 	case http.MethodPost:
@@ -100,11 +92,10 @@ func (m *MainHandler) LogInHandler(w http.ResponseWriter, r *http.Request) {
 			},
 		)
 
-		if cookie, err := r.Cookie("redirect_to"); err == nil && cookie != nil {
-			redirectTo := cookie.Value
-			cookie.MaxAge = -1
-			http.SetCookie(w, cookie)
-			http.Redirect(w, r, redirectTo, http.StatusMovedPermanently)
+		// TODO: Добавить в главном хендлере удаление этого куки
+		if cookie := cookies.GetRedirectCookie(w, r); cookie != nil {
+			cookies.CleanRedirectCookie(w, r)
+			http.Redirect(w, r, cookie.Value, http.StatusMovedPermanently)
 			return
 		}
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)

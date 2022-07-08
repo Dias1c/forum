@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"forum/architecture/models"
+	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
 	"log"
 	"net/http"
@@ -17,6 +18,7 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
+		cookies.AddRedirectCookie(w, r.URL.Query().Get("redirect_to"))
 		if cookie, err := r.Cookie("session"); err == nil && cookie != nil {
 			pg := &view.Page{Warn: fmt.Errorf("you already signed in!")}
 			m.view.ExecuteTemplate(w, pg, "signup.html")
