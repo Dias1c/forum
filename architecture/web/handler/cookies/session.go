@@ -14,6 +14,7 @@ func AddSessionCookie(w http.ResponseWriter, uuid string, durationSec int) {
 		&http.Cookie{
 			Name:   CookieSessionName,
 			Value:  uuid,
+			Path:   "/",
 			MaxAge: durationSec,
 		},
 	)

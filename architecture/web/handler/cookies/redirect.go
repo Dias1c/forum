@@ -18,6 +18,7 @@ func AddRedirectCookie(w http.ResponseWriter, redirectTo string) {
 		&http.Cookie{
 			Name:   CookieRedirectName,
 			Value:  redirectTo,
+			Path:   "/",
 			MaxAge: 3600,
 		},
 	)
