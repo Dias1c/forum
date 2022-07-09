@@ -13,16 +13,16 @@ SELECT id, uuid, expired_at, user_id FROM sessions
 WHERE uuid = ?`, uuid)
 	session := &models.Session{}
 	strExpiredAt := ""
-	err := row.Scan(&session.Id, &session.Uuid, &strExpiredAt, &session.UserId)
 
-	timeExpiredAt, pErr := time.ParseInLocation(timeFormat, strExpiredAt, time.Local)
-	if pErr != nil {
-		return nil, fmt.Errorf("time.Parse: %w", pErr)
-	}
-	session.ExpiredAt = timeExpiredAt
+	err := row.Scan(&session.Id, &session.Uuid, &strExpiredAt, &session.UserId)
 
 	switch {
 	case err == nil:
+		timeExpiredAt, err := time.ParseInLocation(timeFormat, strExpiredAt, time.Local)
+		if err != nil {
+			return nil, fmt.Errorf("time.Parse: %w", err)
+		}
+		session.ExpiredAt = timeExpiredAt
 		return session, nil
 	case strings.HasPrefix(err.Error(), "sql: no rows in result set"):
 		return nil, ErrNotFound
