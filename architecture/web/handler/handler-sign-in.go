@@ -7,9 +7,11 @@ import (
 	"net/http"
 	"time"
 
-	suser "forum/architecture/service/user"
 	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
+
+	ssession "forum/architecture/service/session"
+	suser "forum/architecture/service/user"
 )
 
 // SignInHandler -
@@ -20,12 +22,30 @@ func (m *MainHandler) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		cookies.AddRedirectCookie(w, r.URL.Query().Get("redirect_to"))
 
-		if cookie := cookies.GetSessionCookie(w, r); cookie != nil {
+		cookie := cookies.GetSessionCookie(w, r)
+		switch {
+		case cookie == nil:
+		case cookie != nil:
+			_, err := m.service.Session.GetByUuid(cookie.Value)
+			switch {
+			case err == nil:
+			case errors.Is(err, ssession.ErrExpired) || errors.Is(err, ssession.ErrNotFound):
+				cookies.AddRedirectCookie(w, r.URL.Path)
+				cookies.RemoveSessionCookie(w, r)
+				http.Redirect(w, r, "/signin", http.StatusSeeOther)
+				return
+			case err != nil:
+				log.Printf("SignInHandler: m.service.Session.GetByUuid: %v\n", err)
+				http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
+				return
+			}
 			pg := &view.Page{Warn: fmt.Errorf("you already signed in!")}
 			m.view.ExecuteTemplate(w, pg, "signin.html")
 			return
 		}
+
 		m.view.ExecuteTemplate(w, nil, "signin.html")
+		return
 	case http.MethodPost:
 		err := r.ParseForm()
 		if err != nil {
@@ -90,10 +110,10 @@ func (m *MainHandler) SignInHandler(w http.ResponseWriter, r *http.Request) {
 		// TODO: Добавить в главном хендлере удаление этого куки
 		if cookie := cookies.GetRedirectCookie(w, r); cookie != nil {
 			cookies.RemoveRedirectCookie(w, r)
-			http.Redirect(w, r, cookie.Value, http.StatusMovedPermanently)
+			http.Redirect(w, r, cookie.Value, http.StatusFound)
 			return
 		}
-		http.Redirect(w, r, "/", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/", http.StatusFound)
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 	}

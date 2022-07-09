@@ -15,7 +15,7 @@ func (m *MainHandler) DebugHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Your Current path:      %s%s\n", r.URL.Host, r.URL.Path)
 	fmt.Fprintf(w, "Main:      %s/\n", r.URL.Host)
 	fmt.Fprintf(w, "SignUp:    %s/signup\n", r.URL.Host)
-	fmt.Fprintf(w, "LogIn:     %s/login\n", r.URL.Host)
+	fmt.Fprintf(w, "SignIn:    %s/signin\n", r.URL.Host)
 }
 
 //? debugRefreshTemplates -
