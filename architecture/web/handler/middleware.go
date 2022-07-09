@@ -12,7 +12,7 @@ import (
 func (m *MainHandler) MiddlewareMethodChecker(next http.Handler, allowedMthods map[string]bool) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		debugLogHandler("MiddlewareMethodChecker", r)
-		if !allowedMthods[r.Method] {
+		if _, ok := allowedMthods[r.Method]; !ok {
 			http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 			return
 		}

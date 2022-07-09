@@ -17,31 +17,28 @@ import (
 func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	debugLogHandler("SignUpHandler", r)
 
+	cookie := cookies.GetSessionCookie(w, r)
+	switch {
+	case cookie == nil:
+	case cookie != nil:
+		_, err := m.service.Session.GetByUuid(cookie.Value)
+		switch {
+		case err == nil:
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		case errors.Is(err, ssession.ErrExpired) || errors.Is(err, ssession.ErrNotFound):
+			cookies.AddRedirectCookie(w, r.URL.Path)
+			cookies.RemoveSessionCookie(w, r)
+		case err != nil:
+			log.Printf("SignUpHandler: m.service.Session.GetByUuid: %v\n", err)
+			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
+			return
+		}
+	}
+
 	switch r.Method {
 	case http.MethodGet:
 		cookies.AddRedirectCookie(w, r.URL.Query().Get("redirect_to"))
-
-		cookie := cookies.GetSessionCookie(w, r)
-		switch {
-		case cookie == nil:
-		case cookie != nil:
-			_, err := m.service.Session.GetByUuid(cookie.Value)
-			switch {
-			case err == nil:
-			case errors.Is(err, ssession.ErrExpired) || errors.Is(err, ssession.ErrNotFound):
-				cookies.AddRedirectCookie(w, r.URL.Path)
-				cookies.RemoveSessionCookie(w, r)
-				http.Redirect(w, r, "/signup", http.StatusSeeOther)
-				return
-			case err != nil:
-				log.Printf("SignUpHandler: m.service.Session.GetByUuid: %v\n", err)
-				http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
-				return
-			}
-			pg := &view.Page{Warn: fmt.Errorf("you already signed in!")}
-			m.view.ExecuteTemplate(w, pg, "signup.html")
-			return
-		}
 		m.view.ExecuteTemplate(w, nil, "signup.html")
 	case http.MethodPost:
 		err := r.ParseForm()

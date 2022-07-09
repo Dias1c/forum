@@ -35,9 +35,18 @@ func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
 	mux.HandleFunc("/debug", m.DebugHandler)
 
 	mux.HandleFunc("/", m.IndexHandler)
-	mux.HandleFunc("/signup", m.SignUpHandler)
-	mux.HandleFunc("/signin", m.SignInHandler)
-	mux.HandleFunc("/signout", m.SignOutHandler)
+	mux.Handle("/signup", m.MiddlewareMethodChecker(
+		http.HandlerFunc(m.SignUpHandler),
+		map[string]bool{"GET": true, "POST": true}),
+	)
+	mux.Handle("/signin", m.MiddlewareMethodChecker(
+		http.HandlerFunc(m.SignInHandler),
+		map[string]bool{"GET": true, "POST": true}),
+	)
+	mux.Handle("/signout", m.MiddlewareMethodChecker(
+		http.HandlerFunc(m.SignOutHandler),
+		map[string]bool{"GET": true}),
+	)
 	// mux.HandleFunc("/post/get", m.PostGet)
 	mux.Handle("/post/create", m.MiddlewareMethodChecker(
 		m.MiddlewareCookieChecker(http.HandlerFunc(m.PostCreateHandler)),
