@@ -6,11 +6,12 @@ import (
 )
 
 func (s *SessionRepo) UpdateByUserId(userId int64, session *models.Session) error {
+	strExpiredAt := session.ExpiredAt.Format(timeFormat)
 	row := s.db.QueryRow(`
 UPDATE sessions 
 SET uuid = ?, expired_at = ?
 WHERE user_id = ?
-RETURNING id`, session.Uuid, session.ExpiredAt, session.UserId)
+RETURNING id`, session.Uuid, strExpiredAt, session.UserId)
 
 	err := row.Scan(&session.Id)
 	switch {

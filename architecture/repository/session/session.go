@@ -1,6 +1,12 @@
 package session
 
-import "database/sql"
+import (
+	"database/sql"
+)
+
+const (
+	timeFormat = "2006-01-02T15:04:05Z"
+)
 
 type SessionRepo struct {
 	db *sql.DB
