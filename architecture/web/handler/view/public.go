@@ -20,7 +20,6 @@ func (v *View) ExecuteTemplate(w http.ResponseWriter, pg interface{}, names ...s
 	err = tmpl.ExecuteTemplate(w, "bootstrap", pg)
 	if err != nil {
 		log.Printf("tmpl.ExecuteTemplate: %v", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
