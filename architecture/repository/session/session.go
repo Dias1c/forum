@@ -2,10 +2,11 @@ package session
 
 import (
 	"database/sql"
+	"time"
 )
 
 const (
-	timeFormat = "2006-01-02T15:04:05Z"
+	timeFormat = time.RFC3339
 )
 
 type SessionRepo struct {
