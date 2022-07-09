@@ -14,8 +14,17 @@ import (
 // IndexHandler -
 func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	debugLogHandler("IndexHandler", r)
-	cookies.RemoveRedirectCookie(w, r)
 
+	// Allowed Methods
+	switch r.Method {
+	case http.MethodGet:
+	default:
+		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Logic
+	cookies.RemoveRedirectCookie(w, r)
 	switch r.Method {
 	case http.MethodGet:
 		cookie := cookies.GetSessionCookie(w, r)
@@ -48,7 +57,5 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 		pg := &view.Page{User: user, Warn: fmt.Errorf("you already signed in!")}
 		m.view.ExecuteTemplate(w, pg, "home.html")
 		return
-	default:
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 	}
 }

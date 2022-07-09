@@ -20,10 +20,10 @@ func (m *MainHandler) MiddlewareMethodChecker(next http.Handler, allowedMthods m
 	})
 }
 
-// MiddlewareCookieChecker - NOT FINISHED
-func (m *MainHandler) MiddlewareCookieChecker(next http.Handler) http.Handler {
+// MiddlewareSessionChecker - NOT FINISHED
+func (m *MainHandler) MiddlewareSessionChecker(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		debugLogHandler("MiddlewareCookieChecker", r)
+		debugLogHandler("MiddlewareSessionChecker", r)
 
 		cookie := cookies.GetSessionCookie(w, r)
 		if cookie == nil {
@@ -41,7 +41,7 @@ func (m *MainHandler) MiddlewareCookieChecker(next http.Handler) http.Handler {
 			http.Redirect(w, r, "/signin", http.StatusSeeOther)
 			return
 		case err != nil:
-			log.Printf("MiddlewareCookieChecker: m.service.Session.GetByUuid: %v\n", err)
+			log.Printf("MiddlewareSessionChecker: m.service.Session.GetByUuid: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
 		}

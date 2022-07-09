@@ -18,6 +18,15 @@ import (
 func (m *MainHandler) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	debugLogHandler("SignInHandler", r)
 
+	// Allowed Methods
+	switch r.Method {
+	case http.MethodGet:
+	case http.MethodPost:
+	default:
+		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return
+	}
+
 	cookie := cookies.GetSessionCookie(w, r)
 	switch {
 	case cookie == nil:
@@ -37,6 +46,7 @@ func (m *MainHandler) SignInHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Logic
 	switch r.Method {
 	case http.MethodGet:
 		cookies.AddRedirectCookie(w, r.URL.Query().Get("redirect_to"))

@@ -10,6 +10,15 @@ import (
 func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) {
 	debugLogHandler("PostCreateHandler", r)
 
+	// Allowed Methods
+	switch r.Method {
+	case http.MethodGet:
+	case http.MethodPost:
+	default:
+		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return
+	}
+
 	iUserId := r.Context().Value("UserId")
 	if iUserId == nil {
 		log.Println("PostCreateHandler: r.Context().Value(\"UserId\") is nil")
