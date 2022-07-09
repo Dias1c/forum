@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     nickname NVARCHAR(32) UNIQUE NOT NULL CHECK(LENGTH(nickname) <= 32),
     email NVARCHAR(320) UNIQUE NOT NULL CHECK(LENGTH(email) <= 320),
-    password TEXT
+    password TEXT,
+    created_at TEXT
 );
 
 -- USER SESSIONS 

@@ -7,9 +7,10 @@ import (
 )
 
 func (u *UserRepo) Create(user *models.User) (int64, error) {
+	strCreatedAt := user.CreatedAt.Format(timeFormat)
 	row := u.db.QueryRow(`
-INSERT INTO users (nickname, email, password) VALUES
-(?, ?, ?) RETURNING id`, user.Nickname, user.Email, user.Password)
+INSERT INTO users (nickname, email, password, created_at) VALUES
+(?, ?, ?, ?) RETURNING id`, user.Nickname, user.Email, user.Password, strCreatedAt)
 
 	err := row.Scan(&user.Id)
 	switch {
