@@ -49,14 +49,14 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		cookies.AddRedirectCookie(w, r.URL.Query().Get("redirect_to"))
-		m.view.ExecuteTemplate(w, nil, "signup.html")
+		m.view.ExecuteTemplate(w, nil, "sign-up.html")
 	case http.MethodPost:
 		err := r.ParseForm()
 		if err != nil {
 			log.Printf("SignUpHandler: r.ParseForm: %v\n", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
-			m.view.ExecuteTemplate(w, pg, "signin.html")
+			m.view.ExecuteTemplate(w, pg, "sign-in.html")
 			return
 		}
 
@@ -73,21 +73,21 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		case errors.Is(err, suser.ErrExistNickname):
 			pg := &view.Page{Error: fmt.Errorf("nickname \"%v\" is used. Try with another nickname.", newUser.Nickname)}
-			m.view.ExecuteTemplate(w, pg, "signup.html")
+			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		case errors.Is(err, suser.ErrExistEmail):
 			pg := &view.Page{Error: fmt.Errorf("email \"%v\" is used. Try with another email.", newUser.Nickname)}
-			m.view.ExecuteTemplate(w, pg, "signup.html")
+			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		case errors.Is(err, suser.ErrInvalidNickname):
 			pg := &view.Page{Error: fmt.Errorf("invalid nickname \"%v\"", newUser.Nickname)}
-			m.view.ExecuteTemplate(w, pg, "signup.html")
+			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		case errors.Is(err, suser.ErrInvalidEmail):
 			pg := &view.Page{Error: fmt.Errorf("invalid email \"%v\"", newUser.Email)}
-			m.view.ExecuteTemplate(w, pg, "signup.html")
+			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		default:
 			log.Printf("ERROR: SignUpHandler: %s", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
-			m.view.ExecuteTemplate(w, pg, "signup.html")
+			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 			return
 		}
 	default:

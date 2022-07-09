@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"forum/architecture/web/handler/view"
 	"log"
 	"net/http"
 )
@@ -29,7 +30,8 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 	user, _ := m.service.User.GetByID(userId)
 	switch r.Method {
 	case http.MethodGet:
-		fmt.Fprint(w, "%v", user)
+		pg := &view.Page{User: user, Error: fmt.Errorf("hi")}
+		m.view.ExecuteTemplate(w, pg, "post-create.html")
 	case http.MethodPost:
 		fmt.Fprint(w, "%v", user)
 	default:
