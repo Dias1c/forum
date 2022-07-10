@@ -3,14 +3,14 @@ package handler
 import (
 	"errors"
 	"fmt"
-	"forum/architecture/models"
-	"forum/architecture/web/handler/cookies"
-	"forum/architecture/web/handler/view"
 	"log"
 	"net/http"
 
+	"forum/architecture/models"
 	ssession "forum/architecture/service/session"
 	suser "forum/architecture/service/user"
+	"forum/architecture/web/handler/cookies"
+	"forum/architecture/web/handler/view"
 )
 
 // SignUpHandler -
@@ -75,7 +75,7 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 			pg := &view.Page{Error: fmt.Errorf("nickname \"%v\" is used. Try with another nickname.", newUser.Nickname)}
 			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		case errors.Is(err, suser.ErrExistEmail):
-			pg := &view.Page{Error: fmt.Errorf("email \"%v\" is used. Try with another email.", newUser.Nickname)}
+			pg := &view.Page{Error: fmt.Errorf("email \"%v\" is used. Try with another email.", newUser.Email)}
 			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		case errors.Is(err, suser.ErrInvalidNickname):
 			pg := &view.Page{Error: fmt.Errorf("invalid nickname \"%v\"", newUser.Nickname)}
