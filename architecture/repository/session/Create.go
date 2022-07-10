@@ -2,12 +2,13 @@ package session
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
+
+	"forum/architecture/models"
 )
 
 func (s *SessionRepo) Create(session *models.Session) (int64, error) {
-	strExpiredAt := session.ExpiredAt.Format(timeFormat)
+	strExpiredAt := session.ExpiredAt.Format(models.TimeFormat)
 	row := s.db.QueryRow(`
 INSERT INTO sessions (uuid, expired_at, user_id) VALUES
 (?, ?, ?) RETURNING id`, session.Uuid, strExpiredAt, session.UserId)

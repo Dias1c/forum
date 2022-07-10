@@ -2,9 +2,10 @@ package session
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
 	"time"
+
+	"forum/architecture/models"
 )
 
 func (s *SessionRepo) GetByUuid(uuid string) (*models.Session, error) {
@@ -18,7 +19,7 @@ WHERE uuid = ?`, uuid)
 
 	switch {
 	case err == nil:
-		timeExpiredAt, err := time.ParseInLocation(timeFormat, strExpiredAt, time.Local)
+		timeExpiredAt, err := time.ParseInLocation(models.TimeFormat, strExpiredAt, time.Local)
 		if err != nil {
 			return nil, fmt.Errorf("time.Parse: %w", err)
 		}

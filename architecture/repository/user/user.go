@@ -2,11 +2,6 @@ package user
 
 import (
 	"database/sql"
-	"time"
-)
-
-const (
-	timeFormat = time.RFC3339
 )
 
 type UserRepo struct {

@@ -2,9 +2,10 @@ package user
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
 	"time"
+
+	"forum/architecture/models"
 )
 
 func (u *UserRepo) GetByNickname(nickname string) (*models.User, error) {
@@ -18,7 +19,7 @@ WHERE nickname = ?`, nickname)
 
 	switch {
 	case err == nil:
-		timeCreatedAt, err := time.ParseInLocation(timeFormat, strCreatedAt, time.Local)
+		timeCreatedAt, err := time.ParseInLocation(models.TimeFormat, strCreatedAt, time.Local)
 		if err != nil {
 			return nil, fmt.Errorf("time.Parse: %w", err)
 		}

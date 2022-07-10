@@ -2,12 +2,13 @@ package user
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
+
+	"forum/architecture/models"
 )
 
 func (u *UserRepo) Create(user *models.User) (int64, error) {
-	strCreatedAt := user.CreatedAt.Format(timeFormat)
+	strCreatedAt := user.CreatedAt.Format(models.TimeFormat)
 	row := u.db.QueryRow(`
 INSERT INTO users (nickname, email, password, created_at) VALUES
 (?, ?, ?, ?) RETURNING id`, user.Nickname, user.Email, user.Password, strCreatedAt)

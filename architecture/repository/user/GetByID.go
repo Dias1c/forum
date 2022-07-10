@@ -2,10 +2,10 @@ package user
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
 	"time"
 
+	"forum/architecture/models"
 	model "forum/architecture/models"
 )
 
@@ -18,7 +18,7 @@ WHERE id = ?`, id)
 	err := row.Scan(&user.Id, &user.Nickname, &user.Email, &strCreatedAt)
 	switch {
 	case err == nil:
-		timeCreatedAt, err := time.ParseInLocation(timeFormat, strCreatedAt, time.Local)
+		timeCreatedAt, err := time.ParseInLocation(models.TimeFormat, strCreatedAt, time.Local)
 		if err != nil {
 			return nil, fmt.Errorf("time.Parse: %w", err)
 		}
