@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     nickname NVARCHAR(32) UNIQUE NOT NULL CHECK(LENGTH(nickname) <= 32),
     email NVARCHAR(320) UNIQUE NOT NULL CHECK(LENGTH(email) <= 320),
     password TEXT,
-    created_at TEXT
+    created_at TEXT NOT NULL
 );
 
 -- USER SESSIONS 
@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS sessions (
 -- POSTS CATEGORIES
 CREATE TABLE IF NOT EXISTS categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name NVARCHAR(32) NOT NULL CHECK(LENGTH(name) <= 32) UNIQUE
+    name NVARCHAR(32) NOT NULL CHECK(LENGTH(name) <= 32) UNIQUE,
+    created_at TEXT NOT NULL
 );
 
 -- POSTS
@@ -29,6 +30,7 @@ CREATE TABLE IF NOT EXISTS posts (
     title NVARCHAR(100) NOT NULL CHECK(LENGTH(title) <= 100),
     content TEXT NOT NULL,
     user_id INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
@@ -47,6 +49,7 @@ CREATE TABLE IF NOT EXISTS posts_votes (
     vote INTEGER NOT NULL CHECK(vote IN(-1, 0, 1)),
     user_id INTEGER NOT NULL,
     post_id INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
 );
@@ -57,6 +60,7 @@ CREATE TABLE IF NOT EXISTS comments (
     content TEXT NOT NULL,
     user_id INTEGER NOT NULL,
     post_id INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
 );
@@ -67,6 +71,7 @@ CREATE TABLE IF NOT EXISTS comments_votes (
     vote INTEGER NOT NULL CHECK(vote IN(-1, 0, 1)),
     user_id INTEGER NOT NULL,
     comment_id INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE
 );

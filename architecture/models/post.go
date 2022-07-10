@@ -1,12 +1,13 @@
 package models
 
+import "time"
+
 type Post struct {
-	Id       int64
-	Title    string
-	Content  string
-	Category *Category
-	User     *User
-	Comments []Comment
+	Id        int64
+	Title     string
+	Content   string
+	User      int64
+	CreatedAt time.Time
 }
 
 type IPostService interface {
