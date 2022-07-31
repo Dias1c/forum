@@ -14,10 +14,13 @@
         name="content" placeholder="Include all the information you want to post" required></textarea>
     </div>
     <br />
-    <div class="textblock__input" id="b_TagEditor">
-      <input type="text" placeholder="Max: 32 symbols" value="input-value">
+    <div class="input-form">
+      <label for="content">Categories (Max 5 category)</label>
+      <div class="textblock__input" id="b_TagEditor">
+        <input type="text" placeholder="Max: 32 symbols" value="input-value">
+      </div>
+      <textarea type="text" name="categories" class="s-disabled border-none" id="tb_TagEditor" hidden></textarea>
     </div>
-    <textarea type="text" name="categories" class="s-disabled border-none" id="tb_TagEditor" hidden></textarea>
     <br />
     <!-- <div class="input-form">
       <label for="image">Image</label>
@@ -39,13 +42,13 @@
 
   <script src="/static/js/tag-editor.js"></script>
   <script>
-      const tagEditor = new TagEditor({
-          BlockSelectorName: "#b_TagEditor",
-          TextBlockSelectorName: "#tb_TagEditor",
-          Tags: [],
-          MaxTags: 5,
-          MaxTagLength: 32,
-      });
+    const tagEditor = new TagEditor({
+      BlockSelectorName: "#b_TagEditor",
+      TextBlockSelectorName: "#tb_TagEditor",
+      Tags: [],
+      MaxTags: 5,
+      MaxTagLength: 32,
+    });
   </script>
 </div>
 {{ end }}

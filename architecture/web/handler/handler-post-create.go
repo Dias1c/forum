@@ -7,6 +7,7 @@ import (
 	"forum/architecture/web/handler/view"
 	"log"
 	"net/http"
+	"strings"
 
 	spost "forum/architecture/service/post"
 )
@@ -27,6 +28,9 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 	iUserId := r.Context().Value("UserId")
 	if iUserId == nil {
 		log.Println("PostCreateHandler: r.Context().Value(\"UserId\") is nil")
+		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
+		w.WriteHeader(http.StatusInternalServerError)
+		m.view.ExecuteTemplate(w, pg, "post-create.html")
 		return
 	}
 
@@ -36,9 +40,11 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 	case http.MethodGet:
 		pg := &view.Page{User: user}
 		m.view.ExecuteTemplate(w, pg, "post-create.html")
+		return
 	case http.MethodPost:
 		r.ParseForm()
 		fmt.Println(r.Form)
+		fmt.Printf("categories: %+v\n", strings.Split(r.Form.Get("categories"), " "))
 
 		post := &models.Post{
 			Title:   r.FormValue("title"),
