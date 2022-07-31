@@ -1,5 +1,6 @@
-// TagEditor - Tag Editor Util 
-// https://github.com/Dias1c/frontend-utils-js/blob/main/js/tag-editor.js
+// Source: https://github.com/Dias1c/frontend-utils-js
+
+// TagEditor - Tag Editor Util
 class TagEditor {
     // ! HTML Elements
     B_TagEditor; // new HTMLDivElement();
@@ -12,6 +13,7 @@ class TagEditor {
     SHasDoubles = false;                            // AddDoubles?
     SToLower = true;                                // ToLowercase Tag?
     SMaxTags = 0;                                   // Max Tags Count, 0 == Unlimited
+    SMaxTagLength = 0;                              // Max Tag Length, 0 == Unlimited
     STags = [];                                     // Writed Tags
     SSeparator = ' ';                               // Split by separator
 
@@ -33,6 +35,7 @@ class TagEditor {
         this.SHasDoubles = (settings.HasDoubles) ? settings.HasDoubles : this.SHasDoubles;
         this.SToLower = (settings.ToLower) ? settings.ToLower : this.SToLower;
         this.SMaxTags = (settings.MaxTags) ? settings.MaxTags : this.SMaxTags;
+        this.SMaxTagLength = (settings.MaxTagLength) ? settings.MaxTagLength : this.SMaxTagLength;
         this.STags = (settings.Tags) ? settings.Tags : this.STags;
     }
     init_Tb_Input() {
@@ -74,6 +77,8 @@ class TagEditor {
         } else if (this.SMaxTags != 0 && this.STags.length >= this.SMaxTags) {
             return false
         } else if (!this.SHasDoubles && this.STags.includes(name)) {
+            return false
+        } else if (this.SMaxTagLength != 0 && this.SMaxTagLength < name.length) {
             return false
         }
         return true
