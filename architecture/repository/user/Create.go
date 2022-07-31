@@ -25,7 +25,12 @@ INSERT INTO users (nickname, email, password, created_at) VALUES
 			return -1, ErrExistEmail
 		}
 	case strings.HasPrefix(err.Error(), "CHECK constraint failed"):
-		// Create Error
+		switch {
+		case strings.Contains(err.Error(), "LENGTH(nickname)"):
+			return -1, ErrWrongLengthNickname
+		case strings.Contains(err.Error(), "LENGTH(email)"):
+			return -1, ErrWrongLengthEmail
+		}
 	}
 	return -1, fmt.Errorf("row.Scan: %w", err)
 }

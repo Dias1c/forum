@@ -30,6 +30,10 @@ func (u *UserService) Create(user *models.User) (int64, error) {
 		return -1, ErrExistEmail
 	case errors.Is(err, ruser.ErrExistNickname):
 		return -1, ErrExistNickname
+	case errors.Is(err, ruser.ErrWrongLengthEmail):
+		return -1, ErrWrongLengthEmail
+	case errors.Is(err, ruser.ErrWrongLengthNickname):
+		return -1, ErrWrongLengthNickname
 	}
 	return -1, fmt.Errorf("u.repo.Create: %w", err)
 }
