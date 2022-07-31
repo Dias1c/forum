@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -55,7 +54,7 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		pg := &view.Page{User: user, Warn: fmt.Errorf("you already signed in!")}
+		pg := &view.Page{User: user}
 		m.view.ExecuteTemplate(w, pg, "home.html")
 		return
 	}
