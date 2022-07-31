@@ -32,11 +32,11 @@
     <input type="email" name="email" class="form-control" placeholder="Email address" required>
   </div>
   <div class="form-group">
-    <input type="password" name="password" class="form-control" placeholder="Password" required>
+    <input type="password" class="form-control" name="password" id="password-original" placeholder="Password" required>
   </div>
   <div class="form-group">
-    <input type="password" class="form-control" id="password" placeholder="Confirm password" required
-      onChange="onChange()">
+    <input type="password" class="form-control" id="password-confirm" placeholder="Confirm password" required
+      onChange="confirmPasswordOnChange()">
   </div>
   <button class="btn btn-lg btn-primary btn-block active" type="submit">Sign up</button>
   <!-- <br>
