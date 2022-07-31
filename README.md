@@ -31,8 +31,8 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 - **BackEnd**
 - [x] sign-up
 - [x] sign-in
-- [?] middleware
-- [ ] post-create-page
+- [x] middleware
+- [~] post-create-page
 - [ ] post-page
 - [ ] posts-page
 - [ ] comment-create
