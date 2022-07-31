@@ -34,7 +34,7 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 	user, _ := m.service.User.GetByID(userId)
 	switch r.Method {
 	case http.MethodGet:
-		pg := &view.Page{User: user, Error: fmt.Errorf("hi")}
+		pg := &view.Page{User: user}
 		m.view.ExecuteTemplate(w, pg, "post-create.html")
 	case http.MethodPost:
 		r.ParseForm()

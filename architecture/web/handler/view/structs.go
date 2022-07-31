@@ -8,9 +8,10 @@ type Page struct {
 	Post  *models.Post
 	Posts *[]models.Post
 	// Comments           []models.Comment
-	Error error // Error - Notification Error
-	Warn  error // Warn - Notification Warning
-	Info  error // Info - Notification Info
+	Error   error // Error - Notification Error
+	Warn    error // Warn - Notification Warning
+	Info    error // Info - Notification Info
+	Success error // Success - Notification Success
 }
 
 type View struct {

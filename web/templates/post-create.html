@@ -1,12 +1,4 @@
 {{ define "main" }}
-{{if .Error}}
-<!-- Make it as window or Notification block -->
-<div class="alert alert-danger" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Error:</span>
-  {{.Error}}
-</div>
-{{end}}
 <div class="panel panel-primary">
   <div class="panel-heading">Start a new post with the following title</div>
   <form class="panel-body" role="form" action="/post/create" method="POST">
@@ -23,7 +15,7 @@
     </div>
     <br />
     <div class="textblock__input" id="b_TagEditor">
-      <input type="text" placeholder="..." value="input-value">
+      <input type="text" placeholder="Max: 32 symbols" value="input-value">
     </div>
     <textarea type="text" name="categories" class="s-disabled border-none" id="tb_TagEditor" hidden></textarea>
     <br />
