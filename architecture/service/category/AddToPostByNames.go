@@ -3,7 +3,10 @@ package category
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	"forum/architecture/models"
+
 	rcategory "forum/architecture/repository/category"
 )
 
@@ -16,7 +19,7 @@ func (c *CategoryService) AddToPostByNames(names []string, postId int64) error {
 
 	var ids []int64 = make([]int64, len(names))
 	for i, name := range names {
-		cat := &models.Category{Name: name}
+		cat := &models.Category{Name: name, CreatedAt: time.Now()}
 		id, err := c.repo.Create(cat)
 		switch {
 		case err == nil:
@@ -38,7 +41,15 @@ func (c *CategoryService) AddToPostByNames(names []string, postId int64) error {
 			return fmt.Errorf("c.repo.GetByName: %w", err)
 		}
 	}
-	// TODO: Insert to categories_posts
 
+	for _, id := range ids {
+		_, err := c.repo.AddToPost(id, postId)
+		switch {
+		case err == nil:
+			continue
+		default:
+			return fmt.Errorf("c.repo.AddToPost: %w", err)
+		}
+	}
 	return nil
 }

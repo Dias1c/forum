@@ -1,12 +1,16 @@
 package models
 
+import "time"
+
 type Category struct {
-	Id   int64
-	Name string
+	Id        int64
+	Name      string
+	CreatedAt time.Time
 }
 
 type ICategoryRepo interface {
 	Create(category *Category) (int64, error)
+	AddToPost(categoryId, postId int64) (int64, error)
 	Update(category *Category) error
 	GetByID(id int64) (*Category, error)
 	GetByName(name string) (*Category, error)

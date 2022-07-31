@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"strings"
 
+	scategory "forum/architecture/service/category"
 	spost "forum/architecture/service/post"
 )
 
@@ -44,14 +45,14 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 	case http.MethodPost:
 		r.ParseForm()
 		fmt.Println(r.Form)
-		fmt.Printf("categories: %+v\n", strings.Split(r.Form.Get("categories"), " "))
+		fmt.Printf("categories: %+v\n", strings.Fields(r.Form.Get("categories")))
 
 		post := &models.Post{
 			Title:   r.FormValue("title"),
 			Content: r.FormValue("content"),
 			UserId:  userId,
 		}
-		postId, err := m.service.Post.Create(post)
+		_, err := m.service.Post.Create(post)
 		switch {
 		case err == nil:
 		case errors.Is(err, spost.ErrInvalidTitleLength):
@@ -66,9 +67,26 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 			return
 		}
 
+		catNames := strings.Fields(r.Form.Get("categories"))
+		err = m.service.Category.AddToPostByNames(catNames, post.Id)
+		switch {
+		case err == nil:
+		case errors.Is(err, scategory.ErrCategoryLimitForPost):
+			pg := &view.Page{Warn: fmt.Errorf("post %v created without categories, invalid categies count, category limit = %v", post.Id, models.MaxCategoryLimitForPost)}
+			// TODO: Redirect to another page
+			m.view.ExecuteTemplate(w, pg, "post-create.html")
+			return
+		default:
+			// TODO: Check for another error
+			log.Printf("ERROR: PostCreateHandler:  m.service.Category.AddToPostByNames: %s", err)
+			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later: %s", err)}
+			w.WriteHeader(http.StatusInternalServerError)
+			m.view.ExecuteTemplate(w, pg, "post-create.html")
+			return
+		}
+
 		// Create categories
-		log.Printf("LOGIC: %d %s", postId, err)
-		pg := &view.Page{Error: fmt.Errorf("logic not finished")}
+		pg := &view.Page{Success: fmt.Errorf("Post id %v created Successfully", post.Id)}
 		m.view.ExecuteTemplate(w, pg, "post-create.html")
 		return
 	default:

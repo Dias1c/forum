@@ -7,9 +7,10 @@ import (
 )
 
 func (c *CategoryRepo) Create(category *models.Category) (int64, error) {
+	strCreatedAt := category.CreatedAt.Format(models.TimeFormat)
 	row := c.db.QueryRow(`
-	INSERT INTO categories (name) VALUES
-	(?) RETURNING id`, category.Name)
+	INSERT INTO categories (name, created_at) VALUES
+	(?, ?) RETURNING id`, category.Name, strCreatedAt)
 	err := row.Scan(&category.Id)
 
 	switch {
