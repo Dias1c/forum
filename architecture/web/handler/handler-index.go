@@ -6,9 +6,10 @@ import (
 	"log"
 	"net/http"
 
-	ssession "forum/architecture/service/session"
 	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
+
+	ssession "forum/architecture/service/session"
 )
 
 // IndexHandler -

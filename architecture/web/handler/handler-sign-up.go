@@ -7,10 +7,11 @@ import (
 	"net/http"
 
 	"forum/architecture/models"
-	ssession "forum/architecture/service/session"
-	suser "forum/architecture/service/user"
 	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
+
+	ssession "forum/architecture/service/session"
+	suser "forum/architecture/service/user"
 )
 
 // SignUpHandler -

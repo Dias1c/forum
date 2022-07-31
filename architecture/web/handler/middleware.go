@@ -3,10 +3,12 @@ package handler
 import (
 	"context"
 	"errors"
-	ssession "forum/architecture/service/session"
-	"forum/architecture/web/handler/cookies"
 	"log"
 	"net/http"
+
+	"forum/architecture/web/handler/cookies"
+
+	ssession "forum/architecture/service/session"
 )
 
 func (m *MainHandler) MiddlewareMethodChecker(next http.Handler, allowedMthods map[string]bool) http.Handler {
