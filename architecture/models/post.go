@@ -8,6 +8,8 @@ type Post struct {
 	Content   string
 	UserId    int64
 	CreatedAt time.Time
+
+	WCategories []*Category
 }
 
 type IPostService interface {

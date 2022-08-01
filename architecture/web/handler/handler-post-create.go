@@ -44,8 +44,6 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	case http.MethodPost:
 		r.ParseForm()
-		fmt.Println(r.Form)
-		fmt.Printf("categories: %+v\n", strings.Fields(r.Form.Get("categories")))
 
 		post := &models.Post{
 			Title:   r.FormValue("title"),
@@ -86,7 +84,7 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 		}
 
 		// Create categories
-		pg := &view.Page{Success: fmt.Errorf("Post id %v created Successfully", post.Id)}
+		pg := &view.Page{Success: fmt.Errorf("Post /post/get?id=%v created Successfully", post.Id)}
 		m.view.ExecuteTemplate(w, pg, "post-create.html")
 		return
 	default:

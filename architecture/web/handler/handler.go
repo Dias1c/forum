@@ -40,7 +40,10 @@ func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
 	mux.HandleFunc("/signout", m.SignOutHandler)
 
 	// mux.HandleFunc("/post/get", m.PostGet)
+	mux.Handle("/post/get", http.HandlerFunc(m.PostViewHandler))
 	mux.Handle("/post/create", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostCreateHandler)))
+	// mux.Handle("/post/edit", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostEditHandler)))
+	// mux.Handle("/post/delete", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostDeleteHandler)))
 
 	return mux
 }

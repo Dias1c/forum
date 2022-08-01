@@ -14,6 +14,7 @@ type ICategoryRepo interface {
 	Update(category *Category) error
 	GetByID(id int64) (*Category, error)
 	GetByName(name string) (*Category, error)
+	GetByPostID(postId int64) ([]*Category, error)
 	DeleteByID(id int64) error
 }
 

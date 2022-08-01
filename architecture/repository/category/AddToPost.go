@@ -5,7 +5,6 @@ import (
 )
 
 func (c *CategoryRepo) AddToPost(categoryId, postId int64) (int64, error) {
-	fmt.Println(postId, categoryId)
 	row := c.db.QueryRow(`
 	INSERT INTO posts_categories (post_id, category_id) VALUES
 	(?, ?) RETURNING id`, postId, categoryId)
