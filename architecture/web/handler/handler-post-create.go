@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"forum/architecture/models"
 	"forum/architecture/web/handler/view"
-	"log"
+	"forum/internal/lg"
 	"net/http"
 	"strings"
 
@@ -28,7 +28,7 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 
 	iUserId := r.Context().Value("UserId")
 	if iUserId == nil {
-		log.Println("PostCreateHandler: r.Context().Value(\"UserId\") is nil")
+		lg.Err.Println("PostCreateHandler: r.Context().Value(\"UserId\") is nil")
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "post-create.html")
@@ -58,7 +58,7 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 			m.view.ExecuteTemplate(w, pg, "post-create.html")
 			return
 		default:
-			log.Printf("ERROR: PostCreateHandler: m.service.Post.Create: %s", err)
+			lg.Err.Printf("PostCreateHandler: m.service.Post.Create: %s", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later: %s", err)}
 			w.WriteHeader(http.StatusInternalServerError)
 			m.view.ExecuteTemplate(w, pg, "post-create.html")
@@ -76,7 +76,7 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 			return
 		default:
 			// TODO: Check for another error
-			log.Printf("ERROR: PostCreateHandler:  m.service.Category.AddToPostByNames: %s", err)
+			lg.Err.Printf("PostCreateHandler:  m.service.Category.AddToPostByNames: %s", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later: %s", err)}
 			w.WriteHeader(http.StatusInternalServerError)
 			m.view.ExecuteTemplate(w, pg, "post-create.html")

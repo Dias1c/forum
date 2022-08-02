@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"forum/architecture/web/handler/view"
-	"log"
+	"forum/internal/lg"
 	"net/http"
 	"strconv"
 
@@ -26,7 +26,7 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 
 	iUserId := r.Context().Value("UserId")
 	if iUserId == nil {
-		log.Println("PostCreateHandler: r.Context().Value(\"UserId\") is nil")
+		lg.Err.Println("PostCreateHandler: r.Context().Value(\"UserId\") is nil")
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "post-create.html")
@@ -57,7 +57,7 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 		case err == nil:
 			post.WCategories = categories
 		default:
-			log.Printf("PostEditHandler: m.service.Session.GetByUuid: %v\n", err)
+			lg.Err.Printf("PostEditHandler: m.service.Session.GetByUuid: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
 		}

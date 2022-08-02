@@ -2,11 +2,11 @@ package handler
 
 import (
 	"errors"
-	"log"
 	"net/http"
 
 	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
+	"forum/internal/lg"
 
 	ssession "forum/architecture/service/session"
 )
@@ -40,7 +40,7 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 			m.view.ExecuteTemplate(w, nil, "home.html")
 			return
 		case err != nil:
-			log.Printf("IndexHandler: m.service.Session.GetByUuid: %v\n", err)
+			lg.Err.Printf("IndexHandler: m.service.Session.GetByUuid: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
 		}
@@ -49,7 +49,7 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case err == nil:
 		case err != nil:
-			log.Printf("IndexHandler: m.service.Session.GetByUuid: %v\n", err)
+			lg.Err.Printf("IndexHandler: m.service.Session.GetByUuid: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
 		}

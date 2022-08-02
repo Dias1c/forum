@@ -5,7 +5,7 @@ import (
 	"forum/architecture/models"
 	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
-	"log"
+	"forum/internal/lg"
 	"net/http"
 	"strconv"
 
@@ -38,7 +38,7 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 		case errors.Is(err, ssession.ErrExpired) || errors.Is(err, ssession.ErrNotFound):
 			cookies.RemoveSessionCookie(w, r)
 		default:
-			log.Printf("PostViewHandler: m.service.Session.GetByUuid: %v\n", err)
+			lg.Err.Printf("PostViewHandler: m.service.Session.GetByUuid: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
 		}
@@ -65,7 +65,7 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 		case err == nil:
 			post.WCategories = categories
 		default:
-			log.Printf("PostViewHandler: m.service.Session.GetByUuid: %v\n", err)
+			lg.Err.Printf("PostViewHandler: m.service.Session.GetByUuid: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
 		}

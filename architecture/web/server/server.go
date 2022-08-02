@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"log"
+	"forum/internal/lg"
 	"net/http"
 	"time"
 )
@@ -29,7 +29,7 @@ func (s *Server) Run(configs *Configs, handler http.Handler) error {
 		IdleTimeout:    time.Duration(configs.IdleTimeout * int(time.Millisecond)),
 	}
 
-	log.Printf("Server runs on http://localhost%s\n", s.httpServer.Addr)
+	lg.Info.Printf("Server runs on http://localhost%s\n", s.httpServer.Addr)
 	err := s.httpServer.ListenAndServe()
 	return fmt.Errorf("Run: %w", err)
 }

@@ -3,12 +3,12 @@ package handler
 import (
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 
 	"forum/architecture/models"
 	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
+	"forum/internal/lg"
 
 	ssession "forum/architecture/service/session"
 	suser "forum/architecture/service/user"
@@ -40,7 +40,7 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 			cookies.AddRedirectCookie(w, r.URL.Path)
 			cookies.RemoveSessionCookie(w, r)
 		case err != nil:
-			log.Printf("SignUpHandler: m.service.Session.GetByUuid: %v\n", err)
+			lg.Err.Printf("SignUpHandler: m.service.Session.GetByUuid: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
 		}
@@ -54,7 +54,7 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodPost:
 		err := r.ParseForm()
 		if err != nil {
-			log.Printf("SignUpHandler: r.ParseForm: %v\n", err)
+			lg.Err.Printf("SignUpHandler: r.ParseForm: %v\n", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
 			m.view.ExecuteTemplate(w, pg, "sign-in.html")
@@ -85,7 +85,7 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 			pg := &view.Page{Error: fmt.Errorf("invalid email \"%v\"", newUser.Email)}
 			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		default:
-			log.Printf("ERROR: SignUpHandler: %s", err)
+			lg.Err.Printf("SignUpHandler: %s", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
 			m.view.ExecuteTemplate(w, pg, "sign-up.html")

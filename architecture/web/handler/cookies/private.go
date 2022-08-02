@@ -2,7 +2,7 @@ package cookies
 
 import (
 	"errors"
-	"log"
+	"forum/internal/lg"
 	"net/http"
 )
 
@@ -12,7 +12,7 @@ func getCookieByName(w http.ResponseWriter, r *http.Request, name string) *http.
 	switch {
 	case errors.Is(err, http.ErrNoCookie):
 	case err != nil:
-		log.Printf("GetRedirectCookie: r.Cookie: %v", err)
+		lg.Err.Printf("GetRedirectCookie: r.Cookie: %v", err)
 	case cookie != nil:
 		return cookie
 	}
@@ -25,7 +25,7 @@ func removeCookieByName(w http.ResponseWriter, r *http.Request, name string) {
 	switch {
 	case errors.Is(err, http.ErrNoCookie):
 	case err != nil:
-		log.Printf("cleanCookieByName: r.Cookie: %v", err)
+		lg.Err.Printf("removeCookieByName: r.Cookie: %v", err)
 	case cookie != nil:
 		cookie.MaxAge = -1
 		http.SetCookie(w, cookie)

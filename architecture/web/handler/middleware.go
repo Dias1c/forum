@@ -3,10 +3,10 @@ package handler
 import (
 	"context"
 	"errors"
-	"log"
 	"net/http"
 
 	"forum/architecture/web/handler/cookies"
+	"forum/internal/lg"
 
 	ssession "forum/architecture/service/session"
 )
@@ -43,7 +43,7 @@ func (m *MainHandler) MiddlewareSessionChecker(next http.Handler) http.Handler {
 			http.Redirect(w, r, "/signin", http.StatusSeeOther)
 			return
 		case err != nil:
-			log.Printf("MiddlewareSessionChecker: m.service.Session.GetByUuid: %v\n", err)
+			lg.Err.Printf("MiddlewareSessionChecker: m.service.Session.GetByUuid: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
 		}
