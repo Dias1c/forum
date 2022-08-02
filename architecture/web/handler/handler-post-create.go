@@ -84,7 +84,7 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 		}
 
 		// Create categories
-		pg := &view.Page{Success: fmt.Errorf("Post /post/get?id=%v created Successfully", post.Id)}
+		pg := &view.Page{User: user, Success: fmt.Errorf("Post /post/get?id=%v created Successfully", post.Id)}
 		m.view.ExecuteTemplate(w, pg, "post-create.html")
 		return
 	default:

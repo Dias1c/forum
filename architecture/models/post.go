@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Post struct {
 	Id        int64
@@ -9,7 +11,11 @@ type Post struct {
 	UserId    int64
 	CreatedAt time.Time
 
+	WUserVote   int8  // -1 0 1
+	WVoteUp     int64 // Like
+	WVoteDown   int64 // Dislike
 	WCategories []*Category
+	WComments   []*Comment
 }
 
 type IPostService interface {

@@ -1,8 +1,6 @@
 package models
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func (p *Post) ValidateTitle() error {
 	if lng := len(p.Title); lng < 1 || 100 < lng {
