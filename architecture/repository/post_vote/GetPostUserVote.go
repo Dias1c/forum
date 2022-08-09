@@ -3,6 +3,7 @@ package post_vote
 import (
 	"fmt"
 	"forum/architecture/models"
+	"strings"
 	"time"
 )
 
@@ -13,12 +14,12 @@ func (p *PostVoteRepo) GetPostUserVote(userId, postId int64) (*models.PostVote, 
 	postVote := &models.PostVote{}
 
 	strCreatedAt := ""
-	err := row.Scan(&postVote.Id, &postVote.PostId, &postVote.UserId, postVote.Vote, &strCreatedAt)
+	err := row.Scan(&postVote.Id, &postVote.PostId, &postVote.UserId, &postVote.Vote, &strCreatedAt)
 
 	switch {
 	case err == nil:
-	// case strings.HasPrefix(err.Error(), "sql: no rows in result set"):
-	// return nil, ErrNotFound
+	case strings.HasPrefix(err.Error(), "sql: no rows in result set"):
+		return nil, ErrNotFound
 	default:
 		return nil, fmt.Errorf("row.Scan: %w", err)
 	}

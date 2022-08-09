@@ -22,6 +22,10 @@
             {{ range $category := $Post.WCategories }}
             <a class="btn btn-tag" href="/category/post/get/{{ $category.Id }}">{{ $category.Name }}</a>
             {{ end }}
+            <!-- TODO: Закончить это -->
+            UP: {{ $Post.WVoteUp }}
+            DOWN: {{ $Post.WVoteDown }}
+            USRVOTE: {{ $Post.WUserVote }}
         </div>
     </div>
 </div>
