@@ -1,10 +1,10 @@
-package category
+package post_category
 
 import (
 	"fmt"
 )
 
-func (c *CategoryRepo) AddToPost(categoryId, postId int64) (int64, error) {
+func (c *PostCategoryRepo) AddToPost(categoryId, postId int64) (int64, error) {
 	row := c.db.QueryRow(`
 	INSERT INTO posts_categories (post_id, category_id) VALUES
 	(?, ?) RETURNING id`, postId, categoryId)

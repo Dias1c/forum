@@ -1,4 +1,4 @@
-package category
+package post_category
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func (c *CategoryRepo) Create(category *models.Category) (int64, error) {
+func (c *PostCategoryRepo) Create(category *models.PostCategory) (int64, error) {
 	strCreatedAt := category.CreatedAt.Format(models.TimeFormat)
 	row := c.db.QueryRow(`
 	INSERT INTO categories (name, created_at) VALUES

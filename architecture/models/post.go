@@ -14,7 +14,7 @@ type Post struct {
 	WUserVote   int8  // -1 0 1
 	WVoteUp     int64 // Like
 	WVoteDown   int64 // Dislike
-	WCategories []*Category
+	WCategories []*PostCategory
 	WComments   []*Comment
 }
 

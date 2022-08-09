@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"strings"
 
-	scategory "forum/architecture/service/category"
 	spost "forum/architecture/service/post"
+	scategory "forum/architecture/service/post_category"
 )
 
 // PostCreateHandler -
@@ -66,7 +66,7 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 		}
 
 		catNames := strings.Fields(r.Form.Get("categories"))
-		err = m.service.Category.AddToPostByNames(catNames, post.Id)
+		err = m.service.PostCategory.AddToPostByNames(catNames, post.Id)
 		switch {
 		case err == nil:
 		case errors.Is(err, scategory.ErrCategoryLimitForPost):

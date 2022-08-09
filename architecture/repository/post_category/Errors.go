@@ -1,4 +1,4 @@
-package category
+package post_category
 
 import "errors"
 

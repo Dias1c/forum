@@ -1,4 +1,4 @@
-package category
+package post_category
 
 import (
 	"fmt"
@@ -7,12 +7,12 @@ import (
 	"time"
 )
 
-func (c *CategoryRepo) GetByName(name string) (*models.Category, error) {
+func (c *PostCategoryRepo) GetByName(name string) (*models.PostCategory, error) {
 	row := c.db.QueryRow(`
 SELECT id, name, created_at FROM categories
 WHERE name = ?`, name)
 
-	category := &models.Category{}
+	category := &models.PostCategory{}
 	var strCreatedAt string
 	err := row.Scan(&category.Id, &category.Name, &strCreatedAt)
 	switch {

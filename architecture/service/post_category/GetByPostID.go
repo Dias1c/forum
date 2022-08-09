@@ -1,11 +1,11 @@
-package category
+package post_category
 
 import (
 	"fmt"
 	"forum/architecture/models"
 )
 
-func (c *CategoryService) GetByPostID(postId int64) ([]*models.Category, error) {
+func (c *PostCategoryService) GetByPostID(postId int64) ([]*models.PostCategory, error) {
 	categories, err := c.repo.GetByPostID(postId)
 	switch {
 	case err == nil:

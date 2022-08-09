@@ -1,4 +1,4 @@
-package category
+package post_category
 
 import (
 	"errors"
@@ -7,10 +7,10 @@ import (
 
 	"forum/architecture/models"
 
-	rcategory "forum/architecture/repository/category"
+	rcategory "forum/architecture/repository/post_category"
 )
 
-func (c *CategoryService) AddToPostByNames(names []string, postId int64) error {
+func (c *PostCategoryService) AddToPostByNames(names []string, postId int64) error {
 	if len(names) == 0 {
 		return nil
 	} else if len(names) > models.MaxCategoryLimitForPost {
@@ -19,7 +19,7 @@ func (c *CategoryService) AddToPostByNames(names []string, postId int64) error {
 
 	var ids []int64 = make([]int64, len(names))
 	for i, name := range names {
-		cat := &models.Category{Name: name, CreatedAt: time.Now()}
+		cat := &models.PostCategory{Name: name, CreatedAt: time.Now()}
 		id, err := c.repo.Create(cat)
 		switch {
 		case err == nil:

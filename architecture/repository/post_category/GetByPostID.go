@@ -1,4 +1,4 @@
-package category
+package post_category
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func (c *CategoryRepo) GetByPostID(postId int64) ([]*models.Category, error) {
+func (c *PostCategoryRepo) GetByPostID(postId int64) ([]*models.PostCategory, error) {
 	rows, err := c.db.Query(`
 SELECT c.id, c.name, c.created_at FROM posts_categories pc
 JOIN categories c ON pc.category_id = c.id
@@ -15,10 +15,10 @@ WHERE pc.post_id = ?`, postId)
 		return nil, fmt.Errorf("c.db.Query: %w", err)
 	}
 
-	categories := []*models.Category{}
+	categories := []*models.PostCategory{}
 	for rows.Next() {
 		var strCreatedAt string
-		category := &models.Category{}
+		category := &models.PostCategory{}
 		err = rows.Scan(&category.Id, &category.Name, &strCreatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("rows.Scan: %w", err)

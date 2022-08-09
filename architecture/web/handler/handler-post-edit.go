@@ -52,7 +52,7 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Post Not Found", http.StatusNotFound)
 			return
 		}
-		categories, err := m.service.Category.GetByPostID(post.Id)
+		categories, err := m.service.PostCategory.GetByPostID(post.Id)
 		switch {
 		case err == nil:
 			post.WCategories = categories
