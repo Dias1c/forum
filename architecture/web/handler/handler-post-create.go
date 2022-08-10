@@ -84,8 +84,7 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 		}
 
 		// Create categories
-		pg := &view.Page{User: user, Success: fmt.Errorf("Post /post/get?id=%v created Successfully", post.Id)}
-		m.view.ExecuteTemplate(w, pg, "post-create.html")
+		http.Redirect(w, r, fmt.Sprintf("/post/get?id=%v", post.Id), http.StatusSeeOther)
 		return
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
