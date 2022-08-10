@@ -11,8 +11,8 @@ import (
 func (p *PostRepo) Create(post *model.Post) (int64, error) {
 	strCreatedAt := post.CreatedAt.Format(models.TimeFormat)
 	row := p.db.QueryRow(`
-INSERT INTO posts (title, content, user_id, created_at) VALUES
-(?, ?, ?, ?) RETURNING id`, post.Title, post.Content, post.UserId, strCreatedAt)
+INSERT INTO posts (title, content, user_id, created_at, updated_at) VALUES
+(?, ?, ?, ?, ?) RETURNING id`, post.Title, post.Content, post.UserId, strCreatedAt, strCreatedAt)
 
 	err := row.Scan(&post.Id)
 	switch {

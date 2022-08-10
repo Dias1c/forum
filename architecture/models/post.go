@@ -10,6 +10,7 @@ type Post struct {
 	Content   string
 	UserId    int64
 	CreatedAt time.Time
+	UpdatedAt time.Time
 
 	WUserVote   int8  // -1 0 1
 	WVoteUp     int64 // Like

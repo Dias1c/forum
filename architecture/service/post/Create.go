@@ -11,6 +11,7 @@ import (
 
 func (p *PostService) Create(post *model.Post) (int64, error) {
 	post.CreatedAt = time.Now()
+	post.UpdatedAt = post.CreatedAt
 	postId, err := p.repo.Create(post)
 	switch {
 	case err == nil:

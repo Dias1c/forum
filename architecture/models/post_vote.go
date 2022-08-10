@@ -8,6 +8,7 @@ type PostVote struct {
 	UserId    int64
 	Vote      int8
 	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type IPostVoteRepo interface {
