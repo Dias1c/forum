@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"forum/architecture/models"
 	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
 	"forum/internal/lg"
@@ -29,7 +30,8 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		cookie := cookies.GetSessionCookie(w, r)
 		if cookie == nil {
-			m.view.ExecuteTemplate(w, nil, "home.html")
+			pg := getIndexPage(m, nil)
+			m.view.ExecuteTemplate(w, pg, "home.html")
 			return
 		}
 
@@ -37,7 +39,8 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case err == nil:
 		case errors.Is(err, ssession.ErrExpired) || errors.Is(err, ssession.ErrNotFound):
-			m.view.ExecuteTemplate(w, nil, "home.html")
+			pg := getIndexPage(m, nil)
+			m.view.ExecuteTemplate(w, pg, "home.html")
 			return
 		case err != nil:
 			lg.Err.Printf("IndexHandler: m.service.Session.GetByUuid: %v\n", err)
@@ -54,8 +57,16 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		pg := &view.Page{User: user}
+		pg := getIndexPage(m, user)
 		m.view.ExecuteTemplate(w, pg, "home.html")
 		return
 	}
+}
+
+func getIndexPage(m *MainHandler, user *models.User) *view.Page {
+	posts, err := m.service.Post.GetAll(0, 0)
+	if err != nil {
+		lg.Err.Printf("getIndexPage: m.service.Post.GetAll: %v\n", err)
+	}
+	return &view.Page{User: user, Posts: posts}
 }

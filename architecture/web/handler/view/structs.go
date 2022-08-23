@@ -4,9 +4,9 @@ import "forum/architecture/models"
 
 type Page struct {
 	User  *models.User
-	Users *[]models.User
+	Users []*models.User
 	Post  *models.Post
-	Posts *[]models.Post
+	Posts []*models.Post
 	// Comments           []models.Comment
 	Error   error // Error - Notification Error
 	Warn    error // Warn - Notification Warning

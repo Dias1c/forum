@@ -22,7 +22,7 @@ type Post struct {
 type IPostService interface {
 	Create(user *Post) (int64, error)
 	Update(user *Post) error
-	// GetPosts() ([]*Post, error)
+	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
 	DeleteByID(id int64) error
 }
@@ -30,6 +30,7 @@ type IPostService interface {
 type IPostRepo interface {
 	Create(user *Post) (int64, error)
 	Update(user *Post) error
+	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
 	DeleteByID(id int64) error
 }
