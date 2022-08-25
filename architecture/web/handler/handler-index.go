@@ -9,6 +9,7 @@ import (
 	"forum/architecture/web/handler/view"
 	"forum/internal/lg"
 
+	spostvote "forum/architecture/service/post_vote"
 	ssession "forum/architecture/service/session"
 )
 
@@ -72,13 +73,34 @@ func getIndexPage(m *MainHandler, user *models.User) *view.Page {
 		posts[i].WCategories, err = m.service.PostCategory.GetByPostID(posts[i].Id)
 		switch {
 		case err != nil:
-			lg.Err.Printf("getIndexPage: m.service.PostCategory.GetByPostID(postId: %v): %w", posts[i].Id, err)
+			lg.Err.Printf("getIndexPage: m.service.PostCategory.GetByPostID(postId: %v): %v", posts[i].Id, err)
 		}
 
 		posts[i].WUser, err = m.service.User.GetByID(posts[i].UserId)
 		switch {
 		case err != nil:
-			lg.Err.Printf("getIndexPage: m.service.User.GetByID(userId: %v): %w", posts[i].UserId, err)
+			lg.Err.Printf("getIndexPage: m.service.User.GetByID(userId: %v): %v", posts[i].UserId, err)
+		}
+
+		vUp, vDown, err := m.service.PostVote.GetByPostID(posts[i].Id)
+		switch {
+		case err != nil:
+			lg.Err.Printf("getIndexPage: m.service.PostVote.GetByPostID(id: %v): %v", posts[i].Id, err)
+		}
+		posts[i].WVoteUp = vUp
+		posts[i].WVoteDown = vDown
+
+		if user == nil {
+			continue
+		}
+
+		vUser, err := m.service.PostVote.GetPostUserVote(user.Id, posts[i].Id)
+		switch {
+		case err == nil:
+			posts[i].WUserVote = vUser.Vote
+		case errors.Is(err, spostvote.ErrNotFound):
+		case err != nil:
+			lg.Err.Printf("getIndexPage: m.service.PostVote.GetPostUserVote(userId: %v, postId: %v): %v", user.Id, posts[i].Id, err)
 		}
 	}
 	return &view.Page{User: user, Posts: posts}
