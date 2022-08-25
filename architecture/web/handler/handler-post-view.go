@@ -97,6 +97,13 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
+		post.WUser, err = m.service.User.GetByID(post.UserId)
+		switch {
+		case err == nil:
+		default:
+			lg.Err.Printf("PostViewHandler: m.service.User.GetByID(userId: %v): %v\n", post.UserId, err)
+		}
+
 		pg := &view.Page{User: user, Post: post}
 		m.view.ExecuteTemplate(w, pg, "post-view.html")
 		return
