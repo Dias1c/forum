@@ -70,6 +70,7 @@ func getIndexPage(m *MainHandler, user *models.User) *view.Page {
 		lg.Err.Printf("getIndexPage: m.service.Post.GetAll: %v\n", err)
 	}
 	for i := 0; i < len(posts); i++ {
+		// TODO: make it as another function
 		posts[i].WCategories, err = m.service.PostCategory.GetByPostID(posts[i].Id)
 		switch {
 		case err != nil:
