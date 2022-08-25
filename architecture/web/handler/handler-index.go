@@ -68,5 +68,18 @@ func getIndexPage(m *MainHandler, user *models.User) *view.Page {
 	if err != nil {
 		lg.Err.Printf("getIndexPage: m.service.Post.GetAll: %v\n", err)
 	}
+	for i := 0; i < len(posts); i++ {
+		posts[i].WCategories, err = m.service.PostCategory.GetByPostID(posts[i].Id)
+		switch {
+		case err != nil:
+			lg.Err.Printf("getIndexPage: m.service.PostCategory.GetByPostID(postId: %v): %w", posts[i].Id, err)
+		}
+
+		posts[i].WUser, err = m.service.User.GetByID(posts[i].UserId)
+		switch {
+		case err != nil:
+			lg.Err.Printf("getIndexPage: m.service.User.GetByID(userId: %v): %w", posts[i].UserId, err)
+		}
+	}
 	return &view.Page{User: user, Posts: posts}
 }

@@ -13,12 +13,7 @@
       </span>
 
       <div class="pull-right">
-        <div class="btn-group">
-          <span class="label label-default">C: {{ $Post.CreatedAt.Format "2006-01-02 15:04" }}</span>
-          {{ if eq $Post.CreatedAt $Post.UpdatedAt }}
-          <span class="label label-default">U: {{ $Post.UpdatedAt.Format "2006-01-02 15:04" }}</span>
-          {{ end }}
-        </div>
+
       </div>
     </div>
 
@@ -54,6 +49,23 @@
         {{ end }}
       </div>
       <div class="pull-right">
+        <div class="btn-group">
+
+
+          <span class="btn btn-sm btn-default">Author:
+            {{ if $Post.WUser }}
+            {{ $Post.WUser.Nickname }}
+            {{ else }}
+            Nickname
+            {{ end }}
+          </span>
+
+          <span class="btn btn-sm btn-default">C: {{ $Post.CreatedAt.Format "2006-01-02 15:04" }}</span>
+          {{ if ne $Post.CreatedAt $Post.UpdatedAt }}
+          <span class="btn btn-sm btn-default">U: {{ $Post.UpdatedAt.Format "2006-01-02 15:04" }}</span>
+          {{ end }}
+        </div>
+
         {{ if $Page.User }}
         {{ if eq $Page.User.Id $Post.UserId }}
         <a class="btn btn-primary btn-sm" href="/post/edit?id={{ $Post.Id }}">
@@ -61,6 +73,7 @@
         </a>
         {{ end }}
         {{ end }}
+
       </div>
     </div>
   </div>

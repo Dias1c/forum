@@ -56,6 +56,7 @@ func (m *MainHandler) PostVoteHandler(w http.ResponseWriter, r *http.Request) {
 		// TODO: Протестируй отправляя не существующий постАйди или ЮсерАйди
 		lg.Info.Printf("PostID: %d Vote: %d Err: %v\n", postId, int8(vote), err)
 
+		// TODO: Redirect to old page
 		http.Redirect(w, r, fmt.Sprintf("/post/get?id=%v", postId), http.StatusSeeOther)
 		return
 		// m.service.PostVote.GetByPostID(postId)
