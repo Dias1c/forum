@@ -113,7 +113,6 @@ func (m *MainHandler) SignInHandler(w http.ResponseWriter, r *http.Request) {
 		expiresAfterSeconds := time.Until(session.ExpiredAt).Seconds()
 		cookies.AddSessionCookie(w, session.Uuid, int(expiresAfterSeconds))
 
-		// TODO: Добавить в главном хендлере удаление этого куки
 		if cookie := cookies.GetRedirectCookie(w, r); cookie != nil {
 			cookies.RemoveRedirectCookie(w, r)
 			http.Redirect(w, r, cookie.Value, http.StatusFound)
