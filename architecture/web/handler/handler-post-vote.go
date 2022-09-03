@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"fmt"
+	"errors"
 	"forum/architecture/models"
+	spost_vote "forum/architecture/service/post_vote"
 	"forum/internal/lg"
 	"net/http"
 	"strconv"
@@ -48,19 +49,17 @@ func (m *MainHandler) PostVoteHandler(w http.ResponseWriter, r *http.Request) {
 		err = m.service.PostVote.Record(postVote)
 		switch {
 		case err == nil:
+		case errors.Is(err, spost_vote.ErrInvalidVote) || errors.Is(err, spost_vote.ErrNotFound):
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			return
 		case err != nil:
 			lg.Err.Printf("PostVoteHandler: m.service.PostVote.Record: %s", err)
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
-		// TODO: Протестируй отправляя не существующий постАйди или ЮсерАйди
-		lg.Info.Printf("PostID: %d Vote: %d Err: %v\n", postId, int8(vote), err)
 
-		// TODO: Redirect to old page
-		http.Redirect(w, r, fmt.Sprintf("/post/get?id=%v", postId), http.StatusSeeOther)
+		http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
 		return
-		// m.service.PostVote.GetByPostID(postId)
-		// m.service.PostVote
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		return

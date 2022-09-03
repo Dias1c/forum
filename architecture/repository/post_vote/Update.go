@@ -3,6 +3,7 @@ package post_vote
 import (
 	"fmt"
 	"forum/architecture/models"
+	"strings"
 )
 
 func (p *PostVoteRepo) Update(vote *models.PostVote) error {
@@ -16,6 +17,8 @@ RETURNING id`, vote.Vote, strUpdatedAt, vote.UserId, vote.PostId)
 	err := row.Scan(&vote.Id)
 	switch {
 	case err == nil:
+	case strings.HasPrefix(err.Error(), "FOREIGN KEY constraint failed"):
+		return ErrNotFound
 	case err != nil:
 		return fmt.Errorf("row.Scan: %w", err)
 	}

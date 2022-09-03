@@ -3,8 +3,8 @@ package post_vote
 import "errors"
 
 var (
-	ErrNotFound   = errors.New("no one user vote in post")
-	ErrVoteExists = errors.New("vote exists")
+	ErrNotFound = errors.New("not found")
+	ErrExists   = errors.New("vote exists")
 
 // ErrExistNickname       = errors.New("user with this nickname exists")
 // ErrExistEmail          = errors.New("user with this email exists")

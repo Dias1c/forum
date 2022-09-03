@@ -18,7 +18,9 @@ INSERT INTO posts_votes (vote, user_id, post_id, created_at, updated_at) VALUES
 	case err != nil:
 		switch {
 		case strings.HasPrefix(err.Error(), "UNIQUE constraint failed"):
-			return -1, ErrVoteExists
+			return -1, ErrExists
+		case strings.HasPrefix(err.Error(), "FOREIGN KEY constraint failed"):
+			return -1, ErrNotFound
 		}
 		return -1, fmt.Errorf("row.Scan: %w", err)
 	}
