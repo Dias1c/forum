@@ -70,19 +70,27 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 		switch {
 		case err == nil:
 		case errors.Is(err, scategory.ErrCategoryLimitForPost):
-			pg := &view.Page{Warn: fmt.Errorf("post %v created without categories, invalid categies count, category limit = %v", post.Id, models.MaxCategoryLimitForPost)}
-			// TODO: Redirect to another page
+			err = m.service.Post.DeleteByID(post.Id)
+			if err != nil {
+				lg.Err.Println("PostCreateHandler: m.service.Post.DeleteByID: %w", err)
+			}
+
+			pg := &view.Page{Warn: fmt.Errorf("post not created, invalid categies count, category limit = %v", models.MaxCategoryLimitForPost)}
+			w.WriteHeader(http.StatusBadRequest)
 			m.view.ExecuteTemplate(w, pg, "post-create.html")
 			return
 		default:
-			// TODO: Check for another error
+			err = m.service.Post.DeleteByID(post.Id)
+			if err != nil {
+				lg.Err.Println("PostCreateHandler: m.service.Post.DeleteByID: %w", err)
+			}
+
 			lg.Err.Printf("PostCreateHandler:  m.service.Category.AddToPostByNames: %s", err)
 			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later: %s", err)}
 			w.WriteHeader(http.StatusInternalServerError)
 			m.view.ExecuteTemplate(w, pg, "post-create.html")
 			return
 		}
-
 		// Create categories
 		http.Redirect(w, r, fmt.Sprintf("/post/get?id=%v", post.Id), http.StatusSeeOther)
 		return
