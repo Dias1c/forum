@@ -36,14 +36,12 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 - [x] post-delete
 - [~] post-edit-page
 - [~] post-page (likes, comments)
-- [ ] posts-page (likes, categories, menu)
 - [ ] comment-create 
 - [ ] comment-delete 
 - [ ] comment-edit 
 - [ ] comments (likes)
-- [ ] main-page 
-- [ ] categories
-- [ ] filters in main page
+- [ ] categories-page
+- [~] main-page (posts, posts-filters, users posts, posts-sort)
 - **FrontEnd** 
 - [ ] sign-up
 - [ ] sign-in
