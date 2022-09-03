@@ -3,12 +3,14 @@ package handler
 import (
 	"errors"
 	"fmt"
+	"forum/architecture/web/handler/cookies"
 	"forum/architecture/web/handler/view"
 	"forum/internal/lg"
 	"net/http"
 	"strconv"
 
 	spost "forum/architecture/service/post"
+	suser "forum/architecture/service/user"
 )
 
 // PostCreateHandler -
@@ -29,12 +31,24 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 		lg.Err.Println("PostEditHandler: r.Context().Value(\"UserId\") is nil")
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
-		m.view.ExecuteTemplate(w, pg, "post-create.html")
+		m.view.ExecuteTemplate(w, pg, "post-edit.html")
 		return
 	}
 
 	userId := iUserId.(int64)
-	user, _ := m.service.User.GetByID(userId)
+	user, err := m.service.User.GetByID(userId) // TODO: Проверь это
+	switch {
+	case err == nil:
+	case errors.Is(err, suser.ErrNotFound):
+		cookies.RemoveSessionCookie(w, r)
+		cookies.AddRedirectCookie(w, r.URL.Path)
+		http.Redirect(w, r, "/sign-in", http.StatusSeeOther)
+	case err != nil:
+		lg.Err.Printf("PostEditHandler: m.service.User.GetByID: %v\n", err)
+		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
+		w.WriteHeader(http.StatusInternalServerError)
+		m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
+	}
 
 	switch r.Method {
 	case http.MethodGet:
@@ -52,6 +66,12 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Post Not Found", http.StatusNotFound)
 			return
 		}
+
+		if post.UserId != user.Id {
+			http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
+			return
+		}
+
 		categories, err := m.service.PostCategory.GetByPostID(post.Id)
 		switch {
 		case err == nil:
