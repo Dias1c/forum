@@ -26,7 +26,7 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 
 	iUserId := r.Context().Value("UserId")
 	if iUserId == nil {
-		lg.Err.Println("PostCreateHandler: r.Context().Value(\"UserId\") is nil")
+		lg.Err.Println("PostEditHandler: r.Context().Value(\"UserId\") is nil")
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "post-create.html")
