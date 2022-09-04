@@ -47,6 +47,7 @@ func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
 	mux.Handle("/post/delete", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostDeleteHandler)))
 
 	mux.Handle("/post/comment/create", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostCommentCreateHandler)))
+	mux.Handle("/post/comment/delete", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostCommentDeleteHandler)))
 
 	return mux
 }
