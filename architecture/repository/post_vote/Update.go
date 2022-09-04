@@ -2,8 +2,9 @@ package post_vote
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
+
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (p *PostVoteRepo) Update(vote *models.PostVote) error {

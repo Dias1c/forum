@@ -2,16 +2,17 @@ package handler
 
 import (
 	"errors"
-	"forum/architecture/models"
-	"forum/architecture/service/post_vote"
-	"forum/architecture/web/handler/cookies"
-	"forum/architecture/web/handler/view"
-	"forum/internal/lg"
 	"net/http"
 	"strconv"
 
-	spost "forum/architecture/service/post"
-	ssession "forum/architecture/service/session"
+	"github.com/Dias1c/forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/service/post_vote"
+	"github.com/Dias1c/forum/architecture/web/handler/cookies"
+	"github.com/Dias1c/forum/architecture/web/handler/view"
+	"github.com/Dias1c/forum/internal/lg"
+
+	spost "github.com/Dias1c/forum/architecture/service/post"
+	ssession "github.com/Dias1c/forum/architecture/service/session"
 )
 
 // PostCreateHandler -

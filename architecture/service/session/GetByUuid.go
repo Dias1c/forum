@@ -3,9 +3,10 @@ package session
 import (
 	"errors"
 	"fmt"
-	"forum/architecture/models"
-	rsession "forum/architecture/repository/session"
 	"time"
+
+	"github.com/Dias1c/forum/architecture/models"
+	rsession "github.com/Dias1c/forum/architecture/repository/session"
 )
 
 func (s *SessionService) GetByUuid(uuid string) (*models.Session, error) {

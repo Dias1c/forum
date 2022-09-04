@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"forum/architecture/web/handler/cookies"
+	"github.com/Dias1c/forum/architecture/web/handler/cookies"
 )
 
 // SignOutHandler -

@@ -2,10 +2,11 @@ package post
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
 
-	model "forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
+
+	model "github.com/Dias1c/forum/architecture/models"
 )
 
 func (p *PostRepo) Create(post *model.Post) (int64, error) {

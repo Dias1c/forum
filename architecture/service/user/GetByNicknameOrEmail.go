@@ -3,9 +3,10 @@ package user
 import (
 	"errors"
 	"fmt"
-	"forum/architecture/models"
-	ruser "forum/architecture/repository/user"
 	"strings"
+
+	"github.com/Dias1c/forum/architecture/models"
+	ruser "github.com/Dias1c/forum/architecture/repository/user"
 )
 
 func (u *UserService) GetByNicknameOrEmail(field string) (*models.User, error) {

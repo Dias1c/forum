@@ -2,11 +2,12 @@ package handler
 
 import (
 	"errors"
-	"forum/architecture/models"
-	spost_vote "forum/architecture/service/post_vote"
-	"forum/internal/lg"
 	"net/http"
 	"strconv"
+
+	"github.com/Dias1c/forum/architecture/models"
+	spost_vote "github.com/Dias1c/forum/architecture/service/post_vote"
+	"github.com/Dias1c/forum/internal/lg"
 )
 
 // PostVoteHandler -

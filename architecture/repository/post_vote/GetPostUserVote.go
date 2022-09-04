@@ -2,9 +2,10 @@ package post_vote
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
 	"time"
+
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (p *PostVoteRepo) GetPostUserVote(userId, postId int64) (*models.PostVote, error) {

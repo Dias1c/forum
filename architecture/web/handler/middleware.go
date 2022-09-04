@@ -5,10 +5,10 @@ import (
 	"errors"
 	"net/http"
 
-	"forum/architecture/web/handler/cookies"
-	"forum/internal/lg"
+	"github.com/Dias1c/forum/architecture/web/handler/cookies"
+	"github.com/Dias1c/forum/internal/lg"
 
-	ssession "forum/architecture/service/session"
+	ssession "github.com/Dias1c/forum/architecture/service/session"
 )
 
 func (m *MainHandler) MiddlewareMethodChecker(next http.Handler, allowedMthods map[string]bool) http.Handler {

@@ -2,9 +2,10 @@ package post_category
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
 	"time"
+
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (c *PostCategoryRepo) GetByName(name string) (*models.PostCategory, error) {

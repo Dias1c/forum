@@ -3,16 +3,17 @@ package handler
 import (
 	"errors"
 	"fmt"
-	"forum/architecture/models"
-	"forum/architecture/web/handler/cookies"
-	"forum/architecture/web/handler/view"
-	"forum/internal/lg"
 	"net/http"
 	"strings"
 
-	spost "forum/architecture/service/post"
-	scategory "forum/architecture/service/post_category"
-	suser "forum/architecture/service/user"
+	"github.com/Dias1c/forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/web/handler/cookies"
+	"github.com/Dias1c/forum/architecture/web/handler/view"
+	"github.com/Dias1c/forum/internal/lg"
+
+	spost "github.com/Dias1c/forum/architecture/service/post"
+	scategory "github.com/Dias1c/forum/architecture/service/post_category"
+	suser "github.com/Dias1c/forum/architecture/service/user"
 )
 
 // PostCreateHandler -

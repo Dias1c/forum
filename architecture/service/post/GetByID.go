@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	model "forum/architecture/models"
-	rpost "forum/architecture/repository/post"
+	model "github.com/Dias1c/forum/architecture/models"
+	rpost "github.com/Dias1c/forum/architecture/repository/post"
 )
 
 func (p *PostService) GetByID(id int64) (*model.Post, error) {

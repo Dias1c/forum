@@ -2,8 +2,9 @@ package handler
 
 import (
 	"fmt"
-	"forum/internal/lg"
 	"net/http"
+
+	"github.com/Dias1c/forum/internal/lg"
 )
 
 // DebugHandler - Handle for Testing

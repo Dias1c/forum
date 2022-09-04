@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"forum/architecture/models"
-	model "forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
+	model "github.com/Dias1c/forum/architecture/models"
 )
 
 func (u *UserRepo) GetByID(id int64) (*model.User, error) {

@@ -1,4 +1,4 @@
-module forum
+module github.com/Dias1c/forum
 
 go 1.17
 

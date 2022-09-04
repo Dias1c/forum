@@ -1,7 +1,7 @@
 package post_vote
 
 import (
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 type PostVoteService struct {

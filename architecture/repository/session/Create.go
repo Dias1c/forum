@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (s *SessionRepo) Create(session *models.Session) (int64, error) {

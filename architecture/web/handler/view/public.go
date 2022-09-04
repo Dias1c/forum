@@ -1,8 +1,9 @@
 package view
 
 import (
-	"forum/internal/lg"
 	"net/http"
+
+	"github.com/Dias1c/forum/internal/lg"
 )
 
 func NewView(templatesDir string) *View {

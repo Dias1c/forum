@@ -2,8 +2,9 @@ package post_category
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
+
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (c *PostCategoryRepo) Create(category *models.PostCategory) (int64, error) {

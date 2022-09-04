@@ -1,13 +1,13 @@
 package main
 
 import (
-	"forum/architecture/repository"
-	"forum/architecture/service"
-	"forum/architecture/web/handler"
-	"forum/architecture/web/server"
-	"forum/internal/cenv"
-	"forum/internal/database"
-	"forum/internal/lg"
+	"github.com/Dias1c/forum/architecture/repository"
+	"github.com/Dias1c/forum/architecture/service"
+	"github.com/Dias1c/forum/architecture/web/handler"
+	"github.com/Dias1c/forum/architecture/web/server"
+	"github.com/Dias1c/forum/internal/cenv"
+	"github.com/Dias1c/forum/internal/database"
+	"github.com/Dias1c/forum/internal/lg"
 
 	_ "github.com/mattn/go-sqlite3"
 )

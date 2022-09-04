@@ -1,9 +1,10 @@
 package handler
 
 import (
-	"forum/architecture/service"
-	"forum/architecture/web/handler/view"
 	"net/http"
+
+	"github.com/Dias1c/forum/architecture/service"
+	"github.com/Dias1c/forum/architecture/web/handler/view"
 )
 
 type Configs struct {

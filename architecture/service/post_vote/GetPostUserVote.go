@@ -3,8 +3,9 @@ package post_vote
 import (
 	"errors"
 	"fmt"
-	"forum/architecture/models"
-	"forum/architecture/repository/post_vote"
+
+	"github.com/Dias1c/forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/repository/post_vote"
 )
 
 func (p *PostVoteService) GetPostUserVote(userId, postId int64) (*models.PostVote, error) {

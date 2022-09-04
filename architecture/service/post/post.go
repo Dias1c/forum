@@ -1,6 +1,6 @@
 package post
 
-import "forum/architecture/models"
+import "github.com/Dias1c/forum/architecture/models"
 
 type PostService struct {
 	repo models.IPostRepo

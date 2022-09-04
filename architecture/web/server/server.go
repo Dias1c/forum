@@ -2,9 +2,10 @@ package server
 
 import (
 	"fmt"
-	"forum/internal/lg"
 	"net/http"
 	"time"
+
+	"github.com/Dias1c/forum/internal/lg"
 )
 
 type Configs struct {

@@ -1,13 +1,13 @@
 package service
 
 import (
-	"forum/architecture/models"
-	"forum/architecture/repository"
-	"forum/architecture/service/post"
-	"forum/architecture/service/post_category"
-	"forum/architecture/service/post_vote"
-	"forum/architecture/service/session"
-	"forum/architecture/service/user"
+	"github.com/Dias1c/forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/repository"
+	"github.com/Dias1c/forum/architecture/service/post"
+	"github.com/Dias1c/forum/architecture/service/post_category"
+	"github.com/Dias1c/forum/architecture/service/post_vote"
+	"github.com/Dias1c/forum/architecture/service/session"
+	"github.com/Dias1c/forum/architecture/service/user"
 )
 
 type Service struct {

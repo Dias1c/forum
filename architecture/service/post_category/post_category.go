@@ -1,7 +1,7 @@
 package post_category
 
 import (
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 type PostCategoryService struct {

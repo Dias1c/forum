@@ -3,7 +3,7 @@ package session
 import (
 	"fmt"
 
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (s *SessionRepo) UpdateByUserId(userId int64, session *models.Session) error {

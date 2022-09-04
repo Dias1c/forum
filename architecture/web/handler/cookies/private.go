@@ -2,8 +2,9 @@ package cookies
 
 import (
 	"errors"
-	"forum/internal/lg"
 	"net/http"
+
+	"github.com/Dias1c/forum/internal/lg"
 )
 
 // getCookieByName - returns cookie

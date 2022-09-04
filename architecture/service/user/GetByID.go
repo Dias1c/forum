@@ -3,8 +3,9 @@ package user
 import (
 	"errors"
 	"fmt"
-	model "forum/architecture/models"
-	ruser "forum/architecture/repository/user"
+
+	model "github.com/Dias1c/forum/architecture/models"
+	ruser "github.com/Dias1c/forum/architecture/repository/user"
 )
 
 func (u *UserService) GetByID(id int64) (*model.User, error) {

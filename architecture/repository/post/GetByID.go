@@ -2,11 +2,12 @@ package post
 
 import (
 	"fmt"
-	"forum/architecture/models"
 	"strings"
 	"time"
 
-	model "forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
+
+	model "github.com/Dias1c/forum/architecture/models"
 )
 
 func (p *PostRepo) GetByID(id int64) (*model.Post, error) {

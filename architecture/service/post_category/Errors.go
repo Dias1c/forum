@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 var (

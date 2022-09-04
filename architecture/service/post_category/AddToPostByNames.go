@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 
-	rcategory "forum/architecture/repository/post_category"
+	rcategory "github.com/Dias1c/forum/architecture/repository/post_category"
 )
 
 func (c *PostCategoryService) AddToPostByNames(names []string, postId int64) error {

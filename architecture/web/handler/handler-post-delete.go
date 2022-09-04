@@ -3,14 +3,15 @@ package handler
 import (
 	"errors"
 	"fmt"
-	"forum/architecture/web/handler/cookies"
-	"forum/architecture/web/handler/view"
-	"forum/internal/lg"
 	"net/http"
 	"strconv"
 
-	spost "forum/architecture/service/post"
-	suser "forum/architecture/service/user"
+	"github.com/Dias1c/forum/architecture/web/handler/cookies"
+	"github.com/Dias1c/forum/architecture/web/handler/view"
+	"github.com/Dias1c/forum/internal/lg"
+
+	spost "github.com/Dias1c/forum/architecture/service/post"
+	suser "github.com/Dias1c/forum/architecture/service/user"
 )
 
 // PostDeleteHandler -

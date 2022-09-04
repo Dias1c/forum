@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (s *SessionRepo) GetByUuid(uuid string) (*models.Session, error) {

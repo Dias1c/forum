@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 
-	rsession "forum/architecture/repository/session"
+	rsession "github.com/Dias1c/forum/architecture/repository/session"
 
 	uuid "github.com/satori/go.uuid"
 )

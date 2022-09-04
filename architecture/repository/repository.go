@@ -3,12 +3,12 @@ package repository
 import (
 	"database/sql"
 
-	"forum/architecture/models"
-	"forum/architecture/repository/post"
-	"forum/architecture/repository/post_category"
-	"forum/architecture/repository/post_vote"
-	"forum/architecture/repository/session"
-	"forum/architecture/repository/user"
+	"github.com/Dias1c/forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/repository/post"
+	"github.com/Dias1c/forum/architecture/repository/post_category"
+	"github.com/Dias1c/forum/architecture/repository/post_vote"
+	"github.com/Dias1c/forum/architecture/repository/session"
+	"github.com/Dias1c/forum/architecture/repository/user"
 )
 
 type Repository struct {

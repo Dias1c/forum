@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	model "forum/architecture/models"
-	rpost "forum/architecture/repository/post"
+	model "github.com/Dias1c/forum/architecture/models"
+	rpost "github.com/Dias1c/forum/architecture/repository/post"
 )
 
 func (p *PostService) Create(post *model.Post) (int64, error) {

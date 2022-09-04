@@ -2,7 +2,8 @@ package post_category
 
 import (
 	"fmt"
-	"forum/architecture/models"
+
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (c *PostCategoryService) GetByPostID(postId int64) ([]*models.PostCategory, error) {

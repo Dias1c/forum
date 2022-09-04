@@ -3,7 +3,7 @@ package post
 import (
 	"fmt"
 
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (p *PostRepo) Update(post *models.Post) error {

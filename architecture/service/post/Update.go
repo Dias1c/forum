@@ -2,8 +2,9 @@ package post
 
 import (
 	"fmt"
-	model "forum/architecture/models"
 	"time"
+
+	model "github.com/Dias1c/forum/architecture/models"
 )
 
 func (p *PostService) Update(post *model.Post) error {

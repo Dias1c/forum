@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (u *UserRepo) GetByNickname(nickname string) (*models.User, error) {

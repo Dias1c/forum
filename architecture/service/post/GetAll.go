@@ -2,7 +2,8 @@ package post
 
 import (
 	"fmt"
-	"forum/architecture/models"
+
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (p *PostService) GetAll(offset, limit int64) ([]*models.Post, error) {

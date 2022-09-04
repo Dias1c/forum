@@ -3,9 +3,10 @@ package user
 import (
 	"errors"
 	"fmt"
-	"forum/architecture/models"
-	ruser "forum/architecture/repository/user"
 	"time"
+
+	"github.com/Dias1c/forum/architecture/models"
+	ruser "github.com/Dias1c/forum/architecture/repository/user"
 )
 
 func (u *UserService) Create(user *models.User) (int64, error) {

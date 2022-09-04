@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"forum/architecture/models"
-	"forum/architecture/web/handler/cookies"
-	"forum/architecture/web/handler/view"
-	"forum/internal/lg"
+	"github.com/Dias1c/forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/web/handler/cookies"
+	"github.com/Dias1c/forum/architecture/web/handler/view"
+	"github.com/Dias1c/forum/internal/lg"
 
-	ssession "forum/architecture/service/session"
-	suser "forum/architecture/service/user"
+	ssession "github.com/Dias1c/forum/architecture/service/session"
+	suser "github.com/Dias1c/forum/architecture/service/user"
 )
 
 // SignUpHandler -

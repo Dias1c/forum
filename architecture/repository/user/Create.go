@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/models"
 )
 
 func (u *UserRepo) Create(user *models.User) (int64, error) {

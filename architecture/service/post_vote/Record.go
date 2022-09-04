@@ -3,9 +3,10 @@ package post_vote
 import (
 	"errors"
 	"fmt"
-	"forum/architecture/models"
-	"forum/architecture/repository/post_vote"
 	"time"
+
+	"github.com/Dias1c/forum/architecture/models"
+	"github.com/Dias1c/forum/architecture/repository/post_vote"
 )
 
 func (p *PostVoteService) Record(vote *models.PostVote) error {
