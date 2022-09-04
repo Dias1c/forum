@@ -35,7 +35,7 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 - [x] post-create
 - [x] post-delete
 - [x] post-edit-page
-- [~] post-page (likes, comments)
+- [x] post-page (likes, comments)
 - [x] comment-create 
 - [x] comment-delete
 - [ ] comments (likes)
