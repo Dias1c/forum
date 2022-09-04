@@ -15,11 +15,13 @@ type IPostCategoryRepo interface {
 	GetByID(id int64) (*PostCategory, error)
 	GetByName(name string) (*PostCategory, error)
 	GetByPostID(postId int64) ([]*PostCategory, error)
+	DeleteByPostID(postId int64) error
 	DeleteByID(id int64) error
 }
 
 type IPostCategoryService interface {
 	AddToPostByNames(names []string, postId int64) error
 	GetByPostID(postId int64) ([]*PostCategory, error)
+	DeleteByPostID(postId int64) error
 	DeleteFromPost(id int64) error
 }
