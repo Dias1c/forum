@@ -8,3 +8,10 @@ func (p *Post) ValidateTitle() error {
 	}
 	return nil
 }
+
+func (p *Post) ValidateContent() error {
+	if lng := len(p.Content); lng < 1 {
+		return fmt.Errorf("content: invalid lenght (%d)", lng)
+	}
+	return nil
+}
