@@ -34,11 +34,10 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 - [x] middleware
 - [x] post-create
 - [x] post-delete
-- [~] post-edit-page
+- [x] post-edit-page
 - [~] post-page (likes, comments)
 - [ ] comment-create 
-- [ ] comment-delete 
-- [ ] comment-edit 
+- [ ] comment-delete
 - [ ] comments (likes)
 - [ ] categories-page
 - [~] main-page (posts, posts-filters, users posts, posts-sort)
