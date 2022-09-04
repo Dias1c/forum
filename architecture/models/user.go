@@ -6,11 +6,11 @@ import (
 
 // User -
 type User struct {
-	Id          int64
-	Nickname    string
-	Email       string
-	Password    string
-	CreatedTime time.Time
+	Id        int64
+	Nickname  string
+	Email     string
+	Password  string
+	CreatedAt time.Time
 }
 
 type IUserService interface {

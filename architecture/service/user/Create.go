@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"forum/architecture/models"
 	ruser "forum/architecture/repository/user"
+	"time"
 )
 
 func (u *UserService) Create(user *models.User) (int64, error) {
@@ -19,7 +20,9 @@ func (u *UserService) Create(user *models.User) (int64, error) {
 		return -1, fmt.Errorf("user.HashPassword: %w", err)
 	}
 
+	user.CreatedAt = time.Now()
 	userId, err := u.repo.Create(user)
+
 	switch {
 	case err == nil:
 		return userId, nil
@@ -27,6 +30,10 @@ func (u *UserService) Create(user *models.User) (int64, error) {
 		return -1, ErrExistEmail
 	case errors.Is(err, ruser.ErrExistNickname):
 		return -1, ErrExistNickname
+	case errors.Is(err, ruser.ErrWrongLengthEmail):
+		return -1, ErrWrongLengthEmail
+	case errors.Is(err, ruser.ErrWrongLengthNickname):
+		return -1, ErrWrongLengthNickname
 	}
 	return -1, fmt.Errorf("u.repo.Create: %w", err)
 }

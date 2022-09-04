@@ -7,8 +7,8 @@ import (
 )
 
 type Configs struct {
-	TemplatesDir   string `templates`
-	StaticFilesDir string `static_files`
+	TemplatesDir   string `cenv:"templates"`
+	StaticFilesDir string `cenv:"static_files"`
 }
 
 type MainHandler struct {
@@ -37,5 +37,14 @@ func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
 	mux.HandleFunc("/", m.IndexHandler)
 	mux.HandleFunc("/signup", m.SignUpHandler)
 	mux.HandleFunc("/signin", m.SignInHandler)
+	mux.HandleFunc("/signout", m.SignOutHandler)
+
+	// mux.HandleFunc("/post/get", m.PostGet)
+	mux.Handle("/post/get", http.HandlerFunc(m.PostViewHandler))
+	mux.Handle("/post/create", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostCreateHandler)))
+	mux.Handle("/post/edit", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostEditHandler)))
+	mux.Handle("/post/vote", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostVoteHandler)))
+	mux.Handle("/post/delete", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostDeleteHandler)))
+
 	return mux
 }

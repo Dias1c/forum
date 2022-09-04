@@ -1,4 +1,4 @@
-package envfiller
+package cenv
 
 import "os"
 

@@ -1,6 +1,8 @@
 package session
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type SessionRepo struct {
 	db *sql.DB
