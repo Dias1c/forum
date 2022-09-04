@@ -3,9 +3,11 @@ package session
 import (
 	"errors"
 	"fmt"
-	"forum/architecture/models"
-	rsession "forum/architecture/repository/session"
 	"time"
+
+	"forum/architecture/models"
+
+	rsession "forum/architecture/repository/session"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -15,7 +17,7 @@ func (s *SessionService) Record(userId int64) (*models.Session, error) {
 	session := &models.Session{
 		Uuid:      uid.String(),
 		UserId:    userId,
-		ExpiredAt: time.Now().Add(time.Minute * 15),
+		ExpiredAt: time.Now().Add(models.SessionExpiredAfter),
 	}
 
 	_, err := s.repo.Create(session)

@@ -31,15 +31,16 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 - **BackEnd**
 - [x] sign-up
 - [x] sign-in
-- [?] middleware
-- [ ] post-create-page
-- [ ] post-page
-- [ ] posts-page
-- [ ] comment-create
-- [ ] comments
-- [ ] main-page
-- [ ] categories
-- [ ] filters in main page
+- [x] middleware
+- [x] post-create
+- [x] post-delete
+- [x] post-edit-page
+- [~] post-page (likes, comments)
+- [ ] comment-create 
+- [ ] comment-delete
+- [ ] comments (likes)
+- [ ] categories-page
+- [~] main-page (posts, posts-filters, users posts, posts-sort)
 - **FrontEnd** 
 - [ ] sign-up
 - [ ] sign-in

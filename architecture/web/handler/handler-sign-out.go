@@ -6,14 +6,14 @@ import (
 	"forum/architecture/web/handler/cookies"
 )
 
-// LogInHandler -
-func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
-	debugLogHandler("IndexHandler", r)
-	cookies.RemoveRedirectCookie(w, r)
+// SignOutHandler -
+func (m *MainHandler) SignOutHandler(w http.ResponseWriter, r *http.Request) {
+	debugLogHandler("SignOutHandler", r)
 
 	switch r.Method {
 	case http.MethodGet:
-		m.view.ExecuteTemplate(w, nil, "home.html")
+		cookies.RemoveSessionCookie(w, r)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 	}

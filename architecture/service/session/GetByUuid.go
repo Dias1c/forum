@@ -1,7 +1,25 @@
 package session
 
-import "forum/architecture/models"
+import (
+	"errors"
+	"fmt"
+	"forum/architecture/models"
+	rsession "forum/architecture/repository/session"
+	"time"
+)
 
 func (s *SessionService) GetByUuid(uuid string) (*models.Session, error) {
-	return nil, nil
+	session, err := s.repo.GetByUuid(uuid)
+	switch {
+	case err == nil:
+		expiredInSec := time.Until(session.ExpiredAt).Seconds()
+		if expiredInSec <= 0 {
+			return nil, ErrExpired
+		}
+		return session, nil
+	case errors.Is(err, rsession.ErrNotFound):
+		return nil, ErrNotFound
+	default:
+		return nil, fmt.Errorf("s.repo.GetByUuid: %w", err)
+	}
 }
