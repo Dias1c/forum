@@ -37,7 +37,7 @@ func (m *MainHandler) SignInHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", http.StatusFound)
 			return
 		case errors.Is(err, ssession.ErrExpired) || errors.Is(err, ssession.ErrNotFound):
-			cookies.AddRedirectCookie(w, r.URL.Path)
+			cookies.AddRedirectCookie(w, r.RequestURI)
 			cookies.RemoveSessionCookie(w, r)
 		case err != nil:
 			lg.Err.Printf("SignInHandler: m.service.Session.GetByUuid: %v\n", err)

@@ -26,10 +26,9 @@ func (m *MainHandler) MiddlewareMethodChecker(next http.Handler, allowedMthods m
 func (m *MainHandler) MiddlewareSessionChecker(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		debugLogHandler("MiddlewareSessionChecker", r)
-
 		cookie := cookies.GetSessionCookie(w, r)
 		if cookie == nil {
-			cookies.AddRedirectCookie(w, r.URL.Path)
+			cookies.AddRedirectCookie(w, r.RequestURI)
 			http.Redirect(w, r, "/signin", http.StatusSeeOther)
 			return
 		}
@@ -38,7 +37,7 @@ func (m *MainHandler) MiddlewareSessionChecker(next http.Handler) http.Handler {
 		switch {
 		case err == nil:
 		case errors.Is(err, ssession.ErrExpired) || errors.Is(err, ssession.ErrNotFound):
-			cookies.AddRedirectCookie(w, r.URL.Path)
+			cookies.AddRedirectCookie(w, r.RequestURI)
 			cookies.RemoveSessionCookie(w, r)
 			http.Redirect(w, r, "/signin", http.StatusSeeOther)
 			return

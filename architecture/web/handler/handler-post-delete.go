@@ -40,7 +40,7 @@ func (m *MainHandler) PostDeleteHandler(w http.ResponseWriter, r *http.Request) 
 	case err == nil:
 	case errors.Is(err, suser.ErrNotFound):
 		cookies.RemoveSessionCookie(w, r)
-		cookies.AddRedirectCookie(w, r.URL.Path)
+		cookies.AddRedirectCookie(w, r.RequestURI)
 		http.Redirect(w, r, "/sign-in", http.StatusSeeOther)
 	case err != nil:
 		lg.Err.Printf("PostDeleteHandler: m.service.User.GetByID: %v\n", err)
