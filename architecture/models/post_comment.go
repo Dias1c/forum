@@ -18,7 +18,7 @@ type PostComment struct {
 type IPostCommentRepo interface {
 	Create(comment *PostComment) (int64, error)
 	// Update(comment *PostComment) error
-	GetByPostID(postId, offset, limit int64) ([]*PostComment, error)
+	GetAllByPostID(postId, offset, limit int64) ([]*PostComment, error)
 	GetByID(id int64) (*PostComment, error)
 	DeleteByID(id int64) error
 }
@@ -26,7 +26,7 @@ type IPostCommentRepo interface {
 type IPostCommentService interface {
 	Create(comment *PostComment) (int64, error)
 	// Update(comment *PostComment) error
-	GetByPostID(postId, offset, limit int64) ([]*PostComment, error)
+	GetAllByPostID(postId, offset, limit int64) ([]*PostComment, error)
 	GetByID(id int64) (*PostComment, error)
 	DeleteByID(id int64) error
 }
