@@ -17,7 +17,7 @@ type Post struct {
 	WVoteUp     int64 // Like
 	WVoteDown   int64 // Dislike
 	WCategories []*PostCategory
-	WComments   []*Comment
+	WComments   []*PostComment
 }
 
 type IPostService interface {
