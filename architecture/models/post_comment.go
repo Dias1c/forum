@@ -14,3 +14,19 @@ type PostComment struct {
 	WVoteUp   int64 // Like
 	WVoteDown int64 // Dislike
 }
+
+type IPostCommentRepo interface {
+	Create(comment *PostComment) (int64, error)
+	// Update(comment *PostComment) error
+	GetByPostID(postId, offset, limit int64) ([]*PostComment, error)
+	GetByID(id int64) (*PostComment, error)
+	DeleteByID(id int64) error
+}
+
+type IPostCommentService interface {
+	Create(comment *PostComment) (int64, error)
+	// Update(comment *PostComment) error
+	GetByPostID(postId, offset, limit int64) ([]*PostComment, error)
+	GetByID(id int64) (*PostComment, error)
+	DeleteByID(id int64) error
+}
