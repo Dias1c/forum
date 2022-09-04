@@ -1,4 +1,4 @@
-{{ define "main" }}
+{{ define "block" }}
 
 {{ $Page := . }}
 {{ $Post := .Post }}
@@ -80,5 +80,84 @@
     </div>
   </div>
 </div>
+
+<form role="form" action="/post/comment/create" method="POST">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <h5 style="margin: 0 0 10px 0; padding: 0; color: #888;"><b>New Comment</b></h5>
+      <textarea class="form-control"
+        style="max-width: 100%; min-width: 100%; min-height: 50px; height: 60px; max-height: 300px;" name="content"
+        id="body" placeholder="Write your comment here" rows="3" required></textarea>
+      <input type="hidden" name="post_id" value="{{ $Post.Id }}">
+    </div>
+
+    <div class="panel-footer">
+      <button class="btn btn-primary" type="submit">Create</button>
+    </div>
+  </div>
+</form>
+
+{{ if $Post.WComments }}
+<h5 style="margin: 0 0 10px 0; padding: 0; color: #888;"><b>Comments</b></h5>
+{{ end }}
+{{ range $Comment := $Post.WComments }}
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <pre>{{ $Comment.Content }}</pre>
+  </div>
+  <div class="panel-footer">
+    <div class="btn-group">
+      {{ if eq $Comment.WUserVote 1 }}
+      <a type="button" class="btn btn-primary btn-sm" href="/post/comment/vote?post_id={{ $Comment.Id }}&vote=0">
+        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Comment.WVoteUp }}
+      </a>
+      {{ else }}
+      <a type="button" class="btn btn-default btn-sm" href="/post/comment/vote?post_id={{ $Comment.Id }}&vote=1">
+        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Comment.WVoteUp }}
+      </a>
+      {{ end }}
+      {{ if eq $Comment.WUserVote -1 }}
+      <a type="button" class="btn btn-primary btn-sm" href="/post/comment/vote?post_id={{ $Comment.Id }}&vote=0">
+        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Comment.WVoteDown }}
+      </a>
+      {{ else }}
+      <a type="button" class="btn btn-default btn-sm" href="/post/comment/vote?post_id={{ $Comment.Id }}&vote=-1">
+        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Comment.WVoteDown }}
+      </a>
+      {{ end }}
+    </div>
+    <div class="pull-right">
+      <div class="btn-group">
+        <span class="btn btn-sm btn-default">Author:
+          {{ if $Comment.WUser }}
+          {{ $Comment.WUser.Nickname }}
+          {{ else }}
+          ?
+          {{ end }}
+        </span>
+
+        <span class="btn btn-sm btn-default">C: {{ $Comment.CreatedAt.Format "2006-01-02 15:04" }}</span>
+      </div>
+
+      {{ if $Comment.User }}
+      {{ if eq $Page.User.Id $Comment.UserId }}
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <span class="glyphicon glyphicon-option-vertical"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="/post/comment/delete?id={{ $Comment.Id }}">Delete</a></li>
+        </ul>
+      </div>
+      {{ end }}
+      {{ end }}
+
+    </div>
+  </div>
+</div>
+
+{{ end }}
 
 {{ end }}

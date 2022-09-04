@@ -1,4 +1,4 @@
-{{define "main"}}
+{{define "block"}}
 {{range .Posts}}
 {{if and (eq .AuthID $.User.ID) (eq .Sel.IsLike false) (eq .Sel.IsDislike false)}}
 <div class="panel panel-default">
