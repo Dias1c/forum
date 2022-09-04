@@ -10,14 +10,23 @@ import (
 )
 
 func (p *PostService) Create(post *model.Post) (int64, error) {
+	if post.ValidateTitle() != nil {
+		return -1, ErrInvalidTitleLength
+	} else if post.ValidateContent() != nil {
+		return -1, ErrInvalidContentLength
+	}
+
 	post.CreatedAt = time.Now()
 	post.UpdatedAt = post.CreatedAt
+
 	postId, err := p.repo.Create(post)
 	switch {
 	case err == nil:
-		return postId, nil
 	case errors.Is(err, rpost.ErrInvalidTitleLength):
 		return -1, ErrInvalidTitleLength
+	case err != nil:
+		return -1, fmt.Errorf("p.repo.Create: %w", err)
 	}
-	return -1, fmt.Errorf("p.repo.Create: %w", err)
+	return postId, nil
+
 }
