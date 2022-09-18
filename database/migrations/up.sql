@@ -75,6 +75,8 @@ CREATE TABLE IF NOT EXISTS posts_comments_votes (
     user_id INTEGER NOT NULL,
     comment_id INTEGER NOT NULL,
     created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    UNIQUE (user_id, comment_id),
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(comment_id) REFERENCES posts_comments(id) ON DELETE CASCADE
 );
