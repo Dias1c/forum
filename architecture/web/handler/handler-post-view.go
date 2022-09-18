@@ -105,6 +105,33 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 			lg.Err.Printf("PostViewHandler: m.service.User.GetByID(userId: %v): %v\n", post.UserId, err)
 		}
 
+		post.WComments, err = m.service.PostComment.GetAllByPostID(post.Id, 0, 0)
+		switch {
+		case err == nil:
+			for _, comment := range post.WComments {
+				comment.WUser, err = m.service.User.GetByID(comment.UserId)
+				if err != nil {
+					lg.Err.Printf("PostViewHandler: m.service.User.GetByID: %w", err)
+				}
+			}
+		case err != nil:
+			lg.Err.Printf("PostViewHandler: m.service.PostComment.GetAllByPostID: %v\n", err)
+		}
+
+		for _, comment := range post.WComments {
+			comment.WVoteUp, comment.WVoteDown, err = m.service.PostCommentVote.GetByCommentID(comment.Id)
+			if err != nil {
+				lg.Err.Printf("PostViewHandler: m.service.PostCommentVote.GetByCommentID(commentId: %v): %v\n", comment.Id, err)
+			}
+			vt, err := m.service.PostCommentVote.GetCommentUserVote(user.Id, comment.Id)
+			switch {
+			case err == nil:
+				comment.WUserVote = vt.Vote
+			case err != nil:
+				lg.Err.Printf("PostViewHandler: m.service.PostCommentVote.GetCommentUserVote: %v\n", err)
+			}
+		}
+
 		pg := &view.Page{User: user, Post: post}
 		m.view.ExecuteTemplate(w, pg, "post-view.html")
 		return

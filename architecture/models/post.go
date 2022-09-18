@@ -17,20 +17,20 @@ type Post struct {
 	WVoteUp     int64 // Like
 	WVoteDown   int64 // Dislike
 	WCategories []*PostCategory
-	WComments   []*Comment
+	WComments   []*PostComment
 }
 
 type IPostService interface {
-	Create(user *Post) (int64, error)
-	Update(user *Post) error
+	Create(post *Post) (int64, error)
+	Update(post *Post) error
 	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
 	DeleteByID(id int64) error
 }
 
 type IPostRepo interface {
-	Create(user *Post) (int64, error)
-	Update(user *Post) error
+	Create(post *Post) (int64, error)
+	Update(post *Post) error
 	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
 	DeleteByID(id int64) error

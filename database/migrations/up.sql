@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS posts_votes (
 );
 
 -- POSTS COMMENTS
-CREATE TABLE IF NOT EXISTS comments (
+CREATE TABLE IF NOT EXISTS posts_comments (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     content TEXT NOT NULL,
     user_id INTEGER NOT NULL,
@@ -68,13 +68,15 @@ CREATE TABLE IF NOT EXISTS comments (
     FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
 );
 
--- COMMENTS LIKES
-CREATE TABLE IF NOT EXISTS comments_votes (
+-- POSTS COMMENTS LIKES
+CREATE TABLE IF NOT EXISTS posts_comments_votes (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     vote INTEGER NOT NULL CHECK(vote IN(-1, 0, 1)),
     user_id INTEGER NOT NULL,
     comment_id INTEGER NOT NULL,
     created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    UNIQUE (user_id, comment_id),
     FOREIGN KEY(user_id) REFERENCES users(id),
-    FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE
+    FOREIGN KEY(comment_id) REFERENCES posts_comments(id) ON DELETE CASCADE
 );

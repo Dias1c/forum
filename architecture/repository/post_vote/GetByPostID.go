@@ -14,7 +14,7 @@ SELECT
 	switch {
 	case err == nil:
 	case err != nil:
-		return 0, 0, fmt.Errorf("p.GetByPostID: %w", err)
+		return 0, 0, fmt.Errorf("row.Scan: %w", err)
 	}
 	return up, down, nil
 }

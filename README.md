@@ -28,6 +28,7 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 - [x] Database schema
 - [x] Connect database
 - [x] Write dockerfile
+
 - **BackEnd**
 - [x] sign-up
 - [x] sign-in
@@ -35,12 +36,13 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 - [x] post-create
 - [x] post-delete
 - [x] post-edit-page
-- [~] post-page (likes, comments)
-- [ ] comment-create 
-- [ ] comment-delete
-- [ ] comments (likes)
+- [x] post-page (likes, comments)
+- [x] comment-create 
+- [x] comment-delete
+- [x] comments (likes)
 - [ ] categories-page
 - [~] main-page (posts, posts-filters, users posts, posts-sort)
+
 - **FrontEnd** 
 - [ ] sign-up
 - [ ] sign-in

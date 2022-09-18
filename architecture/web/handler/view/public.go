@@ -18,7 +18,7 @@ func (v *View) ExecuteTemplate(w http.ResponseWriter, pg interface{}, names ...s
 		return
 	}
 
-	err = tmpl.ExecuteTemplate(w, "bootstrap", pg)
+	err = tmpl.ExecuteTemplate(w, "main", pg)
 	if err != nil {
 		lg.Err.Printf("tmpl.ExecuteTemplate: %v", err)
 		return
