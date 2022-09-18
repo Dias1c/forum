@@ -109,20 +109,20 @@
   <div class="panel-footer">
     <div class="btn-group">
       {{ if eq $Comment.WUserVote 1 }}
-      <a type="button" class="btn btn-primary btn-sm" href="/post/comment/vote?post_id={{ $Comment.Id }}&vote=0">
+      <a type="button" class="btn btn-primary btn-sm" href="/post/comment/vote?comment_id={{ $Comment.Id }}&vote=0">
         <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Comment.WVoteUp }}
       </a>
       {{ else }}
-      <a type="button" class="btn btn-default btn-sm" href="/post/comment/vote?post_id={{ $Comment.Id }}&vote=1">
+      <a type="button" class="btn btn-default btn-sm" href="/post/comment/vote?comment_id={{ $Comment.Id }}&vote=1">
         <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Comment.WVoteUp }}
       </a>
       {{ end }}
       {{ if eq $Comment.WUserVote -1 }}
-      <a type="button" class="btn btn-primary btn-sm" href="/post/comment/vote?post_id={{ $Comment.Id }}&vote=0">
+      <a type="button" class="btn btn-primary btn-sm" href="/post/comment/vote?comment_id={{ $Comment.Id }}&vote=0">
         <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Comment.WVoteDown }}
       </a>
       {{ else }}
-      <a type="button" class="btn btn-default btn-sm" href="/post/comment/vote?post_id={{ $Comment.Id }}&vote=-1">
+      <a type="button" class="btn btn-default btn-sm" href="/post/comment/vote?comment_id={{ $Comment.Id }}&vote=-1">
         <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Comment.WVoteDown }}
       </a>
       {{ end }}
