@@ -10,7 +10,7 @@ import (
 
 func (c *PostCommentVoteRepo) GetCommentUserVote(userId, commentId int64) (*models.PostCommentVote, error) {
 	row := c.db.QueryRow(`
-	SELECT id, comment_id, user_id, vote, created_at FROM posts_votes
+	SELECT id, comment_id, user_id, vote, created_at FROM posts_comments_votes
 	WHERE comment_id = ? AND user_id = ?`, commentId, userId)
 	commentVote := &models.PostCommentVote{}
 
