@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Dias1c/forum/architecture/models"
-	spost_vote "github.com/Dias1c/forum/architecture/service/post_vote"
+	"github.com/Dias1c/forum/architecture/service/post_comment_vote"
 	"github.com/Dias1c/forum/internal/lg"
 )
 
@@ -50,7 +50,7 @@ func (m *MainHandler) PostCommentVoteHandler(w http.ResponseWriter, r *http.Requ
 		err = m.service.PostCommentVote.Record(postVote)
 		switch {
 		case err == nil:
-		case errors.Is(err, spost_vote.ErrInvalidVote) || errors.Is(err, spost_vote.ErrNotFound):
+		case errors.Is(err, post_comment_vote.ErrInvalidVote) || errors.Is(err, post_comment_vote.ErrNotFound):
 			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 			return
 		case err != nil:
