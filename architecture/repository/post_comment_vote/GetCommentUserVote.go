@@ -1,7 +1,34 @@
 package post_comment_vote
 
-import "github.com/Dias1c/forum/architecture/models"
+import (
+	"fmt"
+	"strings"
+	"time"
+
+	"github.com/Dias1c/forum/architecture/models"
+)
 
 func (c *PostCommentVoteRepo) GetCommentUserVote(userId, commentId int64) (*models.PostCommentVote, error) {
-	return nil, nil
+	row := c.db.QueryRow(`
+	SELECT id, comment_id, user_id, vote, created_at FROM posts_votes
+	WHERE comment_id = ? AND user_id = ?`, commentId, userId)
+	commentVote := &models.PostCommentVote{}
+
+	strCreatedAt := ""
+	err := row.Scan(&commentVote.Id, &commentVote.CommentId, &commentVote.UserId, &commentVote.Vote, &strCreatedAt)
+
+	switch {
+	case err == nil:
+	case strings.HasPrefix(err.Error(), "sql: no rows in result set"):
+		return nil, ErrNotFound
+	default:
+		return nil, fmt.Errorf("row.Scan: %w", err)
+	}
+
+	timeCreatedAt, err := time.ParseInLocation(models.TimeFormat, strCreatedAt, time.Local)
+	if err != nil {
+		return nil, fmt.Errorf("time.Parse: %w", err)
+	}
+	commentVote.CreatedAt = timeCreatedAt
+	return commentVote, nil
 }
