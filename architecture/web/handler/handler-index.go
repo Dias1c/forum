@@ -77,7 +77,7 @@ func getIndexPage(m *MainHandler, user *models.User) *view.Page {
 			lg.Err.Printf("getIndexPage: m.service.PostCategory.GetByPostID(postId: %v): %v", posts[i].Id, err)
 		}
 
-		posts[i].WUser, err = m.service.User.GetByID(posts[i].UserId)
+		posts[i].WFUser, err = m.service.User.GetByID(posts[i].UserId)
 		switch {
 		case err != nil:
 			lg.Err.Printf("getIndexPage: m.service.User.GetByID(userId: %v): %v", posts[i].UserId, err)
@@ -88,8 +88,8 @@ func getIndexPage(m *MainHandler, user *models.User) *view.Page {
 		case err != nil:
 			lg.Err.Printf("getIndexPage: m.service.PostVote.GetByPostID(id: %v): %v", posts[i].Id, err)
 		}
-		posts[i].WVoteUp = vUp
-		posts[i].WVoteDown = vDown
+		posts[i].WFVoteUp = vUp
+		posts[i].WFVoteDown = vDown
 
 		if user == nil {
 			continue
@@ -98,7 +98,7 @@ func getIndexPage(m *MainHandler, user *models.User) *view.Page {
 		vUser, err := m.service.PostVote.GetPostUserVote(user.Id, posts[i].Id)
 		switch {
 		case err == nil:
-			posts[i].WUserVote = vUser.Vote
+			posts[i].WFUserVote = vUser.Vote
 		case errors.Is(err, spostvote.ErrNotFound):
 		case err != nil:
 			lg.Err.Printf("getIndexPage: m.service.PostVote.GetPostUserVote(userId: %v, postId: %v): %v", user.Id, posts[i].Id, err)

@@ -77,8 +77,8 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 		up, down, err := m.service.PostVote.GetByPostID(postId)
 		switch {
 		case err == nil:
-			post.WVoteUp = up
-			post.WVoteDown = down
+			post.WFVoteUp = up
+			post.WFVoteDown = down
 		case err != nil:
 			lg.Err.Printf("PostViewHandler: m.service.PostVote.GetByPostID: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
@@ -89,7 +89,7 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 			usrVote, err := m.service.PostVote.GetPostUserVote(user.Id, post.Id)
 			switch {
 			case err == nil:
-				post.WUserVote = usrVote.Vote
+				post.WFUserVote = usrVote.Vote
 			case errors.Is(err, post_vote.ErrNotFound):
 			case err != nil:
 				lg.Err.Printf("PostViewHandler: m.service.PostVote.GetPostUserVote: %v\n", err)
@@ -98,7 +98,7 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		post.WUser, err = m.service.User.GetByID(post.UserId)
+		post.WFUser, err = m.service.User.GetByID(post.UserId)
 		switch {
 		case err == nil:
 		default:

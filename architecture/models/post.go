@@ -12,10 +12,10 @@ type Post struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 
-	WUser       *User
-	WUserVote   int8  // -1 0 1
-	WVoteUp     int64 // Like
-	WVoteDown   int64 // Dislike
+	WFUser      *User
+	WFUserVote  int8  // -1 0 1
+	WFVoteUp    int64 // Like
+	WFVoteDown  int64 // Dislike
 	WCategories []*PostCategory
 	WComments   []*PostComment
 }
@@ -25,6 +25,7 @@ type IPostService interface {
 	Update(post *Post) error
 	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
+	GetWFullPostByID(id, userId int64) (*Post, error)
 	DeleteByID(id int64) error
 }
 
@@ -33,5 +34,6 @@ type IPostRepo interface {
 	Update(post *Post) error
 	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
+	GetWFullPostByID(id, userId int64) (*Post, error)
 	DeleteByID(id int64) error
 }
