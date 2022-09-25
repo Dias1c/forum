@@ -26,20 +26,20 @@
     <div class="btn-group">
       {{ if eq $Post.WUserVote 1 }}
       <a type="button" class="btn btn-primary btn-sm" href="/post/vote?post_id={{ $Post.Id }}&vote=0">
-        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Post.WVoteUp }}
+        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> {{ $Post.WVoteUp }}
       </a>
       {{ else }}
       <a type="button" class="btn btn-default btn-sm" href="/post/vote?post_id={{ $Post.Id }}&vote=1">
-        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Post.WVoteUp }}
+        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> {{ $Post.WVoteUp }}
       </a>
       {{ end }}
       {{ if eq $Post.WUserVote -1 }}
       <a type="button" class="btn btn-primary btn-sm" href="/post/vote?post_id={{ $Post.Id }}&vote=0">
-        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Post.WVoteDown }}
+        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{ $Post.WVoteDown }}
       </a>
       {{ else }}
       <a type="button" class="btn btn-default btn-sm" href="/post/vote?post_id={{ $Post.Id }}&vote=-1">
-        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Post.WVoteDown }}
+        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{ $Post.WVoteDown }}
       </a>
       {{ end }}
     </div>
@@ -110,20 +110,20 @@
     <div class="btn-group">
       {{ if eq $Comment.WUserVote 1 }}
       <a type="button" class="btn btn-primary btn-sm" href="/post/comment/vote?comment_id={{ $Comment.Id }}&vote=0">
-        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Comment.WVoteUp }}
+        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> {{ $Comment.WVoteUp }}
       </a>
       {{ else }}
       <a type="button" class="btn btn-default btn-sm" href="/post/comment/vote?comment_id={{ $Comment.Id }}&vote=1">
-        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Comment.WVoteUp }}
+        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> {{ $Comment.WVoteUp }}
       </a>
       {{ end }}
       {{ if eq $Comment.WUserVote -1 }}
       <a type="button" class="btn btn-primary btn-sm" href="/post/comment/vote?comment_id={{ $Comment.Id }}&vote=0">
-        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Comment.WVoteDown }}
+        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{ $Comment.WVoteDown }}
       </a>
       {{ else }}
       <a type="button" class="btn btn-default btn-sm" href="/post/comment/vote?comment_id={{ $Comment.Id }}&vote=-1">
-        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Comment.WVoteDown }}
+        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{ $Comment.WVoteDown }}
       </a>
       {{ end }}
     </div>
