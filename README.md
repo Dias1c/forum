@@ -45,6 +45,7 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 - [x] comment-delete
 - [x] comments (likes)
 - [~] posts-categories-page
+- [~] posts-categories-filtering
 
 - **FrontEnd** 
 - [ ] sign-up
