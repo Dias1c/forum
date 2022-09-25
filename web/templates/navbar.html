@@ -22,34 +22,24 @@
           <a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a>
         </li>
         {{ if .User }}
-        <!-- { if eq .User.Role 1}
-        { end } -->
         <li>
-          <a class="" href="/request"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> Requests</a>
+          <a class="" href="/post/category"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+            Categories</a>
         </li>
         <li>
-          <a class="" href="/makerequest"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Make a
-            request</a>
+          <a class="" href="/post/voted"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Liked</a>
         </li>
         <li>
         <li class="visible-xs-inline"><a href="/activity">
             <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Activity</a>
         </li>
         <li class="visible-xs-inline">
-          <a href="/liked">
+          <a href="/post/voted">
             <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Liked posts</a>
         </li>
         <li class="visible-xs-inline">
-          <a href="/mine"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> My posts</a>
+          <a href="/post/own"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> My posts</a>
         </li>
-        <!-- { if eq .User.Role 1}
-              <li class="visible-xs-inline">
-                <a href="/managecats">
-                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                  Categories
-                 </a>
-              </li>
-              { end } -->
 
         <li class="hidden-xs">
           <a class="" href="/post/create">
@@ -83,14 +73,10 @@
             <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li>
-              <a href="/activity">
-                <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Activity</a>
+              <a href="/post/voted"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Liked posts</a>
             </li>
             <li>
-              <a href="/liked"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Liked posts</a>
-            </li>
-            <li>
-              <a href="/mine"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> My posts</a>
+              <a href="/post/own"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> My posts</a>
             </li>
             <li>
               <a href="/signout"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Sign Out</a>
