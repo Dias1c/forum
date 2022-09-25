@@ -47,11 +47,13 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 		cookies.RemoveSessionCookie(w, r)
 		cookies.AddRedirectCookie(w, r.RequestURI)
 		http.Redirect(w, r, "/sign-in", http.StatusSeeOther)
+		return
 	case err != nil:
 		lg.Err.Printf("PostEditHandler: m.service.User.GetByID: %v\n", err)
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
+		return
 	}
 
 	switch r.Method {
