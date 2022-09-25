@@ -46,7 +46,8 @@ func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
 	mux.Handle("/post/vote", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostVoteHandler)))
 	mux.Handle("/post/delete", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostDeleteHandler)))
 
-	mux.Handle("/post/own", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostOwnHandler)))
+	mux.Handle("/post/own", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostsOwnHandler)))
+	mux.Handle("/post/voted", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostsVotedHandler)))
 
 	mux.Handle("/post/comment/create", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostCommentCreateHandler)))
 	mux.Handle("/post/comment/delete", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostCommentDeleteHandler)))

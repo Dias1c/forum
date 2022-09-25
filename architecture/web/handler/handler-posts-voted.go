@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/Dias1c/forum/architecture/web/handler/cookies"
 	"github.com/Dias1c/forum/architecture/web/handler/view"
@@ -12,9 +13,9 @@ import (
 	suser "github.com/Dias1c/forum/architecture/service/user"
 )
 
-// PostOwnHandler -
-func (m *MainHandler) PostOwnHandler(w http.ResponseWriter, r *http.Request) {
-	debugLogHandler("PostOwnHandler", r)
+// PostsVotedHandler -
+func (m *MainHandler) PostsVotedHandler(w http.ResponseWriter, r *http.Request) {
+	debugLogHandler("PostsVotedHandler", r)
 
 	// Allowed Methods
 	switch r.Method {
@@ -24,15 +25,9 @@ func (m *MainHandler) PostOwnHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookie := cookies.GetSessionCookie(w, r)
-	if cookie == nil {
-
-		return
-	}
-
 	iUserId := r.Context().Value("UserId")
 	if iUserId == nil {
-		lg.Err.Println("PostOwnHandler: r.Context().Value(\"UserId\") is nil")
+		lg.Err.Println("PostsVotedHandler: r.Context().Value(\"UserId\") is nil")
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
@@ -49,7 +44,7 @@ func (m *MainHandler) PostOwnHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/sign-in", http.StatusSeeOther)
 		return
 	case err != nil:
-		lg.Err.Printf("PostDeleteHandler: m.service.User.GetByID: %v\n", err)
+		lg.Err.Printf("PostsVotedHandler: m.service.User.GetByID: %v\n", err)
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
@@ -58,17 +53,33 @@ func (m *MainHandler) PostOwnHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
-		posts, err := m.service.Post.GetByUserID(user.Id, 0, 0)
+		strVote := r.URL.Query().Get("vote")
+		vote, err := strconv.ParseInt(strVote, 10, 8)
+		if err != nil || vote < -1 || 1 < vote {
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			return
+		}
+
+		postIDs, err := m.service.PostVote.GetAllUserVotedPostIDs(userId, int8(vote), 0, 0)
 		if err != nil {
-			lg.Err.Printf("PostDeleteHandler: GetByUserID: %v\n", err)
+			lg.Err.Printf("PostsVotedHandler: PostVote.GetAllUserVotedPostIDs: %v\n", err)
+			pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
+			w.WriteHeader(http.StatusInternalServerError)
+			m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
+			return
+		}
+
+		posts, err := m.service.Post.GetByIds(postIDs)
+		if err != nil {
+			lg.Err.Printf("PostsVotedHandler: Post.GetByIds: %v\n", err)
 		}
 
 		err = m.service.FillPosts(posts, user.Id)
 		if err != nil {
-			lg.Err.Printf("PostDeleteHandler: FillPosts: %v\n", err)
+			lg.Err.Printf("PostsVotedHandler: FillPosts: %v\n", err)
 		}
 
-		pg := &view.Page{User: user, Posts: posts, Info: fmt.Errorf("Here is your posts")}
+		pg := &view.Page{User: user, Posts: posts, Info: fmt.Errorf("Voted Posts")}
 		m.view.ExecuteTemplate(w, pg, "home.html")
 		return
 	default:
