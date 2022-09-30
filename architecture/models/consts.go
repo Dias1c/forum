@@ -9,5 +9,5 @@ const (
 
 	// SqlSortAsc = "DESC"
 	// SqlSortDesc = "ASC"
-	// SqlLimitInfinity = -1
+	SqlLimitInfinity = -1
 )
