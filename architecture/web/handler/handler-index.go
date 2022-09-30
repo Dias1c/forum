@@ -48,6 +48,7 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case err == nil:
 		case errors.Is(err, ssession.ErrExpired) || errors.Is(err, ssession.ErrNotFound):
+			cookies.RemoveSessionCookie(w, r)
 			err = m.service.FillPosts(posts, 0)
 			if err != nil {
 				lg.Err.Printf("IndexHandler: FillPosts: %v\n", err)
