@@ -105,7 +105,7 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 			lg.Err.Printf("PostViewHandler: m.service.User.GetByID(userId: %v): %v\n", post.UserId, err)
 		}
 
-		post.WComments, err = m.service.PostComment.GetAllByPostID(post.Id, 0, 0)
+		post.WComments, err = m.service.PostComment.GetAllByPostID(post.Id, 0, models.SqlLimitInfinity)
 		switch {
 		case err == nil:
 			for _, comment := range post.WComments {

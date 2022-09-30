@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/Dias1c/forum/architecture/models"
 	"github.com/Dias1c/forum/architecture/web/handler/cookies"
 	"github.com/Dias1c/forum/architecture/web/handler/view"
 	"github.com/Dias1c/forum/internal/lg"
@@ -27,7 +28,7 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	cookies.RemoveRedirectCookie(w, r)
 	switch r.Method {
 	case http.MethodGet:
-		posts, err := m.service.Post.GetAll(0, 0)
+		posts, err := m.service.Post.GetAll(0, models.SqlLimitInfinity)
 		if err != nil {
 			lg.Err.Printf("IndexHandler: Post.GetAll: %v\n", err)
 		}
