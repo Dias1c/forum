@@ -1,4 +1,4 @@
-package post_category
+package category
 
 import "fmt"
 

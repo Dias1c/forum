@@ -1,4 +1,4 @@
-package post_category
+package category
 
 import (
 	"fmt"
@@ -7,13 +7,13 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (p *PostCategoryRepo) GetAll(offset, limit int64) ([]*models.PostCategory, error) {
+func (p *PostCategoryRepo) GetAll(offset, limit int64) ([]*models.Category, error) {
 	if limit == 0 {
 		limit = -1
 	}
 
 	rows, err := p.db.Query(`
-SELECT id, name, created_at FROM posts
+SELECT id, name, created_at FROM categories
 LIMIT ? OFFSET ? 
 	`, limit, offset)
 
@@ -21,10 +21,10 @@ LIMIT ? OFFSET ?
 		return nil, fmt.Errorf("p.db.Query: %w", err)
 	}
 
-	categories := []*models.PostCategory{}
+	categories := []*models.Category{}
 	for rows.Next() {
 		var strCreatedAt string
-		category := &models.PostCategory{}
+		category := &models.Category{}
 		err = rows.Scan(&category.Id, &category.Name, &strCreatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("rows.Scan: %w", err)

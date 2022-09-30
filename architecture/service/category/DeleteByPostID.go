@@ -1,8 +1,8 @@
-package post_category
+package category
 
 import "fmt"
 
-func (c *PostCategoryService) DeleteByPostID(postId int64) error {
+func (c *CategoryService) DeleteByPostID(postId int64) error {
 	err := c.repo.DeleteByPostID(postId)
 	switch {
 	case err == nil:

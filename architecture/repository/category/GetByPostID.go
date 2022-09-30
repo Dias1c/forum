@@ -1,4 +1,4 @@
-package post_category
+package category
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (c *PostCategoryRepo) GetByPostID(postId int64) ([]*models.PostCategory, error) {
+func (c *PostCategoryRepo) GetByPostID(postId int64) ([]*models.Category, error) {
 	rows, err := c.db.Query(`
 SELECT c.id, c.name, c.created_at FROM posts_categories pc
 JOIN categories c ON pc.category_id = c.id
@@ -16,10 +16,10 @@ WHERE pc.post_id = ?`, postId)
 		return nil, fmt.Errorf("c.db.Query: %w", err)
 	}
 
-	categories := []*models.PostCategory{}
+	categories := []*models.Category{}
 	for rows.Next() {
 		var strCreatedAt string
-		category := &models.PostCategory{}
+		category := &models.Category{}
 		err = rows.Scan(&category.Id, &category.Name, &strCreatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("rows.Scan: %w", err)

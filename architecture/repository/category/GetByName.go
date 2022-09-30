@@ -1,4 +1,4 @@
-package post_category
+package category
 
 import (
 	"fmt"
@@ -8,12 +8,12 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (c *PostCategoryRepo) GetByName(name string) (*models.PostCategory, error) {
+func (c *PostCategoryRepo) GetByName(name string) (*models.Category, error) {
 	row := c.db.QueryRow(`
 SELECT id, name, created_at FROM categories
 WHERE name = ?`, name)
 
-	category := &models.PostCategory{}
+	category := &models.Category{}
 	var strCreatedAt string
 	err := row.Scan(&category.Id, &category.Name, &strCreatedAt)
 	switch {

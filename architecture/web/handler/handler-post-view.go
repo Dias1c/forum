@@ -64,7 +64,7 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		categories, err := m.service.PostCategory.GetByPostID(post.Id)
+		categories, err := m.service.Category.GetByPostID(post.Id)
 		switch {
 		case err == nil:
 			post.WCategories = categories

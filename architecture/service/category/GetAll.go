@@ -1,4 +1,4 @@
-package post_category
+package category
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (p *PostCategoryService) GetAll(offset, limit int64) ([]*models.PostCategory, error) {
+func (p *CategoryService) GetAll(offset, limit int64) ([]*models.Category, error) {
 	categories, err := p.repo.GetAll(offset, limit)
 	switch {
 	case err == nil:

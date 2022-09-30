@@ -12,7 +12,7 @@ import (
 func (s *Service) FillPost(post *models.Post, sesUserId int64) error {
 	var err error
 
-	post.WCategories, err = s.PostCategory.GetByPostID(post.Id)
+	post.WCategories, err = s.Category.GetByPostID(post.Id)
 	switch {
 	case err != nil:
 		lg.Err.Printf("FillPost: PostCategory.GetByPostID(postId: %v): %v", post.Id, err)
