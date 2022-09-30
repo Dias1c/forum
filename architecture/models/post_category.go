@@ -15,6 +15,7 @@ type IPostCategoryRepo interface {
 	GetByID(id int64) (*PostCategory, error)
 	GetByName(name string) (*PostCategory, error)
 	GetByPostID(postId int64) ([]*PostCategory, error)
+	GetAll(offset, limit int64) ([]*PostCategory, error)
 	DeleteByPostID(postId int64) error
 	DeleteByID(id int64) error
 }
@@ -22,6 +23,7 @@ type IPostCategoryRepo interface {
 type IPostCategoryService interface {
 	AddToPostByNames(names []string, postId int64) error
 	GetByPostID(postId int64) ([]*PostCategory, error)
+	GetAll(offset, limit int64) ([]*PostCategory, error)
 	DeleteByPostID(postId int64) error
 	DeleteFromPost(id int64) error
 }
