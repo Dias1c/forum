@@ -1,7 +1,17 @@
 package category
 
-import "github.com/Dias1c/forum/architecture/models"
+import (
+	"fmt"
+
+	"github.com/Dias1c/forum/architecture/models"
+)
 
 func (c *CategoryService) GetByNames(names []string) ([]*models.Category, error) {
-	return nil, nil
+	cats, err := c.repo.GetByNames(names)
+	switch {
+	case err == nil:
+	case err != nil:
+		return nil, fmt.Errorf("GetByNames: %w", err)
+	}
+	return cats, nil
 }
