@@ -1,5 +1,5 @@
 package category
 
-func (c *PostCategoryRepo) DeleteByID(id int64) error {
+func (c *CategoryRepo) DeleteByID(id int64) error {
 	return nil
 }

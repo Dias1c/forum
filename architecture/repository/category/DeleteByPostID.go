@@ -2,7 +2,7 @@ package category
 
 import "fmt"
 
-func (c *PostCategoryRepo) DeleteByPostID(postId int64) error {
+func (c *CategoryRepo) DeleteByPostID(postId int64) error {
 	_, err := c.db.Exec(`DELETE FROM posts_categories
 WHERE post_id = ?`, postId)
 	switch {

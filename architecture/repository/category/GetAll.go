@@ -7,7 +7,7 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (p *PostCategoryRepo) GetAll(offset, limit int64) ([]*models.Category, error) {
+func (p *CategoryRepo) GetAll(offset, limit int64) ([]*models.Category, error) {
 	if limit == 0 {
 		limit = -1
 	}

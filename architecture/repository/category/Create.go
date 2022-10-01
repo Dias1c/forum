@@ -7,7 +7,7 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (c *PostCategoryRepo) Create(category *models.Category) (int64, error) {
+func (c *CategoryRepo) Create(category *models.Category) (int64, error) {
 	strCreatedAt := category.CreatedAt.Format(models.TimeFormat)
 	row := c.db.QueryRow(`
 	INSERT INTO categories (name, created_at) VALUES

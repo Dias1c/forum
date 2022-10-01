@@ -8,7 +8,7 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (c *PostCategoryRepo) GetByName(name string) (*models.Category, error) {
+func (c *CategoryRepo) GetByName(name string) (*models.Category, error) {
 	row := c.db.QueryRow(`
 SELECT id, name, created_at FROM categories
 WHERE name = ?`, name)

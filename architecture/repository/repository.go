@@ -28,7 +28,7 @@ func NewRepo(db *sql.DB) *Repository {
 		User:            user.NewUserRepo(db),
 		Post:            post.NewPostRepo(db),
 		PostVote:        post_vote.NewPostVoteRepo(db),
-		Category:        category.NewPostCategoryRepo(db),
+		Category:        category.NewCategoryRepo(db),
 		PostComment:     post_comment.NewPostCommentRepo(db),
 		PostCommentVote: post_comment_vote.NewPostCommentVoteRepo(db),
 		Session:         session.NewSessionRepo(db),

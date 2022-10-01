@@ -4,10 +4,10 @@ import (
 	"database/sql"
 )
 
-type PostCategoryRepo struct {
+type CategoryRepo struct {
 	db *sql.DB
 }
 
-func NewPostCategoryRepo(db *sql.DB) *PostCategoryRepo {
-	return &PostCategoryRepo{db}
+func NewCategoryRepo(db *sql.DB) *CategoryRepo {
+	return &CategoryRepo{db}
 }

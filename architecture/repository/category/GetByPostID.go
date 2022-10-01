@@ -7,7 +7,7 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (c *PostCategoryRepo) GetByPostID(postId int64) ([]*models.Category, error) {
+func (c *CategoryRepo) GetByPostID(postId int64) ([]*models.Category, error) {
 	rows, err := c.db.Query(`
 SELECT c.id, c.name, c.created_at FROM posts_categories pc
 JOIN categories c ON pc.category_id = c.id

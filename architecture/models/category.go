@@ -14,6 +14,7 @@ type ICategoryRepo interface {
 	Update(category *Category) error
 	GetByID(id int64) (*Category, error)
 	GetByName(name string) (*Category, error)
+	GetByNames(names []string) ([]*Category, error)
 	GetByPostID(postId int64) ([]*Category, error)
 	GetAll(offset, limit int64) ([]*Category, error)
 	DeleteByPostID(postId int64) error
@@ -23,6 +24,7 @@ type ICategoryRepo interface {
 type ICategoryService interface {
 	AddToPostByNames(names []string, postId int64) error
 	GetByPostID(postId int64) ([]*Category, error)
+	GetByNames(names []string) ([]*Category, error)
 	GetAll(offset, limit int64) ([]*Category, error)
 	DeleteByPostID(postId int64) error
 	DeleteFromPost(id int64) error
