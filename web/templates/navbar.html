@@ -22,8 +22,15 @@
           <a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a>
         </li>
         <li>
-          <a class="" href="/categories"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
-            Categories</a>
+          <a href="/categories" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+            Categories <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/categories/posts"><i class="fa fa-comment-o"></i>  Posts</a>
+            </li>
+            <li>
+          </ul>
         </li>
         {{ if .User }}
         <li>
@@ -43,13 +50,14 @@
                 Down</a>
             </li>
             <li>
-              <a href="/posts/voted?vote=0"><span class="glyphicon glyphicon-leaf" aria-hidden="true"></span> Voted Neutral</a>
+              <a href="/posts/voted?vote=0"><span class="glyphicon glyphicon-leaf" aria-hidden="true"></span> Voted
+                Neutral</a>
             </li>
           </ul>
         </li>
         <li>
 
-        {{end}}
+          {{end}}
       </ul>
       {{ if .User }}
       <ul class="nav navbar-nav navbar-right">
