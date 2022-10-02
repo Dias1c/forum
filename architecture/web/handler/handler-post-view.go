@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Dias1c/forum/architecture/models"
-	"github.com/Dias1c/forum/architecture/service/post_vote"
+	"github.com/Dias1c/forum/architecture/service/post_comment_vote"
 	"github.com/Dias1c/forum/architecture/web/handler/cookies"
 	"github.com/Dias1c/forum/architecture/web/handler/view"
 	"github.com/Dias1c/forum/internal/lg"
@@ -64,46 +64,11 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		categories, err := m.service.Category.GetByPostID(post.Id)
-		switch {
-		case err == nil:
-			post.WCategories = categories
-		default:
-			lg.Err.Printf("PostViewHandler: m.service.Session.GetByUuid: %v\n", err)
-			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
-			return
-		}
-
-		up, down, err := m.service.PostVote.GetByPostID(postId)
-		switch {
-		case err == nil:
-			post.WVoteUp = up
-			post.WVoteDown = down
-		case err != nil:
-			lg.Err.Printf("PostViewHandler: m.service.PostVote.GetByPostID: %v\n", err)
-			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
-			return
-		}
-
+		var userId int64
 		if user != nil {
-			usrVote, err := m.service.PostVote.GetPostUserVote(user.Id, post.Id)
-			switch {
-			case err == nil:
-				post.WUserVote = usrVote.Vote
-			case errors.Is(err, post_vote.ErrNotFound):
-			case err != nil:
-				lg.Err.Printf("PostViewHandler: m.service.PostVote.GetPostUserVote: %v\n", err)
-				http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
-				return
-			}
+			userId = user.Id
 		}
-
-		post.WUser, err = m.service.User.GetByID(post.UserId)
-		switch {
-		case err == nil:
-		default:
-			lg.Err.Printf("PostViewHandler: m.service.User.GetByID(userId: %v): %v\n", post.UserId, err)
-		}
+		m.service.FillPost(post, userId)
 
 		post.WComments, err = m.service.PostComment.GetAllByPostID(post.Id, 0, models.SqlLimitInfinity)
 		switch {
@@ -115,20 +80,21 @@ func (m *MainHandler) PostViewHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		case err != nil:
-			lg.Err.Printf("PostViewHandler: m.service.PostComment.GetAllByPostID: %v\n", err)
+			lg.Err.Printf("PostViewHandler: service.PostComment.GetAllByPostID: %v\n", err)
 		}
 
 		for _, comment := range post.WComments {
 			comment.WVoteUp, comment.WVoteDown, err = m.service.PostCommentVote.GetByCommentID(comment.Id)
 			if err != nil {
-				lg.Err.Printf("PostViewHandler: m.service.PostCommentVote.GetByCommentID(commentId: %v): %v\n", comment.Id, err)
+				lg.Err.Printf("PostViewHandler: service.PostCommentVote.GetByCommentID(commentId: %v): %v\n", comment.Id, err)
 			}
-			vt, err := m.service.PostCommentVote.GetCommentUserVote(user.Id, comment.Id)
+			vt, err := m.service.PostCommentVote.GetCommentUserVote(userId, comment.Id)
 			switch {
 			case err == nil:
 				comment.WUserVote = vt.Vote
+			case errors.Is(err, post_comment_vote.ErrNotFound):
 			case err != nil:
-				lg.Err.Printf("PostViewHandler: m.service.PostCommentVote.GetCommentUserVote: %v\n", err)
+				lg.Err.Printf("PostViewHandler: service.PostCommentVote.GetCommentUserVote: %v\n", err)
 			}
 		}
 
