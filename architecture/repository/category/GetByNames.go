@@ -18,11 +18,9 @@ func (c *CategoryRepo) GetByNames(names []string) ([]*models.Category, error) {
 		iNames[i] = v
 	}
 
-	strQuery := fmt.Sprintf(`SELECT id, title, content, user_id, created_at, updated_at FROM posts
-WHERE id IN (%v)`, `?`+strings.Repeat(",?", len(iNames)-1))
-	fmt.Println(strQuery)
-	preQuery := fmt.Sprintf(strQuery, iNames...)
-	rows, err := c.db.Query(preQuery)
+	strQuery := fmt.Sprintf(`SELECT id, name, created_at FROM categories
+WHERE name IN (%v)`, `?`+strings.Repeat(",?", len(iNames)-1))
+	rows, err := c.db.Query(strQuery, iNames...)
 	if err != nil {
 		return nil, fmt.Errorf("db.Query: %w", err)
 	}
