@@ -26,6 +26,8 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 
 	switch r.Method {
 	case http.MethodGet:
+		// TODO: 1. Get Array of catNames (Max 5)
+		// TODO: 2. Add dropdown menu category posts in navbar
 		names := []string{"dc", "marvel"}
 		categories, err := m.service.Category.GetByNames(names)
 		switch {
