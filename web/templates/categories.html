@@ -1,9 +1,9 @@
 {{ define "block" }}
 {{ $Page := .}}
-<form class="panel panel-default" role="form" action="/category/create" method="POST">
+<form class="panel panel-default" role="form" action="/categories/posts" method="POST">
   <div class="panel-body">
     <div class="input-form">
-      <label for="content">Create Category</label>
+      <label for="content">Select Categories</label>
       <div class="textblock__input" id="b_TagEditor">
         <input type="text" placeholder="Max: 32 symbols" value="">
       </div>
@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="panel-footer">
-    <button class="btn btn-primary active" type="submit">Create</button>
+    <button class="btn btn-primary active" type="submit">find posts by selected</button>
   </div>
 </form>
 
@@ -43,7 +43,7 @@
     BlockSelectorName: "#b_TagEditor",
     TextBlockSelectorName: "#tb_TagEditor",
     Tags: [],
-    MaxTags: 1,
+    MaxTags: 5,
     MaxTagLength: 32,
   });
 </script>
