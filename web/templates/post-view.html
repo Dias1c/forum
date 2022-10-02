@@ -17,7 +17,7 @@
     <pre>{{ $Post.Content }}</pre>
     <div class="btn-group">
       {{ range $category := $Post.WCategories }}
-      <a class="btn btn-tag label label-primary" href="/category/post/get/{{ $category.Id }}">{{ $category.Name
+      <a class="btn btn-tag label label-primary" href="/categories/posts?categories={{ $category.Name }}">{{ $category.Name
         }}</a>
       {{ end }}
     </div>
