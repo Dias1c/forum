@@ -2,7 +2,9 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/Dias1c/forum/architecture/models"
 	"github.com/Dias1c/forum/architecture/web/handler/cookies"
@@ -26,16 +28,27 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 
 	switch r.Method {
 	case http.MethodGet:
+		value := r.URL.Query().Get("categories")
+		categoryNames := strings.Fields(value)
+		if len(categoryNames) > 5 {
+			http.Error(w, "Max Category names is 5", http.StatusInternalServerError)
+			return
+		}
+
 		// TODO: 1. Get Array of catNames (Max 5)
 		// TODO: 2. Add dropdown menu category posts in navbar
-		names := []string{"dc", "marvel"}
-		categories, err := m.service.Category.GetByNames(names)
+		categories, err := m.service.Category.GetByNames(categoryNames)
 		switch {
 		case err == nil:
 		case err != nil:
 			lg.Err.Printf("CategoriesPostsHandler: Category.GetByNames: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
+		}
+
+		var infoMsg error
+		if len(categories) != len(categoryNames) {
+			infoMsg = fmt.Errorf("Looking for only contaned categories")
 		}
 
 		catIDs := make([]int64, len(categories))
@@ -62,13 +75,13 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 			return
 		}
 
+		pg := &view.Page{Posts: posts, Categories: categories, Info: infoMsg}
 		cookie := cookies.GetSessionCookie(w, r)
 		if cookie == nil {
 			err = m.service.FillPosts(posts, 0)
 			if err != nil {
 				lg.Err.Printf("CategoriesPostsHandler: FillPosts: %v\n", err)
 			}
-			pg := &view.Page{Posts: posts, Categories: categories}
 			m.view.ExecuteTemplate(w, pg, "categories-posts.html") // TODO: Replace PG
 			return
 		}
@@ -82,7 +95,6 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 			if err != nil {
 				lg.Err.Printf("CategoriesPostsHandler: FillPosts: %v\n", err)
 			}
-			pg := &view.Page{Posts: posts, Categories: categories}
 			m.view.ExecuteTemplate(w, pg, "categories-posts.html") // TODO: Replace PG
 			return
 		case err != nil:
@@ -104,7 +116,7 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 		if err != nil {
 			lg.Err.Printf("CategoriesPostsHandler: FillPosts: %v\n", err)
 		}
-		pg := &view.Page{Posts: posts, User: user, Categories: categories}
+		pg.User = user
 		m.view.ExecuteTemplate(w, pg, "categories-posts.html") // TODO: Replace PG
 		return
 	}
