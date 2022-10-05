@@ -6,12 +6,12 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (p *PostService) GetByIds(ids []int64) ([]*models.Post, error) {
-	posts, err := p.repo.GetByIds(ids)
+func (p *PostService) GetByIDs(ids []int64) ([]*models.Post, error) {
+	posts, err := p.repo.GetByIDs(ids)
 	switch {
 	case err == nil:
 	case err != nil:
-		return nil, fmt.Errorf("GetByIds: %w", err)
+		return nil, fmt.Errorf("GetByIDs: %w", err)
 	}
 	return posts, nil
 }

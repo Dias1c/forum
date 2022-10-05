@@ -64,11 +64,11 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 		}
 
 		// TODO: Rename Ids -> IDs
-		posts, err := m.service.Post.GetByIds(postIDs)
+		posts, err := m.service.Post.GetByIDs(postIDs)
 		switch {
 		case err == nil:
 		case err != nil:
-			lg.Err.Printf("CategoriesPostsHandler: Post.GetByIds: %v\n", err)
+			lg.Err.Printf("CategoriesPostsHandler: Post.GetByIDs: %v\n", err)
 			http.Error(w, "something wrong, maybe try again later", http.StatusInternalServerError)
 			return
 		}

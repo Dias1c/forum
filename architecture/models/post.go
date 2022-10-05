@@ -25,7 +25,7 @@ type IPostService interface {
 	Update(post *Post) error
 	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
-	GetByIds(ids []int64) ([]*Post, error)
+	GetByIDs(ids []int64) ([]*Post, error)
 	GetByUserID(userId, offset, limit int64) ([]*Post, error)
 	DeleteByID(id int64) error
 }
@@ -35,7 +35,7 @@ type IPostRepo interface {
 	Update(post *Post) error
 	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
-	GetByIds(ids []int64) ([]*Post, error)
+	GetByIDs(ids []int64) ([]*Post, error)
 	GetByUserID(userId, offset, limit int64) ([]*Post, error)
 	DeleteByID(id int64) error
 }

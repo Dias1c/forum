@@ -69,9 +69,9 @@ func (m *MainHandler) PostsVotedHandler(w http.ResponseWriter, r *http.Request) 
 			return
 		}
 
-		posts, err := m.service.Post.GetByIds(postIDs)
+		posts, err := m.service.Post.GetByIDs(postIDs)
 		if err != nil {
-			lg.Err.Printf("PostsVotedHandler: Post.GetByIds: %v\n", err)
+			lg.Err.Printf("PostsVotedHandler: Post.GetByIDs: %v\n", err)
 		}
 
 		err = m.service.FillPosts(posts, user.Id)

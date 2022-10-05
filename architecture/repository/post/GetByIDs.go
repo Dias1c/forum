@@ -8,7 +8,7 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (p *PostRepo) GetByIds(ids []int64) ([]*models.Post, error) {
+func (p *PostRepo) GetByIDs(ids []int64) ([]*models.Post, error) {
 	strIDs := strings.Trim(strings.Replace(fmt.Sprint(ids), " ", ",", -1), "[]")
 	preQuery := fmt.Sprintf(`SELECT id, title, content, user_id, created_at, updated_at FROM posts
 WHERE id IN (%v)`, strIDs)
