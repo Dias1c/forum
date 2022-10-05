@@ -53,7 +53,6 @@ func (m *MainHandler) InitRoutes(configs *Configs) http.Handler {
 	mux.Handle("/post/comment/delete", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostCommentDeleteHandler)))
 	mux.Handle("/post/comment/vote", m.MiddlewareSessionChecker(http.HandlerFunc(m.PostCommentVoteHandler)))
 
-	mux.Handle("/categories", http.HandlerFunc(m.CategoriesHandler))
 	mux.Handle("/categories/posts", http.HandlerFunc(m.CategoriesPostsHandler))
 
 	return mux
