@@ -31,12 +31,10 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 		value := r.URL.Query().Get("categories")
 		categoryNames := strings.Fields(value)
 		if len(categoryNames) > 5 {
-			http.Error(w, "Max Category names is 5", http.StatusInternalServerError)
+			http.Error(w, "Max Category names is 5", http.StatusBadRequest)
 			return
 		}
 
-		// TODO: 1. Get Array of catNames (Max 5)
-		// TODO: 2. Add dropdown menu category posts in navbar
 		categories, err := m.service.Category.GetByNames(categoryNames)
 		switch {
 		case err == nil:
@@ -82,7 +80,7 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 			if err != nil {
 				lg.Err.Printf("CategoriesPostsHandler: FillPosts: %v\n", err)
 			}
-			m.view.ExecuteTemplate(w, pg, "categories-posts.html") // TODO: Replace PG
+			m.view.ExecuteTemplate(w, pg, "categories-posts.html")
 			return
 		}
 
@@ -95,7 +93,7 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 			if err != nil {
 				lg.Err.Printf("CategoriesPostsHandler: FillPosts: %v\n", err)
 			}
-			m.view.ExecuteTemplate(w, pg, "categories-posts.html") // TODO: Replace PG
+			m.view.ExecuteTemplate(w, pg, "categories-posts.html")
 			return
 		case err != nil:
 			lg.Err.Printf("CategoriesPostsHandler: m.service.Session.GetByUuid: %v\n", err)
@@ -117,7 +115,7 @@ func (m *MainHandler) CategoriesPostsHandler(w http.ResponseWriter, r *http.Requ
 			lg.Err.Printf("CategoriesPostsHandler: FillPosts: %v\n", err)
 		}
 		pg.User = user
-		m.view.ExecuteTemplate(w, pg, "categories-posts.html") // TODO: Replace PG
+		m.view.ExecuteTemplate(w, pg, "categories-posts.html")
 		return
 	}
 }
