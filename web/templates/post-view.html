@@ -14,10 +14,11 @@
   </div>
 
   <div class="panel-body">
-    <pre>{{ $Post.Content }}</pre>
+    <div class="markdown">{{ $Post.Content }}</div>
     <div class="btn-group">
       {{ range $category := $Post.WCategories }}
-      <a class="btn btn-tag label label-primary" href="/categories/posts?categories={{ $category.Name }}">{{ $category.Name
+      <a class="btn btn-tag label label-primary" href="/categories/posts?categories={{ $category.Name }}">{{
+        $category.Name
         }}</a>
       {{ end }}
     </div>
@@ -160,4 +161,12 @@
 
 {{ end }}
 
+<script src="/static/js/showdown.js"></script>
+<script>
+  let mdConverter = new showdown.Converter();
+  
+  Array.from(document.getElementsByClassName("markdown")).forEach((element) => {
+    element.innerHTML = mdConverter.makeHtml(element.innerHTML)
+  });
+</script>
 {{ end }}
