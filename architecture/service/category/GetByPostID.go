@@ -1,4 +1,4 @@
-package post_category
+package category
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (c *PostCategoryService) GetByPostID(postId int64) ([]*models.PostCategory, error) {
+func (c *CategoryService) GetByPostID(postId int64) ([]*models.Category, error) {
 	categories, err := c.repo.GetByPostID(postId)
 	switch {
 	case err == nil:

@@ -9,7 +9,6 @@ import (
 	"github.com/Dias1c/forum/architecture/web/handler/view"
 	"github.com/Dias1c/forum/internal/lg"
 
-	spostvote "github.com/Dias1c/forum/architecture/service/post_vote"
 	ssession "github.com/Dias1c/forum/architecture/service/session"
 )
 
@@ -29,9 +28,18 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	cookies.RemoveRedirectCookie(w, r)
 	switch r.Method {
 	case http.MethodGet:
+		posts, err := m.service.Post.GetAll(0, models.SqlLimitInfinity)
+		if err != nil {
+			lg.Err.Printf("IndexHandler: Post.GetAll: %v\n", err)
+		}
+
 		cookie := cookies.GetSessionCookie(w, r)
 		if cookie == nil {
-			pg := getIndexPage(m, nil)
+			err = m.service.FillPosts(posts, 0)
+			if err != nil {
+				lg.Err.Printf("IndexHandler: FillPosts: %v\n", err)
+			}
+			pg := &view.Page{Posts: posts}
 			m.view.ExecuteTemplate(w, pg, "home.html")
 			return
 		}
@@ -40,7 +48,12 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case err == nil:
 		case errors.Is(err, ssession.ErrExpired) || errors.Is(err, ssession.ErrNotFound):
-			pg := getIndexPage(m, nil)
+			cookies.RemoveSessionCookie(w, r)
+			err = m.service.FillPosts(posts, 0)
+			if err != nil {
+				lg.Err.Printf("IndexHandler: FillPosts: %v\n", err)
+			}
+			pg := &view.Page{Posts: posts}
 			m.view.ExecuteTemplate(w, pg, "home.html")
 			return
 		case err != nil:
@@ -58,51 +71,12 @@ func (m *MainHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		pg := getIndexPage(m, user)
+		err = m.service.FillPosts(posts, user.Id)
+		if err != nil {
+			lg.Err.Printf("IndexHandler: FillPosts: %v\n", err)
+		}
+		pg := &view.Page{Posts: posts, User: user}
 		m.view.ExecuteTemplate(w, pg, "home.html")
 		return
 	}
-}
-
-func getIndexPage(m *MainHandler, user *models.User) *view.Page {
-	posts, err := m.service.Post.GetAll(0, 0)
-	if err != nil {
-		lg.Err.Printf("getIndexPage: m.service.Post.GetAll: %v\n", err)
-	}
-	for i := 0; i < len(posts); i++ {
-		// TODO: make it as another function
-		posts[i].WCategories, err = m.service.PostCategory.GetByPostID(posts[i].Id)
-		switch {
-		case err != nil:
-			lg.Err.Printf("getIndexPage: m.service.PostCategory.GetByPostID(postId: %v): %v", posts[i].Id, err)
-		}
-
-		posts[i].WUser, err = m.service.User.GetByID(posts[i].UserId)
-		switch {
-		case err != nil:
-			lg.Err.Printf("getIndexPage: m.service.User.GetByID(userId: %v): %v", posts[i].UserId, err)
-		}
-
-		vUp, vDown, err := m.service.PostVote.GetByPostID(posts[i].Id)
-		switch {
-		case err != nil:
-			lg.Err.Printf("getIndexPage: m.service.PostVote.GetByPostID(id: %v): %v", posts[i].Id, err)
-		}
-		posts[i].WVoteUp = vUp
-		posts[i].WVoteDown = vDown
-
-		if user == nil {
-			continue
-		}
-
-		vUser, err := m.service.PostVote.GetPostUserVote(user.Id, posts[i].Id)
-		switch {
-		case err == nil:
-			posts[i].WUserVote = vUser.Vote
-		case errors.Is(err, spostvote.ErrNotFound):
-		case err != nil:
-			lg.Err.Printf("getIndexPage: m.service.PostVote.GetPostUserVote(userId: %v, postId: %v): %v", user.Id, posts[i].Id, err)
-		}
-	}
-	return &view.Page{User: user, Posts: posts}
 }

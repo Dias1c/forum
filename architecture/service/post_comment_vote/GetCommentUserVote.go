@@ -15,7 +15,7 @@ func (c *PostCommentVoteService) GetCommentUserVote(userId, commentId int64) (*m
 	case errors.Is(err, post_comment_vote.ErrNotFound):
 		return nil, ErrNotFound
 	case err != nil:
-		return nil, fmt.Errorf("c.repo.GetCommentUserVote: %w", err)
+		return nil, fmt.Errorf("repo.GetCommentUserVote: %w", err)
 	}
 	return pVote, nil
 }

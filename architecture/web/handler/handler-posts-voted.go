@@ -10,13 +10,12 @@ import (
 	"github.com/Dias1c/forum/architecture/web/handler/view"
 	"github.com/Dias1c/forum/internal/lg"
 
-	spost "github.com/Dias1c/forum/architecture/service/post"
 	suser "github.com/Dias1c/forum/architecture/service/user"
 )
 
-// PostDeleteHandler -
-func (m *MainHandler) PostDeleteHandler(w http.ResponseWriter, r *http.Request) {
-	debugLogHandler("PostDeleteHandler", r)
+// PostsVotedHandler -
+func (m *MainHandler) PostsVotedHandler(w http.ResponseWriter, r *http.Request) {
+	debugLogHandler("PostsVotedHandler", r)
 
 	// Allowed Methods
 	switch r.Method {
@@ -28,7 +27,7 @@ func (m *MainHandler) PostDeleteHandler(w http.ResponseWriter, r *http.Request) 
 
 	iUserId := r.Context().Value("UserId")
 	if iUserId == nil {
-		lg.Err.Println("PostDeleteHandler: r.Context().Value(\"UserId\") is nil")
+		lg.Err.Println("PostsVotedHandler: r.Context().Value(\"UserId\") is nil")
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
@@ -45,7 +44,7 @@ func (m *MainHandler) PostDeleteHandler(w http.ResponseWriter, r *http.Request) 
 		http.Redirect(w, r, "/sign-in", http.StatusSeeOther)
 		return
 	case err != nil:
-		lg.Err.Printf("PostDeleteHandler: m.service.User.GetByID: %v\n", err)
+		lg.Err.Printf("PostsVotedHandler: m.service.User.GetByID: %v\n", err)
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
@@ -54,40 +53,37 @@ func (m *MainHandler) PostDeleteHandler(w http.ResponseWriter, r *http.Request) 
 
 	switch r.Method {
 	case http.MethodGet:
-		strPostId := r.URL.Query().Get("id")
-		postId, err := strconv.ParseInt(strPostId, 10, 64)
-		if err != nil || postId < 1 {
-			http.Error(w, "Invalid query id", http.StatusBadRequest)
-			return
-		}
-		post, err := m.service.Post.GetByID(postId)
-		switch {
-		case err == nil:
-		case errors.Is(err, spost.ErrNotFound):
-			// TODO: error page
-			http.Error(w, "Post Not Found", http.StatusNotFound)
+		strVote := r.URL.Query().Get("vote")
+		vote, err := strconv.ParseInt(strVote, 10, 8)
+		if err != nil || vote < -1 || 1 < vote {
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 			return
 		}
 
-		if post.UserId != user.Id {
-			http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
-			return
-		}
-
-		err = m.service.Post.DeleteByID(post.Id)
-		switch {
-		case err == nil:
-		case err != nil:
-			lg.Err.Printf("PostDeleteHandler: m.service.Post.DeleteByID: %v\n", err)
+		postIDs, err := m.service.PostVote.GetAllUserVotedPostIDs(userId, int8(vote), 0, 0)
+		if err != nil {
+			lg.Err.Printf("PostsVotedHandler: PostVote.GetAllUserVotedPostIDs: %v\n", err)
 			pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 			w.WriteHeader(http.StatusInternalServerError)
 			m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
 			return
 		}
 
-		http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
+		posts, err := m.service.Post.GetByIDs(postIDs)
+		if err != nil {
+			lg.Err.Printf("PostsVotedHandler: Post.GetByIDs: %v\n", err)
+		}
+
+		err = m.service.FillPosts(posts, user.Id)
+		if err != nil {
+			lg.Err.Printf("PostsVotedHandler: FillPosts: %v\n", err)
+		}
+
+		pg := &view.Page{User: user, Posts: posts, Info: fmt.Errorf("Voted Posts")}
+		m.view.ExecuteTemplate(w, pg, "home.html")
 		return
 	default:
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return
 	}
 }

@@ -16,7 +16,7 @@ type Post struct {
 	WUserVote   int8  // -1 0 1
 	WVoteUp     int64 // Like
 	WVoteDown   int64 // Dislike
-	WCategories []*PostCategory
+	WCategories []*Category
 	WComments   []*PostComment
 }
 
@@ -25,6 +25,8 @@ type IPostService interface {
 	Update(post *Post) error
 	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
+	GetByIDs(ids []int64) ([]*Post, error)
+	GetByUserID(userId, offset, limit int64) ([]*Post, error)
 	DeleteByID(id int64) error
 }
 
@@ -33,5 +35,7 @@ type IPostRepo interface {
 	Update(post *Post) error
 	GetAll(offset, limit int64) ([]*Post, error)
 	GetByID(id int64) (*Post, error)
+	GetByIDs(ids []int64) ([]*Post, error)
+	GetByUserID(userId, offset, limit int64) ([]*Post, error)
 	DeleteByID(id int64) error
 }

@@ -23,32 +23,37 @@ docker build . -t forum-image
 docker run -p 80:8080 --rm --name forum-container forum-image
 ```
 
-## Definition of Done
-- [x] Configs system
+## For Developers
+<details>
+<summary>The Project's Definition of Done</summary>
+
+> It helps to you write forum with this order
+
+**Preparing**
+- [x] Configs (config files or params)
 - [x] Database schema
-- [x] Connect database
+- [x] Create and Connect to DB
 - [x] Write dockerfile
 
-- **BackEnd**
+**Logic**
 - [x] sign-up
 - [x] sign-in
-- [x] middleware
+- [x] middleware (session tracker)
 - [x] post-create
+- [x] post-view
+- [x] main-page
 - [x] post-delete
 - [x] post-edit-page
 - [x] post-page (likes, comments)
+- [x] posts-own
+- [x] posts-voted
 - [x] comment-create 
 - [x] comment-delete
 - [x] comments (likes)
-- [ ] categories-page
-- [~] main-page (posts, posts-filters, users posts, posts-sort)
+- [x] posts-categories-page (filtering, posts)
 
-- **FrontEnd** 
-- [ ] sign-up
-- [ ] sign-in
-- [ ] main-page
-- [ ] posts-page
-- [ ] post-create-page
-- [ ] post-page, comments, comment-create
-- [ ] categories
-- [ ] filters in main page
+**Opt**
+- [ ] Makrdown
+  - [ ] About project (Description)
+  - [ ] How To Run (Examples)
+</details>

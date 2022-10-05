@@ -12,8 +12,8 @@ import (
 	"github.com/Dias1c/forum/architecture/web/handler/view"
 	"github.com/Dias1c/forum/internal/lg"
 
+	scategory "github.com/Dias1c/forum/architecture/service/category"
 	spost "github.com/Dias1c/forum/architecture/service/post"
-	scategory "github.com/Dias1c/forum/architecture/service/post_category"
 	suser "github.com/Dias1c/forum/architecture/service/user"
 )
 
@@ -47,11 +47,13 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 		cookies.RemoveSessionCookie(w, r)
 		cookies.AddRedirectCookie(w, r.RequestURI)
 		http.Redirect(w, r, "/sign-in", http.StatusSeeOther)
+		return
 	case err != nil:
 		lg.Err.Printf("PostEditHandler: m.service.User.GetByID: %v\n", err)
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
+		return
 	}
 
 	switch r.Method {
@@ -76,7 +78,7 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		categories, err := m.service.PostCategory.GetByPostID(post.Id)
+		categories, err := m.service.Category.GetByPostID(post.Id)
 		switch {
 		case err == nil:
 			post.WCategories = categories
@@ -123,7 +125,7 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case err == nil:
 		case errors.Is(err, spost.ErrInvalidTitleLength) || errors.Is(err, spost.ErrInvalidContentLength):
-			categories, errn := m.service.PostCategory.GetByPostID(post.Id)
+			categories, errn := m.service.Category.GetByPostID(post.Id)
 			switch {
 			case errn == nil:
 				post.WCategories = categories
@@ -153,7 +155,7 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = m.service.PostCategory.DeleteByPostID(post.Id)
+		err = m.service.Category.DeleteByPostID(post.Id)
 		switch {
 		case err == nil:
 		case err != nil:
@@ -163,7 +165,7 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		catNames := strings.Fields(r.Form.Get("categories"))
-		err = m.service.PostCategory.AddToPostByNames(catNames, post.Id)
+		err = m.service.Category.AddToPostByNames(catNames, post.Id)
 		switch {
 		case err == nil:
 		case errors.Is(err, scategory.ErrCategoryLimitForPost):

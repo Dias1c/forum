@@ -11,8 +11,8 @@ import (
 	"github.com/Dias1c/forum/architecture/web/handler/view"
 	"github.com/Dias1c/forum/internal/lg"
 
+	scategory "github.com/Dias1c/forum/architecture/service/category"
 	spost "github.com/Dias1c/forum/architecture/service/post"
-	scategory "github.com/Dias1c/forum/architecture/service/post_category"
 	suser "github.com/Dias1c/forum/architecture/service/user"
 )
 
@@ -46,11 +46,13 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 		cookies.RemoveSessionCookie(w, r)
 		cookies.AddRedirectCookie(w, r.RequestURI)
 		http.Redirect(w, r, "/sign-in", http.StatusSeeOther)
+		return
 	case err != nil:
 		lg.Err.Printf("PostEditHandler: m.service.User.GetByID: %v\n", err)
 		pg := &view.Page{Error: fmt.Errorf("internal server error, maybe try again later")}
 		w.WriteHeader(http.StatusInternalServerError)
 		m.view.ExecuteTemplate(w, pg, "alert.html") // TODO: Custom Error Page
+		return
 	}
 
 	switch r.Method {
@@ -86,7 +88,7 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 		}
 
 		catNames := strings.Fields(r.Form.Get("categories"))
-		err = m.service.PostCategory.AddToPostByNames(catNames, post.Id)
+		err = m.service.Category.AddToPostByNames(catNames, post.Id)
 		switch {
 		case err == nil:
 		case errors.Is(err, scategory.ErrCategoryLimitForPost):

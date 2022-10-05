@@ -1,37 +1,51 @@
 {{ define "block" }}
-<div class="panel panel-default">
-  <div class="panel-body">  
-
-
-
-
-
-<form role="form" action="/savecats" method="POST">
-  <div class="input-group control-group after-add-more">  
-    <input type="text" name="savecat" class="form-control" placeholder="e.g. (golang)" required>  
-    <div class="input-group-btn">   
-      <button class="btn btn-success add-more" type="submit"><i class="glyphicon glyphicon-plus"></i> Create the category</button>  
-    </div>  
-  </div> 
+{{ $Page := .}}
+<form class="panel panel-default" role="form" action="/categories/posts" method="GET">
+  <div class="panel-body">
+    <div class="input-form">
+      <label for="content">Select Categories</label>
+      <div class="textblock__input" id="b_TagEditor">
+        <input type="text" placeholder="Max: 32 symbols" value="">
+      </div>
+      <textarea type="text" name="categories" class="s-disabled border-none" id="tb_TagEditor" hidden></textarea>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-primary active" type="submit">find posts by selected</button>
+  </div>
 </form>
 
 
-{{ range .Post.Cats }}
-<form role="form" action="/deletecats" method="POST">
-    <div class="control-group input-group" style="margin-top:10px">  
-      <input type="hidden" name="deletecat" value="{{.ID}}">
-      <h3>
-        <span class="lead label label-default">{{ .Name}}</span>  
-        <button class="btn btn-danger remove" type="submit"><i class="glyphicon glyphicon-remove"></i> Delete</button>  
-      </h3>
-      
-      </div>  
-    </form>
-   
+{{ range $Category := $Page.Categories }}
+<div class="panel panel-default">
+  <div class="panel-body text-center">
+    <div class=" btn-group-justified" role="group" aria-label="...">
+      <div class="btn-group btn-group-justified">
+        <a class="btn btn-tag btn-primary" href="/categories/posts?categories={{ $Category.Name }}">{{ $Category.Name }} </a>
+        <span class="btn btn-tag btn-primary"></span>
+      </div>
+      <div class="btn-group" role="group">
+        {{ $Category.CreatedAt.Format "2006-01-02 15:04" }}
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default">Right</button>
+      </div>
+    </div>
+  </div>
+</div>
 {{ end }}
 
-</div>  
 
-</div>
+
+<script src="/static/js/tag-editor.js"></script>
+<script>
+  const tagEditor = new TagEditor({
+    BlockSelectorName: "#b_TagEditor",
+    TextBlockSelectorName: "#tb_TagEditor",
+    Tags: [],
+    MaxTags: 5,
+    MaxTagLength: 32,
+  });
+</script>
 
 {{ end }}

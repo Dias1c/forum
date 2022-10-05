@@ -1,4 +1,4 @@
-package post_category
+package category
 
 import (
 	"fmt"
@@ -7,19 +7,24 @@ import (
 	"github.com/Dias1c/forum/architecture/models"
 )
 
-func (c *PostCategoryRepo) GetByPostID(postId int64) ([]*models.PostCategory, error) {
-	rows, err := c.db.Query(`
-SELECT c.id, c.name, c.created_at FROM posts_categories pc
-JOIN categories c ON pc.category_id = c.id
-WHERE pc.post_id = ?`, postId)
-	if err != nil {
-		return nil, fmt.Errorf("c.db.Query: %w", err)
+func (p *CategoryRepo) GetAll(offset, limit int64) ([]*models.Category, error) {
+	if limit == 0 {
+		limit = -1
 	}
 
-	categories := []*models.PostCategory{}
+	rows, err := p.db.Query(`
+SELECT id, name, created_at FROM categories
+LIMIT ? OFFSET ? 
+	`, limit, offset)
+
+	if err != nil {
+		return nil, fmt.Errorf("p.db.Query: %w", err)
+	}
+
+	categories := []*models.Category{}
 	for rows.Next() {
 		var strCreatedAt string
-		category := &models.PostCategory{}
+		category := &models.Category{}
 		err = rows.Scan(&category.Id, &category.Name, &strCreatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("rows.Scan: %w", err)
@@ -30,7 +35,9 @@ WHERE pc.post_id = ?`, postId)
 			return nil, fmt.Errorf("time.Parse: %w", err)
 		}
 		category.CreatedAt = timeCreatedAt
+
 		categories = append(categories, category)
 	}
+
 	return categories, nil
 }

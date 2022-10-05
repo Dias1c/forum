@@ -20,10 +20,10 @@
     </div>
 
     <div class="panel-body">
-      <pre>{{ $Post.Content }}</pre>
+      <pre>{{ printf "%.220s" $Post.Content }}</pre>
       <div class="btn-group">
         {{ range $category := $Post.WCategories }}
-        <a class="btn btn-tag label label-primary" href="/category/post/get/{{ $category.Id }}">{{ $category.Name
+        <a class="btn btn-tag label label-primary" href="/categories/posts?categories={{ $category.Name }}">{{ $category.Name
           }}</a>
         {{ end }}
       </div>
@@ -33,20 +33,20 @@
         <!-- TODO: Закончить это -->
         {{ if eq $Post.WUserVote 1 }}
         <a type="button" class="btn btn-primary btn-sm" href="/post/vote?post_id={{ $Post.Id }}&vote=0">
-          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Post.WVoteUp }}
+          <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> {{ $Post.WVoteUp }}
         </a>
         {{ else }}
         <a type="button" class="btn btn-default btn-sm" href="/post/vote?post_id={{ $Post.Id }}&vote=1">
-          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ $Post.WVoteUp }}
+          <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> {{ $Post.WVoteUp }}
         </a>
         {{ end }}
         {{ if eq $Post.WUserVote -1 }}
         <a type="button" class="btn btn-primary btn-sm" href="/post/vote?post_id={{ $Post.Id }}&vote=0">
-          <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Post.WVoteDown }}
+          <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{ $Post.WVoteDown }}
         </a>
         {{ else }}
         <a type="button" class="btn btn-default btn-sm" href="/post/vote?post_id={{ $Post.Id }}&vote=-1">
-          <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ $Post.WVoteDown }}
+          <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{ $Post.WVoteDown }}
         </a>
         {{ end }}
       </div>
