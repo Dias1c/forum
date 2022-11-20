@@ -72,17 +72,19 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 		switch {
 		case err == nil:
 		case errors.Is(err, spost.ErrInvalidTitleLength):
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{Error: fmt.Errorf("invalid length of title")}
 			m.view.ExecuteTemplate(w, pg, "post-create.html")
 			return
 		case errors.Is(err, spost.ErrInvalidContentLength):
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{Error: fmt.Errorf("invalid length of content")}
 			m.view.ExecuteTemplate(w, pg, "post-create.html")
 			return
 		default:
 			lg.Err.Printf("PostCreateHandler: m.service.Post.Create: %s", err)
-			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later: %s", err)}
 			w.WriteHeader(http.StatusInternalServerError)
+			pg := &view.Page{Error: fmt.Errorf("something wrong, maybe try again later: %s", err)}
 			m.view.ExecuteTemplate(w, pg, "post-create.html")
 			return
 		}
@@ -97,8 +99,8 @@ func (m *MainHandler) PostCreateHandler(w http.ResponseWriter, r *http.Request) 
 				lg.Err.Println("PostCreateHandler: m.service.Post.DeleteByID: %w", err)
 			}
 
-			pg := &view.Page{Error: fmt.Errorf("post not created, invalid categies count, category limit = %v", models.MaxCategoryLimitForPost)}
 			w.WriteHeader(http.StatusBadRequest)
+			pg := &view.Page{Error: fmt.Errorf("post not created, invalid categies count, category limit = %v", models.MaxCategoryLimitForPost)}
 			m.view.ExecuteTemplate(w, pg, "post-create.html")
 			return
 		default:

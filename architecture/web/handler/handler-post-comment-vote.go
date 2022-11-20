@@ -40,7 +40,7 @@ func (m *MainHandler) PostCommentVoteHandler(w http.ResponseWriter, r *http.Requ
 		}
 
 		strVote := r.URL.Query().Get("vote")
-		vote, err := strconv.ParseInt(strVote, 3, 8)
+		vote, err := strconv.ParseInt(strVote, 10, 8)
 		if err != nil {
 			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 			return

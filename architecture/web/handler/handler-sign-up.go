@@ -73,15 +73,19 @@ func (m *MainHandler) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/signin", http.StatusSeeOther)
 			return
 		case errors.Is(err, suser.ErrExistNickname):
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{Error: fmt.Errorf("nickname \"%v\" is used. Try with another nickname.", newUser.Nickname)}
 			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		case errors.Is(err, suser.ErrExistEmail):
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{Error: fmt.Errorf("email \"%v\" is used. Try with another email.", newUser.Email)}
 			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		case errors.Is(err, suser.ErrInvalidNickname):
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{Error: fmt.Errorf("invalid nickname \"%v\"", newUser.Nickname)}
 			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		case errors.Is(err, suser.ErrInvalidEmail):
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{Error: fmt.Errorf("invalid email \"%v\"", newUser.Email)}
 			m.view.ExecuteTemplate(w, pg, "sign-up.html")
 		default:

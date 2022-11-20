@@ -146,6 +146,7 @@ func (m *MainHandler) PostEditHandler(w http.ResponseWriter, r *http.Request) {
 				errMsg = fmt.Errorf("invalid post")
 			}
 
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{User: user, Post: post, Error: errMsg}
 			m.view.ExecuteTemplate(w, pg, "post-edit.html")
 			return

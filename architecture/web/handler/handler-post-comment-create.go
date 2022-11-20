@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/Dias1c/forum/architecture/models"
-	spost "github.com/Dias1c/forum/architecture/service/post"
+	"github.com/Dias1c/forum/architecture/service/post_comment"
 	suser "github.com/Dias1c/forum/architecture/service/user"
 	"github.com/Dias1c/forum/architecture/web/handler/cookies"
 	"github.com/Dias1c/forum/architecture/web/handler/view"
@@ -73,10 +73,8 @@ func (m *MainHandler) PostCommentCreateHandler(w http.ResponseWriter, r *http.Re
 		_, err = m.service.PostComment.Create(comment)
 		switch {
 		case err == nil:
-		case errors.Is(err, spost.ErrInvalidContentLength):
-			// TODO: Error Page
-			pg := &view.Page{Error: fmt.Errorf("invalid length of content")}
-			m.view.ExecuteTemplate(w, pg, "post-view.html")
+		case errors.Is(err, post_comment.ErrInvalidContentLength):
+			http.Error(w, "invalid length of content", http.StatusBadRequest)
 			return
 		default:
 			lg.Err.Printf("PostCommentCreateHandler: m.service.PostComment.Create: %s", err)

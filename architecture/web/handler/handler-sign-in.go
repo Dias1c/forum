@@ -67,17 +67,16 @@ func (m *MainHandler) SignInHandler(w http.ResponseWriter, r *http.Request) {
 		case err == nil:
 		case errors.Is(err, suser.ErrNotFound):
 			pg := &view.Page{Error: fmt.Errorf("user with login \"%v\" not found", r.FormValue("login"))}
-			// w.WriteHeader(http.StatusNotFound)
 			m.view.ExecuteTemplate(w, pg, "sign-in.html")
 			return
 		case errors.Is(err, suser.ErrInvalidEmail):
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{Error: fmt.Errorf("invalid email %v", r.FormValue("login"))}
-			// w.WriteHeader(http.StatusBadRequest)
 			m.view.ExecuteTemplate(w, pg, "sign-in.html")
 			return
 		case errors.Is(err, suser.ErrInvalidNickname):
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{Error: fmt.Errorf("invalid nickname %v", r.FormValue("login"))}
-			// w.WriteHeader(http.StatusBadRequest)
 			m.view.ExecuteTemplate(w, pg, "sign-in.html")
 			return
 		default:
@@ -97,6 +96,7 @@ func (m *MainHandler) SignInHandler(w http.ResponseWriter, r *http.Request) {
 			m.view.ExecuteTemplate(w, pg, "sign-in.html")
 			return
 		case !areEqual:
+			w.WriteHeader(http.StatusBadRequest)
 			pg := &view.Page{Error: fmt.Errorf("invalid password for login \"%s\"", r.FormValue("login"))}
 			m.view.ExecuteTemplate(w, pg, "sign-in.html")
 			return
