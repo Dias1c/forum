@@ -1,5 +1,10 @@
 # forum
-Forum with clean architecture
+Forum with clean architecture.
+Here you can:
+- Create posts - Share your inner world
+- Comments posts - Discuss posts
+- Vote liked/disliked posts and comments
+- But before creating you must register :)
 
 ## How to run local
 Run:
