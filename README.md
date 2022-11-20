@@ -2,7 +2,7 @@
 Forum with clean architecture
 
 ## How to run local
-Run without build
+Run:
 ```bash
 go run ./cmd/
 ```
@@ -22,6 +22,7 @@ docker build . -t forum-image
 ```bash
 docker run -p 80:8080 --rm --name forum-container forum-image
 ```
+3. Check [`http://localhost`](http://localhost:80)
 
 ## For Developers
 <details>
@@ -55,5 +56,5 @@ docker run -p 80:8080 --rm --name forum-container forum-image
 **Opt**
 - [ ] Makrdown
   - [ ] About project (Description)
-  - [ ] How To Run (Examples)
+  - [x] How To Run (Examples)
 </details>
