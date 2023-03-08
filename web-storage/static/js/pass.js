@@ -1,4 +1,4 @@
-function confirmPasswordOnChange() {
+function confirmPasswordOnKeyUp() {
   let password = document.querySelector('#password-original');
   let confirm = document.querySelector('#password-confirm');
   let btn_submit = document.querySelector('#btn-signup-submit')
