@@ -10,11 +10,7 @@ FROM ubuntu:20.04
 LABEL run forum builded file on new container
 WORKDIR /src
 
-COPY --from=builder /src/database database
-COPY --from=builder /src/web web
-COPY --from=builder /src/*.db .
-COPY --from=builder /src/configs.env .
-COPY --from=builder /src/main.exe .
+COPY --from=builder /src/. .
 EXPOSE 8080
 
 CMD ["./main.exe"]
