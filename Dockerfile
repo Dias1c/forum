@@ -12,7 +12,7 @@ WORKDIR /src
 
 COPY --from=builder /src/database database
 COPY --from=builder /src/web web
-COPY --from=builder /src/store.sqlite.db .
+COPY --from=builder /src/*.db .
 COPY --from=builder /src/configs.env .
 COPY --from=builder /src/main.exe .
 EXPOSE 8080
