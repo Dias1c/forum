@@ -13,6 +13,11 @@ func InitDatabase(configs *Configs) (*sql.DB, error) {
 		return nil, fmt.Errorf("sql.Open: %w", err)
 	}
 
+	err = db.Ping()
+	if err != nil {
+		return nil, fmt.Errorf("db.Ping: %w", err)
+	}
+
 	err = execMigration(db, configs.DbMigrationPath)
 	if err != nil {
 		return nil, fmt.Errorf("ExecMigration: %w", err)
