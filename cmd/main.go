@@ -5,9 +5,9 @@ import (
 	"github.com/Dias1c/forum/architecture/service"
 	"github.com/Dias1c/forum/architecture/web/handler"
 	"github.com/Dias1c/forum/architecture/web/server"
-	"github.com/Dias1c/forum/internal/cenv"
 	"github.com/Dias1c/forum/internal/database"
 	"github.com/Dias1c/forum/internal/lg"
+	"github.com/Dias1c/forum/pkg/cenv"
 
 	_ "github.com/mattn/go-sqlite3"
 )
