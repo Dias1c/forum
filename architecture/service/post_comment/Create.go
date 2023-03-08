@@ -8,6 +8,8 @@ import (
 )
 
 func (c *PostCommentService) Create(comment *models.PostComment) (int64, error) {
+	comment.Prepare()
+
 	if comment.ValidateContent() != nil {
 		return -1, ErrInvalidContentLength
 	}

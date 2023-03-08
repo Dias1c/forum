@@ -10,6 +10,8 @@ import (
 )
 
 func (p *PostService) Create(post *model.Post) (int64, error) {
+	post.Prepare()
+
 	if post.ValidateTitle() != nil {
 		return -1, ErrInvalidTitleLength
 	} else if post.ValidateContent() != nil {
