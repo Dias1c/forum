@@ -14,7 +14,7 @@
   </div>
 
   <div class="panel-body">
-    <div class="markdown">{{ $Post.Content }}</div>
+    <div class="markdown" style="overflow: auto;">{{ $Post.Content }}</div>
     <div class="btn-group">
       {{ range $category := $Post.WCategories }}
       <a class="btn btn-tag label label-primary" href="/categories/posts?categories={{ $category.Name }}">{{
